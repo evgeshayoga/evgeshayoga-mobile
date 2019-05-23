@@ -10,7 +10,6 @@ class Marathons extends StatelessWidget {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignin = GoogleSignIn();
 
-
   @override
   Marathons({Key key, this.name, this.familyName}) : super(key: key);
 
@@ -30,7 +29,7 @@ class Marathons extends StatelessWidget {
                     child: Column(
                   children: <Widget>[
                     ListTile(
-                    contentPadding: EdgeInsets.fromLTRB(0, 60, 0, 0),
+                      contentPadding: EdgeInsets.fromLTRB(0, 60, 0, 0),
                       title: CircleAvatar(
                         backgroundColor: Colors.white,
                         child: Icon(
@@ -58,7 +57,7 @@ class Marathons extends StatelessWidget {
             height: 420,
             alignment: Alignment.bottomCenter,
             child: RaisedButton(
-                onPressed: (){
+                onPressed: () {
                   _auth.signOut();
                   _googleSignin.signOut();
                   print("Signed out");
@@ -66,23 +65,27 @@ class Marathons extends StatelessWidget {
 //                    return Login();
 //                  });
 //                  Navigator.of(context).push(router);
-                  Navigator.of(context)
-                      .popUntil(ModalRoute.withName('/'));
+                  Navigator.of(context).popUntil(ModalRoute.withName('/'));
                 },
                 color: Colors.white,
                 child: new Text(
                   "Logout",
-                  style: TextStyle(
-                      color: Colors.black, fontSize: 16.9),
-                )
-            ),
+                  style: TextStyle(color: Colors.black, fontSize: 16.9),
+                )),
           )
         ],
       )),
       appBar: AppBar(
-        title: Text("Marathons"),
+        title: Text(
+          "Marathons",
+          style:
+              TextStyle(
+                fontFamily: "BebasNeue",
+                  fontSize: 25,
+                  color: Color.fromRGBO(94, 101, 111, 1)),
+        ),
         centerTitle: true,
-        backgroundColor: Colors.green.shade400,
+        backgroundColor: Color.fromRGBO(242, 206, 210, 1),
       ),
       body: Center(
         child: ListView(

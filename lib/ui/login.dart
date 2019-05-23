@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter/services.dart' show PlatformException;
+import 'package:url_launcher/url_launcher.dart';
+
 
 //import 'package:evgeshayoga/utils/database_helper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -40,124 +42,116 @@ class _LoginState extends State<Login> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.green.shade400,
-        title: Text("Йога с Женей"),
+        backgroundColor: Colors.white,
+        title: Image.asset(
+          'assets/images/logo.png',
+          height: 40,
+        ),
         centerTitle: true,
       ),
       body: Container(
         color: Colors.white,
-        margin: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-//        alignment: Alignment.bottomCenter,
         child: ListView(
-//          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Image.asset(
-              'assets/images/yoga_logo.png',
-              height: 100,
-              width: 100,
+              'assets/images/evgeshayoga_landscape.jpg',
             ),
-            new Container(
+            Padding(
+              padding: const EdgeInsets.only(top: 20.0),
+            ),
+            Container(
+              height: 170,
+              alignment: Alignment(0.0, 0.0),
               color: Colors.white,
-              child: new Column(
-                children: <Widget>[
-                  Form(
-                    key: _loginFormKey,
-                    child: Column(
-                      children: <Widget>[
-                        TextFormField(
-//                          controller: _emailController,
-                          decoration: const InputDecoration(
-                            icon: Icon(Icons.email),
-                            hintText: 'Enter your Email',
-                            labelText: 'Email',
-                          ),
-                          onSaved: (value) => user.userEmail = value.trim(),
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Please enter your email';
-                            }
-                          },
-                        ),
-                        TextFormField(
-//                          controller: _passwordController,
-                          obscureText: true,
-                          decoration: const InputDecoration(
-                            icon: Icon(Icons.lock),
-                            hintText: 'Enter your password',
-                            labelText: 'Password',
-                          ),
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Please enter your password';
-                            }
-                          },
-                          onSaved: (value) => user.password = value.trim(),
-                        ),
-                      ],
-                    ),
-                  ),
-//
-//                  new TextField(
-//                    controller: _emailController,
-//                    decoration: new InputDecoration(
-//                        hintText: "Your email", icon: new Icon(Icons.email)),
-//                  ),
-//                  new TextField(
-//                    controller: _passwordController,
-//                    decoration: new InputDecoration(
-//                        hintText: "Your password", icon: new Icon(Icons.lock)),
-//                    obscureText: true,
-//                  ),
-                  new Padding(padding: new EdgeInsets.all(10.5)),
-                  new Column(
+              child: Container(
+                width: 300,
+                child: Form(
+                  key: _loginFormKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      Row(
-                        children: <Widget>[
-                          new Container(
-                              margin: const EdgeInsets.only(left: 60.0),
-                              child: new RaisedButton(
-                                  onPressed: userLogIn,
-                                  color: Colors.white,
-                                  child: new Text(
-                                    "Login",
-                                    style: TextStyle(
-                                        color: Colors.black, fontSize: 16.9),
-                                  ))),
-                          new Container(
-                            margin: const EdgeInsets.only(left: 100.0),
-                            child: new RaisedButton(
-                                onPressed: () {
-                                  var router = new MaterialPageRoute(
-                                      builder: (BuildContext context) {
-                                    return RegistrationPage();
-                                  });
-                                  Navigator.of(context).push(router);
-                                },
-                                color: Colors.white,
-                                child: new Text(
-                                  "Register",
-                                  style: TextStyle(
-                                      color: Colors.black, fontSize: 16.9),
-                                )),
-                          )
-                        ],
+                      TextFormField(
+//                          controller: _emailController,
+                        decoration: const InputDecoration(
+                          icon: Icon(Icons.email),
+                          hintText: 'Введите свой email',
+                          labelText: 'Email',
+                        ),
+                        onSaved: (value) => user.userEmail = value.trim(),
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Введите email';
+                          }
+                        },
+                      ),
+                      TextFormField(
+//                          controller: _passwordController,
+                        obscureText: true,
+                        decoration: const InputDecoration(
+                          icon: Icon(Icons.lock),
+                          hintText: 'Введите свой пароль',
+                          labelText: 'Пароль',
+                        ),
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Введите пароль';
+                          }
+                        },
+                        onSaved: (value) => user.password = value.trim(),
                       ),
                     ],
                   ),
-                ],
+                ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 10.0),
-            ),
-            Center(
+            Container(
+                margin: const EdgeInsets.only(left: 50, right: 50),
                 child: RaisedButton(
-                    onPressed: googleSignIn,
-                    color: Colors.white,
+                    onPressed: userLogIn,
+                    color: Color.fromRGBO(242, 206, 210, .75),
                     child: Text(
-                      "Sign-in with Google",
-                      style: TextStyle(color: Colors.black, fontSize: 16.9),
+                      "Войти",
+                      style: TextStyle(
+                          color: Color.fromRGBO(94, 101, 111, 1),
+                          fontSize: 16.9),
                     ))),
+            Text(
+              "или",
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Color.fromRGBO(94, 101, 111, 1)),
+            ),
+            Container(
+                margin: const EdgeInsets.only(left: 50, right: 50),
+                child: RaisedButton(
+                    onPressed:
+                        () async {
+                      var url = 'https://evgeshayoga.com/register';
+                      if (await canLaunch(url)) {
+                        await launch(url);
+                      }
+                    },
+//                        () {
+//                      var router = new MaterialPageRoute(
+//                          builder: (BuildContext context) {
+//                        return RegistrationPage();
+//                      });
+//                      Navigator.of(context).push(router);
+//                    },
+                    color: Color.fromRGBO(242, 206, 210, .75),
+                    child: Text(
+                      "Зарегестрироваться",
+                      style: TextStyle(
+                          color: Color.fromRGBO(94, 101, 111, 1),
+                          fontSize: 16.9),
+                    ))),
+//            Center(
+//                child: RaisedButton(
+//                    onPressed: googleSignIn,
+//                    color: Colors.white,
+//                    child: Text(
+//                      "Sign-in with Google",
+//                      style: TextStyle(color: Colors.black, fontSize: 16.9),
+//                    ))),
             Padding(padding: new EdgeInsets.all(10.5)),
             Center(
               child: Text(
@@ -177,9 +171,11 @@ class _LoginState extends State<Login> {
       _loginFormKey.currentState.reset();
       print("${user.userEmail}, ${user.password}");
       try {
-        var response = await http.post("https://evgeshayoga.com/api/jwt/auth",
-            body: json.encode({"email": user.userEmail, "password": user.password}),
-            headers: {'Content-type': 'application/json'},
+        var response = await http.post(
+          "https://evgeshayoga.com/api/jwt/auth",
+          body:
+              json.encode({"email": user.userEmail, "password": user.password}),
+          headers: {'Content-type': 'application/json'},
         );
         Map<String, dynamic> data = json.decode(response.body);
         String token = data["token"];
@@ -189,8 +185,7 @@ class _LoginState extends State<Login> {
 
         print("User signed in: ${newUser.email}, ${newUser.uid}");
         var router = new MaterialPageRoute(builder: (BuildContext context) {
-          return Marathons(
-              name: user.userEmail, familyName: "test");
+          return Marathons(name: user.userEmail, familyName: "test");
         });
         Navigator.of(context).push(router);
 //        FirebaseDatabase.instance
@@ -217,7 +212,7 @@ class _LoginState extends State<Login> {
         setState(() {
           loginAlert = e.message;
         });
-      } on Exception catch(e) {
+      } on Exception catch (e) {
         print("exception");
         print(e.toString());
         setState(() {
@@ -283,4 +278,3 @@ class _LoginState extends State<Login> {
 //    });
 //    Navigator.of(context).push(router);
 //  }
-
