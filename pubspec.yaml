@@ -68,6 +68,8 @@ flutter:
     - assets/images/evgeshayoga_landscape.jpg
     - assets/images/evgeshayoga_portrait.jpg
     - assets/images/photo_3_portrait.jpg
+    - assets/images/avatar.png
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
@@ -83,14 +85,18 @@ flutter:
   fonts:
     - family: BebasNeue
       fonts:
-        - asset: fonts/bebasneueregular.ttf
-        - asset: fonts/bebasneuelight.ttf
+        - asset: fonts/BebasNeue-Bold.ttf
+        - asset: fonts/BebasNeue-Thin.ttf
           weight: 200
     - family: Nunito
       fonts:
         - asset: fonts/Nunito-Regular.ttf
         - asset: fonts/Nunito-Italic.ttf
           style: italic
+    - family: GarageGothic
+      fonts:
+        - asset: fonts/GarageGothicRUS-Bold.ttf
+
           #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf

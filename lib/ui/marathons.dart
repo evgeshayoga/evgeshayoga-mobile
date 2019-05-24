@@ -1,7 +1,10 @@
+import 'package:evgeshayoga/models/marathons_data.dart';
 import 'package:evgeshayoga/ui/login.dart';
+import 'package:evgeshayoga/ui/marathon_card.dart';
 import 'package:evgeshayoga/ui/marathon_poweryoga.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class Marathons extends StatelessWidget {
@@ -22,34 +25,35 @@ class Marathons extends StatelessWidget {
             children: <Widget>[
               //green container with user's icon and name
               Container(
-                color: Colors.green.shade400,
+                color: Color.fromRGBO(242, 206, 210, 1),
                 alignment: Alignment.topCenter,
                 height: 250,
                 child: Center(
-                    child: Column(
-                  children: <Widget>[
-                    ListTile(
-                      contentPadding: EdgeInsets.fromLTRB(0, 60, 0, 0),
-                      title: CircleAvatar(
-                        backgroundColor: Colors.white,
-                        child: Icon(
-                          Icons.person,
-                          size: 50,
+                  child: Column(
+                    children: <Widget>[
+                      ListTile(
+                        contentPadding: EdgeInsets.fromLTRB(0, 60, 0, 0),
+                        title: CircleAvatar(
+                          backgroundColor: Colors.white,
+                          child: Image.asset(
+                            'assets/images/avatar.png',
+                            height: 75,
+                          ),
+                          minRadius: 60,
                         ),
-                        minRadius: 60,
                       ),
-                    ),
-                    Padding(padding: new EdgeInsets.fromLTRB(0, 20, 0, 0)),
-                    Text(
-                      "$name $familyName",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w800,
+                      Padding(padding: new EdgeInsets.fromLTRB(0, 20, 0, 0)),
+                      Text(
+                        "$name $familyName",
+                        style: TextStyle(
+                          color: Color.fromRGBO(94, 101, 111, 1),
+                          fontSize: 20,
+                          fontWeight: FontWeight.w800,
+                        ),
                       ),
-                    ),
-                  ],
-                )),
+                    ],
+                  ),
+                ),
               ),
             ],
           ),
@@ -57,91 +61,44 @@ class Marathons extends StatelessWidget {
             height: 420,
             alignment: Alignment.bottomCenter,
             child: RaisedButton(
-                onPressed: () {
-                  _auth.signOut();
-                  _googleSignin.signOut();
-                  print("Signed out");
+              onPressed: () {
+                _auth.signOut();
+                _googleSignin.signOut();
+                print("Signed out");
 //                  var router = new MaterialPageRoute(builder: (BuildContext context) {
 //                    return Login();
 //                  });
 //                  Navigator.of(context).push(router);
-                  Navigator.of(context).popUntil(ModalRoute.withName('/'));
-                },
-                color: Colors.white,
-                child: new Text(
-                  "Logout",
-                  style: TextStyle(color: Colors.black, fontSize: 16.9),
-                )),
+                Navigator.of(context).popUntil(ModalRoute.withName('/'));
+              },
+              color: Color.fromRGBO(242, 206, 210, 1),
+              child: new Text(
+                "Logout",
+                style: TextStyle(
+                    color: Color.fromRGBO(94, 101, 111, 1), fontSize: 16.9),
+              ),
+            ),
           )
         ],
       )),
       appBar: AppBar(
         title: Text(
-          "Marathons",
-          style:
-              TextStyle(
-                fontFamily: "BebasNeue",
-                  fontSize: 25,
-                  color: Color.fromRGBO(94, 101, 111, 1)),
+          "ПРОГРАММЫ",
+          style: TextStyle(
+              fontFamily: "GarageGothic",
+              fontSize: 30,
+              color: Color.fromRGBO(94, 101, 111, 1)),
         ),
         centerTitle: true,
         backgroundColor: Color.fromRGBO(242, 206, 210, 1),
       ),
       body: Center(
-        child: ListView(
-          children: <Widget>[
-            Column(
-              children: <Widget>[
-                ListTile(
-                  onTap: () {
-                    _showMarathonDialog(context);
-                  },
-                  contentPadding: const EdgeInsets.all(10),
-                  title: Text(
-                    'Марафон для начинающих',
-                    style: TextStyle(
-                        fontSize: 19,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.blueGrey),
-                  ),
-                  subtitle:
-                      Image.asset('assets/images/marathon_beginners_cover.png'),
-                  isThreeLine: true,
-                  leading: Icon(
-                    Icons.event_available,
-                    color: Colors.blueGrey,
-                  ),
-                ),
-                Divider(
-                  height: 7,
-                  color: Colors.blueGrey,
-                ),
-                ListTile(
-                  onTap: () {
-                    var router =
-                        new MaterialPageRoute(builder: (BuildContext context) {
-                      return PowerYoga();
-                    });
-                    Navigator.of(context).push(router);
-                  },
-                  contentPadding: const EdgeInsets.all(10),
-                  title: Text(
-                    'PowerYoga',
-                    style: TextStyle(
-                        fontSize: 19,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.blueGrey),
-                  ),
-                  subtitle:
-                      Image.asset('assets/images/marathon_poweryoga_cover.jpg'),
-                  leading: Icon(
-                    Icons.event_available,
-                    color: Colors.blueGrey,
-                  ),
-                ),
-              ],
-            ),
-          ],
+        child: ListView.builder(
+          itemCount: MarathonData.marathons.length,
+          itemBuilder: (BuildContext context, int index) {
+            var marathon = MarathonData.marathons[index];
+            return MarathonCard(marathon);
+          },
         ),
       ),
     );

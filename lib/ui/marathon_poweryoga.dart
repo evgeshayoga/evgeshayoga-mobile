@@ -43,24 +43,6 @@ class _PowerYogaState extends State<PowerYoga> {
         padding: const EdgeInsets.all(20),
         child: ListView(
           children: <Widget>[
-            RaisedButton(
-            child: Text("Old video player"),
-              onPressed: (){
-                var router = new MaterialPageRoute(builder: (BuildContext context) {
-                  return Scaffold(
-                    appBar: AppBar(
-                      title: Text("Video"),
-                    ),
-                    body: Column(
-                      children: <Widget>[
-                        Video()
-                      ],
-                    ),
-                  );
-                });
-                Navigator.of(context).push(router);
-              },
-        ),
             Text(
               "Добро пожаловать в ряды участников PowerYoga марафона!",
               style: TextStyle(

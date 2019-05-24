@@ -36,9 +36,240 @@ class _LoginState extends State<Login> {
 //      _passwordController.clear();
 //    });
 //  }
+  static const int tabletBreakpoint = 600;
+  Widget _buildLandscapeLayout(){
+    return Container(
+      color: Colors.white,
+      child: ListView(
+        children: <Widget>[
+          Image.asset(
+            'assets/images/evgeshayoga_landscape.jpg',
+            fit: BoxFit.cover,
+            height: 240,
+            alignment: FractionalOffset.bottomCenter,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 20.0),
+          ),
+          Container(
+            height: 170,
+            alignment: Alignment(0.0, 0.0),
+            color: Colors.white,
+            child: Container(
+              width: 500,
+              child: Form(
+                key: _loginFormKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    TextFormField(
+//                          controller: _emailController,
+                      decoration: const InputDecoration(
+                        icon: Icon(Icons.email),
+                        hintText: 'Введите свой email',
+                        labelText: 'Email',
+                      ),
+                      onSaved: (value) => user.userEmail = value.trim(),
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Введите email';
+                        }
+                      },
+                    ),
+                    TextFormField(
+//                          controller: _passwordController,
+                      obscureText: true,
+                      decoration: const InputDecoration(
+                        icon: Icon(Icons.lock),
+                        hintText: 'Введите свой пароль',
+                        labelText: 'Пароль',
+                      ),
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Введите пароль';
+                        }
+                      },
+                      onSaved: (value) => user.password = value.trim(),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Container(
+              margin: const EdgeInsets.only(left: 150, right: 150),
+              child: RaisedButton(
+                  onPressed: userLogIn,
+                  color: Color.fromRGBO(242, 206, 210, .75),
+                  child: Text(
+                    "Войти",
+                    style: TextStyle(
+                        color: Color.fromRGBO(94, 101, 111, 1),
+                        fontSize: 16.9),
+                  ))),
+          Text(
+            "или",
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Color.fromRGBO(94, 101, 111, 1)),
+          ),
+          Container(
+              margin: const EdgeInsets.only(left: 150, right: 150),
+              child: RaisedButton(
+                  onPressed:
+                      () async {
+                    var url = 'https://evgeshayoga.com/register';
+                    if (await canLaunch(url)) {
+                      await launch(url);
+                    }
+                  },
+                  color: Color.fromRGBO(242, 206, 210, .75),
+                  child: Text(
+                    "Зарегестрироваться",
+                    style: TextStyle(
+                        color: Color.fromRGBO(94, 101, 111, 1),
+                        fontSize: 16.9),
+                  ))),
+//            Center(
+//                child: RaisedButton(
+//                    onPressed: googleSignIn,
+//                    color: Colors.white,
+//                    child: Text(
+//                      "Sign-in with Google",
+//                      style: TextStyle(color: Colors.black, fontSize: 16.9),
+//                    ))),
+          Padding(padding: new EdgeInsets.all(10.5)),
+          Center(
+            child: Text(
+              loginAlert,
+              style: TextStyle(color: Colors.red),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPortraitLayout(){
+    return Container(
+      color: Colors.white,
+      child: ListView(
+        children: <Widget>[
+          Image.asset(
+            'assets/images/evgeshayoga_landscape.jpg',
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 20.0),
+          ),
+          Container(
+            height: 170,
+            alignment: Alignment(0.0, 0.0),
+            color: Colors.white,
+            child: Container(
+              width: 300,
+              child: Form(
+                key: _loginFormKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    TextFormField(
+//                          controller: _emailController,
+                      decoration: const InputDecoration(
+                        icon: Icon(Icons.email),
+                        hintText: 'Введите свой email',
+                        labelText: 'Email',
+                      ),
+                      onSaved: (value) => user.userEmail = value.trim(),
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Введите email';
+                        }
+                      },
+                    ),
+                    TextFormField(
+//                          controller: _passwordController,
+                      obscureText: true,
+                      decoration: const InputDecoration(
+                        icon: Icon(Icons.lock),
+                        hintText: 'Введите свой пароль',
+                        labelText: 'Пароль',
+                      ),
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Введите пароль';
+                        }
+                      },
+                      onSaved: (value) => user.password = value.trim(),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Container(
+              margin: const EdgeInsets.only(left: 50, right: 50),
+              child: RaisedButton(
+                  onPressed: userLogIn,
+                  color: Color.fromRGBO(242, 206, 210, .75),
+                  child: Text(
+                    "Войти",
+                    style: TextStyle(
+                        color: Color.fromRGBO(94, 101, 111, 1),
+                        fontSize: 16.9),
+                  ))),
+          Text(
+            "или",
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Color.fromRGBO(94, 101, 111, 1)),
+          ),
+          Container(
+              margin: const EdgeInsets.only(left: 50, right: 50),
+              child: RaisedButton(
+                  onPressed:
+                      () async {
+                    var url = 'https://evgeshayoga.com/register';
+                    if (await canLaunch(url)) {
+                      await launch(url);
+                    }
+                  },
+                  color: Color.fromRGBO(242, 206, 210, .75),
+                  child: Text(
+                    "Зарегестрироваться",
+                    style: TextStyle(
+                        color: Color.fromRGBO(94, 101, 111, 1),
+                        fontSize: 16.9),
+                  ))),
+//            Center(
+//                child: RaisedButton(
+//                    onPressed: googleSignIn,
+//                    color: Colors.white,
+//                    child: Text(
+//                      "Sign-in with Google",
+//                      style: TextStyle(color: Colors.black, fontSize: 16.9),
+//                    ))),
+          Padding(padding: new EdgeInsets.all(10.5)),
+          Center(
+            child: Text(
+              loginAlert,
+              style: TextStyle(color: Colors.red),
+            ),
+          )
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
+    Widget loginPageContent;
+    var shortestSide = MediaQuery.of(context).size.shortestSide;
+    var orientation = MediaQuery.of(context).orientation;
+
+    if (orientation == Orientation.portrait && shortestSide < tabletBreakpoint) {
+      loginPageContent = _buildPortraitLayout();
+    } else {
+      loginPageContent = _buildLandscapeLayout();
+    }
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -49,119 +280,7 @@ class _LoginState extends State<Login> {
         ),
         centerTitle: true,
       ),
-      body: Container(
-        color: Colors.white,
-        child: ListView(
-          children: <Widget>[
-            Image.asset(
-              'assets/images/evgeshayoga_landscape.jpg',
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 20.0),
-            ),
-            Container(
-              height: 170,
-              alignment: Alignment(0.0, 0.0),
-              color: Colors.white,
-              child: Container(
-                width: 300,
-                child: Form(
-                  key: _loginFormKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      TextFormField(
-//                          controller: _emailController,
-                        decoration: const InputDecoration(
-                          icon: Icon(Icons.email),
-                          hintText: 'Введите свой email',
-                          labelText: 'Email',
-                        ),
-                        onSaved: (value) => user.userEmail = value.trim(),
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return 'Введите email';
-                          }
-                        },
-                      ),
-                      TextFormField(
-//                          controller: _passwordController,
-                        obscureText: true,
-                        decoration: const InputDecoration(
-                          icon: Icon(Icons.lock),
-                          hintText: 'Введите свой пароль',
-                          labelText: 'Пароль',
-                        ),
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return 'Введите пароль';
-                          }
-                        },
-                        onSaved: (value) => user.password = value.trim(),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            Container(
-                margin: const EdgeInsets.only(left: 50, right: 50),
-                child: RaisedButton(
-                    onPressed: userLogIn,
-                    color: Color.fromRGBO(242, 206, 210, .75),
-                    child: Text(
-                      "Войти",
-                      style: TextStyle(
-                          color: Color.fromRGBO(94, 101, 111, 1),
-                          fontSize: 16.9),
-                    ))),
-            Text(
-              "или",
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Color.fromRGBO(94, 101, 111, 1)),
-            ),
-            Container(
-                margin: const EdgeInsets.only(left: 50, right: 50),
-                child: RaisedButton(
-                    onPressed:
-                        () async {
-                      var url = 'https://evgeshayoga.com/register';
-                      if (await canLaunch(url)) {
-                        await launch(url);
-                      }
-                    },
-//                        () {
-//                      var router = new MaterialPageRoute(
-//                          builder: (BuildContext context) {
-//                        return RegistrationPage();
-//                      });
-//                      Navigator.of(context).push(router);
-//                    },
-                    color: Color.fromRGBO(242, 206, 210, .75),
-                    child: Text(
-                      "Зарегестрироваться",
-                      style: TextStyle(
-                          color: Color.fromRGBO(94, 101, 111, 1),
-                          fontSize: 16.9),
-                    ))),
-//            Center(
-//                child: RaisedButton(
-//                    onPressed: googleSignIn,
-//                    color: Colors.white,
-//                    child: Text(
-//                      "Sign-in with Google",
-//                      style: TextStyle(color: Colors.black, fontSize: 16.9),
-//                    ))),
-            Padding(padding: new EdgeInsets.all(10.5)),
-            Center(
-              child: Text(
-                loginAlert,
-                style: TextStyle(color: Colors.red),
-              ),
-            )
-          ],
-        ),
-      ),
+      body: loginPageContent,
     );
   }
 
