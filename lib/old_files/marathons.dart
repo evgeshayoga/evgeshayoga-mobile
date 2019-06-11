@@ -6,15 +6,16 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class Marathons extends StatelessWidget {
-  final String name;
-  final String familyName;
+  final String userUid;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignin = GoogleSignIn();
+  final FirebaseDatabase database = FirebaseDatabase.instance;
 
   @override
-  Marathons({Key key, this.name, this.familyName}) : super(key: key);
+  Marathons({Key key, this.userUid}) : super(key: key);
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,8 +44,7 @@ class Marathons extends StatelessWidget {
                         ),
                       ),
                       Padding(padding: new EdgeInsets.fromLTRB(0, 20, 0, 0)),
-                      Text(
-                        "$name $familyName",
+                      Text("",
                         style: TextStyle(
                           color: Color.fromRGBO(94, 101, 111, 1),
                           fontSize: 20,
@@ -120,3 +120,4 @@ void _showMarathonDialog(BuildContext context) {
   );
   showDialog(context: context, builder: (context) => alert);
 }
+

@@ -1,5 +1,5 @@
 import 'package:evgeshayoga/models/user.dart';
-import 'package:evgeshayoga/ui/marathons.dart';
+import 'package:evgeshayoga/ui/programs.dart';
 import 'package:evgeshayoga/utils/date_formatter.dart';
 import 'package:evgeshayoga/ui/login.dart';
 import 'package:flutter/material.dart';
@@ -49,9 +49,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
         await databaseReference.child(firebaseUser.uid).set(user.toJson());
 
         var router = new MaterialPageRoute(builder: (BuildContext context) {
-          return Marathons(
-            name: user.userName,
-            familyName: user.userFamilyName,
+          return Programs(
+            userUid: firebaseUser.uid,
           );
         });
         Navigator.of(context).push(router);

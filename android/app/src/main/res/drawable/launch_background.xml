@@ -4,10 +4,12 @@
     <item android:drawable="@android:color/white" />
 
     <!-- You can insert your own image assets here -->
-    <item>
+    <item
+    android:left="50dp"
+    android:right="50dp">
         <bitmap
             android:gravity="center"
-            android:src="@drawable/logo"
+            android:src="@mipmap/logo"
         />
     </item>
 </layer-list>

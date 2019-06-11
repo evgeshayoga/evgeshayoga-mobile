@@ -1,7 +1,5 @@
 import 'package:evgeshayoga/models/user.dart';
-import 'package:evgeshayoga/ui/marathons.dart';
-import 'package:evgeshayoga/old_files/registration.dart';
-import 'package:evgeshayoga/ui/registration_page.dart';
+import 'package:evgeshayoga/ui/programs.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -291,20 +289,25 @@ class _LoginState extends State<Login> {
       print("${user.userEmail}, ${user.password}");
       try {
         var response = await http.post(
-          "https://evgeshayoga.com/api/jwt/auth",
+          "https://evgeshayoga.com/api/auth",
           body:
               json.encode({"email": user.userEmail, "password": user.password}),
-          headers: {'Content-type': 'application/json'},
+          headers: {'Content-Type': 'application/json'},
         );
         Map<String, dynamic> data = json.decode(response.body);
-        String token = data["token"];
-        print(token);
+        String error = data["error"];
+        if (error != null) {
+          throw new Exception(error);
+        }
 //        var newUser = await _auth.signInWithCustomToken(token: "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJmaXJlYmFzZS1hZG1pbnNkay1vbGhlOUBldmdlc2hheW9nYS1iYTM5Ny5pYW0uZ3NlcnZpY2VhY2NvdW50LmNvbSIsInN1YiI6ImZpcmViYXNlLWFkbWluc2RrLW9saGU5QGV2Z2VzaGF5b2dhLWJhMzk3LmlhbS5nc2VydmljZWFjY291bnQuY29tIiwiYXVkIjoiaHR0cHM6XC9cL2lkZW50aXR5dG9vbGtpdC5nb29nbGVhcGlzLmNvbVwvZ29vZ2xlLmlkZW50aXR5LmlkZW50aXR5dG9vbGtpdC52MS5JZGVudGl0eVRvb2xraXQiLCJ1aWQiOiJwaHAwMDAwMDE2MiIsImlhdCI6MTU1ODM3ODg5MCwiZXhwIjoxNTU4MzgyNDkwfQ.Dp7TALS9yODHkvqYNx9YjVyR39rxMzLB7N1j7vtNEZVKIPm4384TGJ3RQs5ubLZmTvKTeEq-RB7EXlC0o2H2qt0tciZj5TTZG6ZJ_FDtjz3TsQXB9-R99KFNnyebRuqCtuoCj_rhzT95_IHEdVGFkaum0rE64Gtvh0s_9bMdKwYVE08MM5ZwBFzsnxc-dDHG6deMCZbNjANC5ntndZnYTdMyLTusu80WrAfB9kJJRZU5W9Kj-PLkV832CoymyDEy2kZUI5KQWwBDERw4EdQl0TGMjcNdUL9vL5d09sIBouFJYuhI9BCfQ8lsQzDzwWR9fOonwtQ12Wmw2LPZPEPzyA");
-        var newUser = await _auth.signInWithCustomToken(token: token);
+        var newUser = await _auth.signInWithEmailAndPassword(
+            email: user.userEmail,
+            password: user.password,
+        );
 
         print("User signed in: ${newUser.email}, ${newUser.uid}");
         var router = new MaterialPageRoute(builder: (BuildContext context) {
-          return Marathons(name: user.userEmail, familyName: "test");
+          return Programs(userUid: newUser.uid);
         });
         Navigator.of(context).push(router);
 //        FirebaseDatabase.instance
@@ -340,22 +343,34 @@ class _LoginState extends State<Login> {
       }
     }
   }
+// Sign-in with email
+  _signInWithEmail() {
+    _auth.signInWithEmailAndPassword(
+        email: user.userEmail,
+        password: user.password)
+        .catchError((error){
+      print("Something went wrong! ${error.toString()}");
+    })
+        .then((newUser){
+      print("User signed in: ${newUser.email}");
+    });
+  }
 
 // Sign-in with Google
-  Future<FirebaseUser> googleSignIn() async {
-    GoogleSignInAccount googleSignInAccount = await _googleSignin.signIn();
-    GoogleSignInAuthentication googleSignInAuthentication =
-        await googleSignInAccount.authentication;
-    AuthCredential credential = GoogleAuthProvider.getCredential(
-        accessToken: googleSignInAuthentication.accessToken,
-        idToken: googleSignInAuthentication.idToken);
-    FirebaseUser googleUser = await _auth.signInWithCredential(credential);
-    print("User is ${googleUser.displayName}");
-    var router = new MaterialPageRoute(builder: (BuildContext context) {
-      return Marathons(name: googleUser.displayName, familyName: "");
-    });
-    Navigator.of(context).push(router);
-  }
+//  Future<FirebaseUser> googleSignIn() async {
+//    GoogleSignInAccount googleSignInAccount = await _googleSignin.signIn();
+//    GoogleSignInAuthentication googleSignInAuthentication =
+//        await googleSignInAccount.authentication;
+//    AuthCredential credential = GoogleAuthProvider.getCredential(
+//        accessToken: googleSignInAuthentication.accessToken,
+//        idToken: googleSignInAuthentication.idToken);
+//    FirebaseUser googleUser = await _auth.signInWithCredential(credential);
+//    print("User is ${googleUser.displayName}");
+//    var router = new MaterialPageRoute(builder: (BuildContext context) {
+//      return Marathons(name: googleUser.displayName, familyName: googleUser.email);
+//    });
+//    Navigator.of(context).push(router);
+//  }
 }
 
 // OLD LOGIN

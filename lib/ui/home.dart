@@ -1,6 +1,7 @@
 import 'package:evgeshayoga/ui/animation.dart';
-import 'package:evgeshayoga/ui/marathons.dart';
+import 'package:evgeshayoga/ui/programs.dart';
 import 'package:evgeshayoga/ui/registration_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'login.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -11,6 +12,7 @@ class Home extends StatelessWidget {
       : animation = HomeAnimation(controller);
 
   final HomeAnimation animation;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   static const int tabletBreakpoint = 600;
 
   Widget _buildHomeLayout(BuildContext context, bool isLandscape) {
@@ -120,11 +122,13 @@ class Home extends StatelessWidget {
               child: new MaterialButton(
                 minWidth: 120,
                 onPressed: () {
-                  var router = new MaterialPageRoute(
-                      builder: (BuildContext context) {
-                        return Marathons();
-                      });
-                  Navigator.of(context).push(router);
+                  _auth.signInWithEmailAndPassword(email: "***REMOVED***", password: "***REMOVED***").then((user){
+                    var router = new MaterialPageRoute(
+                        builder: (BuildContext context) {
+                          return Programs(userUid: user.uid);
+                        });
+                    Navigator.of(context).push(router);
+                  });
                 },
                 color: Colors.white,
                 child: new Text(
