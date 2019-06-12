@@ -1,4 +1,4 @@
-import 'package:evgeshayoga/models/marathons_data.dart';
+import 'package:evgeshayoga/old_files/marathons_data.dart';
 import 'package:evgeshayoga/ui/program_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +17,7 @@ class MarathonCard extends StatelessWidget {
               var router =
                   new MaterialPageRoute(builder: (BuildContext context) {
                     print(marathon.material.content);
-                return ProgramScreen(marathon);
+                return null;
               });
               Navigator.of(context).push(router);
             },

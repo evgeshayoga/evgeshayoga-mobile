@@ -77,6 +77,7 @@ flutter:
     - assets/images/evgeshayoga_portrait.jpg
     - assets/images/photo_3_portrait.jpg
     - assets/images/avatar.png
+    - assets/images/lock.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

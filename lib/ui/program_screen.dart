@@ -1,20 +1,21 @@
-import 'package:evgeshayoga/models/marathons_data.dart';
+import 'package:evgeshayoga/old_files/marathons_data.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
 class ProgramScreen extends StatelessWidget {
-  final Marathon marathon;
+  final Map program;
+
 
   @override
 
-  ProgramScreen(this.marathon, {Key key}) : super(key: key);
+  ProgramScreen(this.program, {Key key}) : super(key: key);
 
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          marathon.marathonName,
+          program["title"],
           style: TextStyle(
             fontFamily: "GarageGothic",
             fontSize: 30,
@@ -28,7 +29,7 @@ class ProgramScreen extends StatelessWidget {
         child: ListView(
           children: <Widget>[
             Container(
-              child: Text(marathon.material.content),
+              child: Text(program["content"]),
             ),
 //            Container(
 //              child: ListView.builder(

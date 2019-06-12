@@ -25,7 +25,7 @@ class _LoginState extends State<Login> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignin = GoogleSignIn();
   final _loginFormKey = GlobalKey<FormState>();
-  User user = User("", "", "", "", "", "");
+  User user = User("","","","");
   String loginAlert = "";
 
 //  void _erase() {

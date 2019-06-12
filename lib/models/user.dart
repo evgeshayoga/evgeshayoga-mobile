@@ -1,29 +1,51 @@
 import 'package:firebase_database/firebase_database.dart';
 
 class User {
-  String key;
+  int userId;
   String userName;
-  String userFamilyName;
   String userEmail;
   String password;
-  String dateCreated;
+  String phoneNumber;
+  UserPurchases purchases;
 
-  User(this.key, this.userName, this.userFamilyName, this.userEmail,
-      this.password, this.dateCreated);
+  User(this.userName, this.userEmail, this.password, this.phoneNumber,
+      {this.userId, this.purchases});
 
   User.fromSnapshot(DataSnapshot snapshot)
-      : key = snapshot.key,
-        userName = snapshot.value["userName"],
-        userFamilyName = snapshot.value["userFamilyName"],
-        userEmail = snapshot.value["userEmail"],
-        dateCreated = snapshot.value["dateCreated"];
+      : userId = snapshot.value["id"],
+        userName = snapshot.value["name"],
+        userEmail = snapshot.value["email"],
+        phoneNumber = snapshot.value["phone"],
+        purchases = new UserPurchases(snapshot.value["purchases"]);
+
+  UserPurchases getPurchases() {
+    return purchases != null ? purchases : new UserPurchases({});
+  }
 
   toJson() {
     return {
-      "userName": userName,
-      "userFamilyName": userFamilyName,
-      "userEmail": userEmail,
-      "dateCreated": dateCreated
+      "id": userId,
+      "name": userName,
+      "email": userEmail,
+      "phone": phoneNumber,
+      "purchases": purchases
     };
   }
+}
+
+class UserPurchases {
+  Map<int, dynamic> programs;
+
+  UserPurchases(Map<dynamic, dynamic> dbData) {
+    this.programs = {};
+    List userPrograms = dbData["marathons"];
+    if (userPrograms != null) {
+      userPrograms.forEach((purchase) {
+        this.programs[purchase["id"]] = purchase;
+      });
+    }
+  }
+
+
+
 }

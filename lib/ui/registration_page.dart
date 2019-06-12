@@ -1,6 +1,6 @@
 import 'package:evgeshayoga/models/user.dart';
 import 'package:evgeshayoga/ui/programs.dart';
-import 'package:evgeshayoga/utils/date_formatter.dart';
+import 'package:evgeshayoga/old_files/date_formatter.dart';
 import 'package:evgeshayoga/ui/login.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -19,7 +19,7 @@ class RegistrationPage extends StatefulWidget {
 class _RegistrationPageState extends State<RegistrationPage> {
   final FirebaseDatabase database = FirebaseDatabase.instance;
   final _registrationFormKey = GlobalKey<FormState>();
-  User user = new User("", "", "", "", "", "");
+  User user = new User("","","","");
 
   DatabaseReference databaseReference;
   String alertString = "";
@@ -43,7 +43,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
           email: "${user.userEmail}",
           password: "${user.password}",
         );
-        user.dateCreated = dateFormatted();
+//        user.dateCreated = dateFormatted();
         print("Created user ${firebaseUser.uid} ${firebaseUser.displayName}");
         print("Email ${firebaseUser.email}");
         await databaseReference.child(firebaseUser.uid).set(user.toJson());
@@ -118,19 +118,19 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     },
                     onSaved: (value) => user.userName = value,
                   ),
-                  TextFormField(
-                    decoration: const InputDecoration(
-                      icon: Icon(Icons.person),
-                      hintText: 'Enter your family name',
-                      labelText: 'Family Name',
-                    ),
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'Please enter your family name';
-                      }
-                    },
-                    onSaved: (value) => user.userFamilyName = value,
-                  ),
+//                  TextFormField(
+//                    decoration: const InputDecoration(
+//                      icon: Icon(Icons.person),
+//                      hintText: 'Enter your family name',
+//                      labelText: 'Family Name',
+//                    ),
+//                    validator: (value) {
+//                      if (value.isEmpty) {
+//                        return 'Please enter your family name';
+//                      }
+//                    },
+//                    onSaved: (value) => user.userFamilyName = value,
+//                  ),
                   Padding(
                     padding: const EdgeInsets.only(top: 30.0),
                   ),
