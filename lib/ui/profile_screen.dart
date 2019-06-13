@@ -1,8 +1,10 @@
 import 'package:evgeshayoga/models/user.dart';
+import 'package:evgeshayoga/utils/style.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatelessWidget {
   User user;
+
   @override
   ProfileScreen(this.user, {Key key}) : super(key: key);
 
@@ -18,13 +20,24 @@ class ProfileScreen extends StatelessWidget {
         centerTitle: true,
       ),
       body: Center(
-        child: Column(
-          children: <Widget>[
-            Text(user.userName),
-            Text(user.userEmail),
-            Text(user.phoneNumber)
-          ],
-        ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                user.userName,
+                style: Style.header2TextStyle,
+              ),
+              Text(
+                user.userEmail,
+                style: Style.regularTextStyle,
+              ),
+              Text(
+                user.phoneNumber,
+                style: Style.regularTextStyle,
+              )
+            ],
+          )
+
       ),
     );
   }

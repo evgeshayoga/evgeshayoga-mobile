@@ -1,6 +1,7 @@
 import 'package:evgeshayoga/ui/animation.dart';
 import 'package:evgeshayoga/ui/programs.dart';
 import 'package:evgeshayoga/ui/registration_page.dart';
+import 'package:evgeshayoga/utils/style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'login.dart';
@@ -25,7 +26,7 @@ class Home extends StatelessWidget {
             Container(
               child: Opacity(
                 opacity: animation.bgdropOpacity.value,
-                child: Image.asset('assets/images/photo_3_portrait.jpg',
+                child: Image.asset('assets/images/photo_3_portrait.jpg', alignment: Alignment(0,0.7),
                     fit: BoxFit.cover),
               ),
             ),
@@ -50,13 +51,10 @@ class Home extends StatelessWidget {
                             });
                         Navigator.of(context).push(router);
                       },
-                      color: Color.fromRGBO(242, 206, 210, 1),
+                      color: Style.pinkMain,
                       child: new Text(
                         "Вход",
-                        style: TextStyle(
-                          color: Color.fromRGBO(94, 101, 111, 1),
-                          fontSize: 16.9,
-                        ),
+                        style: Style.regularTextStyle,
                       ),
                     ),
                   ),
@@ -66,7 +64,7 @@ class Home extends StatelessWidget {
 //                  margin: const EdgeInsets.fromLTRB(100, 0, 0, 30),
                     child: new MaterialButton(
                       minWidth: 120,
-                      color: Color.fromRGBO(242, 206, 210, 1),
+                      color: Style.pinkMain,
                       onPressed: () async {
                         var url = 'https://evgeshayoga.com/register';
                         if (await canLaunch(url)) {
@@ -75,9 +73,7 @@ class Home extends StatelessWidget {
                       },
                       child: new Text(
                         "Регистрация",
-                        style: TextStyle(
-                            color: Color.fromRGBO(94, 101, 111, 1),
-                            fontSize: 16.9),
+                        style: Style.regularTextStyle,
                       ),
                     ),
                   )
@@ -97,7 +93,7 @@ class Home extends StatelessWidget {
                       fontSize: 30 * animation.titleSize.value,
                       fontWeight: FontWeight.w800,
 //                      letterSpacing: 0,
-                      color: Color.fromRGBO(94, 101, 111, 1)
+                      color: Style.blueGrey
                           .withOpacity(animation.titleOpacity.value),
                     ),
                   ),
@@ -109,7 +105,7 @@ class Home extends StatelessWidget {
                       fontSize: 20 * animation.titleSize.value,
                       fontWeight: FontWeight.w200,
                       letterSpacing: -1,
-                      color: Color.fromRGBO(94, 101, 111, 0.6)
+                      color: Style.blueGrey
                           .withOpacity(animation.titleOpacity.value),
                     ),
                   ),
@@ -133,10 +129,7 @@ class Home extends StatelessWidget {
                 color: Colors.white,
                 child: new Text(
                   "Перейти к рограммам",
-                  style: TextStyle(
-                    color: Color.fromRGBO(94, 101, 111, 1),
-                    fontSize: 16.9,
-                  ),
+                  style: Style.regularTextStyle,
                 ),
               ),
             )

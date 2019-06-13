@@ -2,6 +2,7 @@ import 'package:evgeshayoga/models/user.dart';
 import 'package:evgeshayoga/ui/profile_screen.dart';
 import 'package:evgeshayoga/ui/program_screen.dart';
 import 'package:evgeshayoga/ui/purchases_screen.dart';
+import 'package:evgeshayoga/utils/style.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -31,7 +32,7 @@ class _ProgramsState extends State<Programs> {
     dbUsersReference =
         database.reference().child("users").child(widget.userUid);
     dbProgramsReference = database.reference().child("marathons");
-    user = User("","","","");
+    user = User("", "", "", "");
 
     dbUsersReference.once().then((snapshot) {
       setState(() {
@@ -67,14 +68,8 @@ class _ProgramsState extends State<Programs> {
                             minRadius: 60,
                           ),
                         ),
-                        Padding(padding: new EdgeInsets.fromLTRB(0, 20, 0, 0)),
-                        Text(
-                          user.userName,
-                          style: TextStyle(
-                            color: Color.fromRGBO(94, 101, 111, 1),
-                            fontSize: 20,
-                            fontWeight: FontWeight.w800,
-                          ),
+                        Padding(padding: new EdgeInsets.fromLTRB(0, 0, 0, 0)),
+                        Text(user.userName, style: Style.header2TextStyle,
                         ),
                       ],
                     ),
@@ -83,7 +78,7 @@ class _ProgramsState extends State<Programs> {
               ],
             ),
             Padding(
-            padding: EdgeInsets.only(top: 20),
+              padding: EdgeInsets.only(top: 20),
             ),
             Column(
               children: <Widget>[
@@ -91,13 +86,11 @@ class _ProgramsState extends State<Programs> {
                   title: Text(
                     "Профиль",
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.blueGrey,
-                    ),
+                    style: Style.regularTextStyle,
                   ),
                   onTap: () {
                     var router =
-                    new MaterialPageRoute(builder: (BuildContext context) {
+                        new MaterialPageRoute(builder: (BuildContext context) {
                       return ProfileScreen(user);
                     });
                     Navigator.of(context).push(router);
@@ -107,13 +100,11 @@ class _ProgramsState extends State<Programs> {
                   title: Text(
                     "Мои покупки",
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.blueGrey,
-                    ),
+                    style: Style.regularTextStyle,
                   ),
                   onTap: () {
                     var router =
-                    new MaterialPageRoute(builder: (BuildContext context) {
+                        new MaterialPageRoute(builder: (BuildContext context) {
                       return PurchasesScreen(user);
                     });
                     Navigator.of(context).push(router);
@@ -131,24 +122,25 @@ class _ProgramsState extends State<Programs> {
                   Navigator.of(context).popUntil(ModalRoute.withName('/'));
                 },
                 color: Color.fromRGBO(242, 206, 210, 1),
-                child: new Text(
-                  "Logout",
-                  style: TextStyle(
-                    color: Color.fromRGBO(94, 101, 111, 1),
-                    fontSize: 16.9,
-                  ),
+                child: new Text("Logout", style: Style.regularTextStyle,
                 ),
               ),
             )
           ],
         )),
         appBar: AppBar(
-          title: Text(
-            "ПРОГРАММЫ",
-            style: TextStyle(
-                fontFamily: "GarageGothic",
-                fontSize: 30,
-                color: Color.fromRGBO(94, 101, 111, 1)),
+          leading: Builder(
+            builder: (BuildContext context) {
+              return IconButton(
+                icon: const Icon(Icons.menu, color: Colors.blueGrey,),
+                onPressed: () { Scaffold.of(context).openDrawer(); },
+                tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+              );
+            },
+          ),
+
+
+          title: Text("ПРОГРАММЫ", style: Style.headerTextStyle,
           ),
           centerTitle: true,
           backgroundColor: Color.fromRGBO(242, 206, 210, 1),
@@ -170,11 +162,16 @@ class _ProgramsState extends State<Programs> {
                         snapshot.value["title"],
                         "https://evgeshayoga.com" +
                             snapshot.value["thumbnailUrl"]);
-                  } else if (!user.getPurchases().programs.containsKey(snapshot.value["id"]) ||
-                      !user.getPurchases().programs[snapshot.value["id"]]["isPurchased"]) {
+                  } else if (!user
+                          .getPurchases()
+                          .programs
+                          .containsKey(snapshot.value["id"]) ||
+                      !user.getPurchases().programs[snapshot.value["id"]]
+                          ["isPurchased"]) {
                     return _notPurchasedProgram(snapshot.value);
                   } else
-                    return _purchasedProgram(user.getPurchases().programs, snapshot.value);
+                    return _purchasedProgram(
+                        user.getPurchases().programs, snapshot.value);
                 },
               ),
             )
@@ -191,14 +188,11 @@ class _ProgramsState extends State<Programs> {
           child: Opacity(
             opacity: 0.4,
             child: ListTile(
-              title: Text(programTitle,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    height: 1.5,
-                    fontSize: 22,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.blueGrey.withOpacity(0.7),
-                  )),
+              title: Text(
+                programTitle,
+                textAlign: TextAlign.center,
+                style: Style.header2TextStyle,
+              ),
               subtitle: Image.network(thumbnailUrl),
               onTap: () {
                 print(thumbnailUrl);
@@ -223,19 +217,10 @@ class _ProgramsState extends State<Programs> {
       title: Text(
         programTitle,
         textAlign: TextAlign.center,
-        style: TextStyle(
-          color: Colors.blueGrey,
-          fontSize: 22,
-          fontWeight: FontWeight.bold,
-        ),
+        style: Style.header2TextStyle,
       ),
-      content: Text(
-        "Программа не активна",
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          color: Colors.blueGrey,
-          fontSize: 17,
-        ),
+      content: Text("Программа не активна",
+          textAlign: TextAlign.center, style: Style.regularTextStyle,
       ),
       actions: <Widget>[
         FlatButton(
@@ -254,14 +239,11 @@ class _ProgramsState extends State<Programs> {
         child: Column(
       children: <Widget>[
         ListTile(
-            title: Text(program["title"],
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  height: 1.5,
-                  fontSize: 22,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.blueGrey,
-                )),
+            title: Text(
+              program["title"],
+              textAlign: TextAlign.center,
+              style: Style.header2TextStyle,
+            ),
             subtitle: Stack(
               children: <Widget>[
                 Image.network(
@@ -273,13 +255,10 @@ class _ProgramsState extends State<Programs> {
               ],
             )),
         MaterialButton(
-          child: Text("Купить",
-              style: TextStyle(
-                height: 1.5,
-                fontSize: 22,
-                fontWeight: FontWeight.w500,
-                color: Colors.blueGrey,
-              )),
+          child: Text(
+            "Купить",
+            style: Style.regularTextStyle,
+          ),
           color: Color.fromRGBO(242, 206, 210, 1),
           onPressed: () async {
             var url =
@@ -308,14 +287,11 @@ class _ProgramsState extends State<Programs> {
                 });
                 Navigator.of(context).push(router);
               },
-              title: Text(program["title"],
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    height: 1.5,
-                    fontSize: 22,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.blueGrey,
-                  )),
+              title: Text(
+                program["title"],
+                textAlign: TextAlign.center,
+                style: Style.header2TextStyle,
+              ),
               subtitle: Image.network(
                   "https://evgeshayoga.com" + program["thumbnailUrl"])),
           Padding(
@@ -338,12 +314,9 @@ class _ProgramsState extends State<Programs> {
     var parsedDate = DateTime.parse(date);
     var formatter = DateFormat("d.MM.y");
     String formatted = formatter.format(parsedDate);
-    return Text("Доступен до " + formatted,
-        style: TextStyle(
-          height: 1.5,
-          fontSize: 17,
-          fontWeight: FontWeight.w400,
-          color: Colors.blueGrey,
-        ));
+    return Text(
+      "Доступен до " + formatted,
+      style: Style.regularTextStyle,
+    );
   }
 }

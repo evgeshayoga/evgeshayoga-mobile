@@ -1,11 +1,11 @@
 import 'package:evgeshayoga/models/user.dart';
 import 'package:evgeshayoga/ui/programs.dart';
+import 'package:evgeshayoga/utils/style.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter/services.dart' show PlatformException;
 import 'package:url_launcher/url_launcher.dart';
-
 
 //import 'package:evgeshayoga/utils/database_helper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -25,7 +25,7 @@ class _LoginState extends State<Login> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignin = GoogleSignIn();
   final _loginFormKey = GlobalKey<FormState>();
-  User user = User("","","","");
+  User user = User("", "", "", "");
   String loginAlert = "";
 
 //  void _erase() {
@@ -35,7 +35,8 @@ class _LoginState extends State<Login> {
 //    });
 //  }
   static const int tabletBreakpoint = 600;
-  Widget _buildLandscapeLayout(){
+
+  Widget _buildLandscapeLayout() {
     return Container(
       color: Colors.white,
       child: ListView(
@@ -95,38 +96,37 @@ class _LoginState extends State<Login> {
             ),
           ),
           Container(
-              margin: const EdgeInsets.only(left: 150, right: 150),
-              child: RaisedButton(
-                  onPressed: userLogIn,
-                  color: Color.fromRGBO(242, 206, 210, .75),
-                  child: Text(
-                    "Войти",
-                    style: TextStyle(
-                        color: Color.fromRGBO(94, 101, 111, 1),
-                        fontSize: 16.9),
-                  ))),
+            margin: const EdgeInsets.only(left: 150, right: 150),
+            child: RaisedButton(
+              onPressed: userLogIn,
+              color: Color.fromRGBO(242, 206, 210, .75),
+              child: Text(
+                "Войти",
+                style: Style.regularTextStyle,
+              ),
+            ),
+          ),
           Text(
             "или",
             textAlign: TextAlign.center,
-            style: TextStyle(color: Color.fromRGBO(94, 101, 111, 1)),
+            style: Style.regularTextStyle,
           ),
           Container(
-              margin: const EdgeInsets.only(left: 150, right: 150),
-              child: RaisedButton(
-                  onPressed:
-                      () async {
-                    var url = 'https://evgeshayoga.com/register';
-                    if (await canLaunch(url)) {
-                      await launch(url);
-                    }
-                  },
-                  color: Color.fromRGBO(242, 206, 210, .75),
-                  child: Text(
-                    "Зарегестрироваться",
-                    style: TextStyle(
-                        color: Color.fromRGBO(94, 101, 111, 1),
-                        fontSize: 16.9),
-                  ))),
+            margin: const EdgeInsets.only(left: 150, right: 150),
+            child: RaisedButton(
+              onPressed: () async {
+                var url = 'https://evgeshayoga.com/register';
+                if (await canLaunch(url)) {
+                  await launch(url);
+                }
+              },
+              color: Color.fromRGBO(242, 206, 210, .75),
+              child: Text(
+                "Зарегестрироваться",
+                style: Style.regularTextStyle,
+              ),
+            ),
+          ),
 //            Center(
 //                child: RaisedButton(
 //                    onPressed: googleSignIn,
@@ -139,7 +139,10 @@ class _LoginState extends State<Login> {
           Center(
             child: Text(
               loginAlert,
-              style: TextStyle(color: Colors.red),
+              style: TextStyle(
+                fontFamily: "Nunito",
+                color: Colors.red,
+              ),
             ),
           )
         ],
@@ -147,7 +150,7 @@ class _LoginState extends State<Login> {
     );
   }
 
-  Widget _buildPortraitLayout(){
+  Widget _buildPortraitLayout() {
     return Container(
       color: Colors.white,
       child: ListView(
@@ -204,38 +207,37 @@ class _LoginState extends State<Login> {
             ),
           ),
           Container(
-              margin: const EdgeInsets.only(left: 50, right: 50),
-              child: RaisedButton(
-                  onPressed: userLogIn,
-                  color: Color.fromRGBO(242, 206, 210, .75),
-                  child: Text(
-                    "Войти",
-                    style: TextStyle(
-                        color: Color.fromRGBO(94, 101, 111, 1),
-                        fontSize: 16.9),
-                  ))),
+            margin: const EdgeInsets.only(left: 50, right: 50),
+            child: RaisedButton(
+              onPressed: userLogIn,
+              color: Style.pinkMain,
+              child: Text(
+                "Войти",
+                style: Style.regularTextStyle,
+              ),
+            ),
+          ),
           Text(
             "или",
             textAlign: TextAlign.center,
-            style: TextStyle(color: Color.fromRGBO(94, 101, 111, 1)),
+            style: Style.regularTextStyle,
           ),
           Container(
-              margin: const EdgeInsets.only(left: 50, right: 50),
-              child: RaisedButton(
-                  onPressed:
-                      () async {
-                    var url = 'https://evgeshayoga.com/register';
-                    if (await canLaunch(url)) {
-                      await launch(url);
-                    }
-                  },
-                  color: Color.fromRGBO(242, 206, 210, .75),
-                  child: Text(
-                    "Зарегестрироваться",
-                    style: TextStyle(
-                        color: Color.fromRGBO(94, 101, 111, 1),
-                        fontSize: 16.9),
-                  ))),
+            margin: const EdgeInsets.only(left: 50, right: 50),
+            child: RaisedButton(
+              onPressed: () async {
+                var url = 'https://evgeshayoga.com/register';
+                if (await canLaunch(url)) {
+                  await launch(url);
+                }
+              },
+              color: Style.pinkMain,
+              child: Text(
+                "Зарегестрироваться",
+                style: Style.regularTextStyle,
+              ),
+            ),
+          ),
 //            Center(
 //                child: RaisedButton(
 //                    onPressed: googleSignIn,
@@ -262,7 +264,8 @@ class _LoginState extends State<Login> {
     var shortestSide = MediaQuery.of(context).size.shortestSide;
     var orientation = MediaQuery.of(context).orientation;
 
-    if (orientation == Orientation.portrait && shortestSide < tabletBreakpoint) {
+    if (orientation == Orientation.portrait &&
+        shortestSide < tabletBreakpoint) {
       loginPageContent = _buildPortraitLayout();
     } else {
       loginPageContent = _buildLandscapeLayout();
@@ -270,11 +273,18 @@ class _LoginState extends State<Login> {
 
     return Scaffold(
       appBar: AppBar(
+        leading: Builder(
+          builder: (BuildContext context) {
+            return BackButton(
+              color: Style.blueGrey,
+            );
+          },
+        ),
         automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
         title: Image.asset(
-          'assets/images/logo.png',
-          height: 40,
+          'assets/images/logo.png', alignment: Alignment.center, fit: BoxFit.contain, repeat: ImageRepeat.noRepeat,
+          height: 35,
         ),
         centerTitle: true,
       ),
@@ -301,8 +311,8 @@ class _LoginState extends State<Login> {
         }
 //        var newUser = await _auth.signInWithCustomToken(token: "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJmaXJlYmFzZS1hZG1pbnNkay1vbGhlOUBldmdlc2hheW9nYS1iYTM5Ny5pYW0uZ3NlcnZpY2VhY2NvdW50LmNvbSIsInN1YiI6ImZpcmViYXNlLWFkbWluc2RrLW9saGU5QGV2Z2VzaGF5b2dhLWJhMzk3LmlhbS5nc2VydmljZWFjY291bnQuY29tIiwiYXVkIjoiaHR0cHM6XC9cL2lkZW50aXR5dG9vbGtpdC5nb29nbGVhcGlzLmNvbVwvZ29vZ2xlLmlkZW50aXR5LmlkZW50aXR5dG9vbGtpdC52MS5JZGVudGl0eVRvb2xraXQiLCJ1aWQiOiJwaHAwMDAwMDE2MiIsImlhdCI6MTU1ODM3ODg5MCwiZXhwIjoxNTU4MzgyNDkwfQ.Dp7TALS9yODHkvqYNx9YjVyR39rxMzLB7N1j7vtNEZVKIPm4384TGJ3RQs5ubLZmTvKTeEq-RB7EXlC0o2H2qt0tciZj5TTZG6ZJ_FDtjz3TsQXB9-R99KFNnyebRuqCtuoCj_rhzT95_IHEdVGFkaum0rE64Gtvh0s_9bMdKwYVE08MM5ZwBFzsnxc-dDHG6deMCZbNjANC5ntndZnYTdMyLTusu80WrAfB9kJJRZU5W9Kj-PLkV832CoymyDEy2kZUI5KQWwBDERw4EdQl0TGMjcNdUL9vL5d09sIBouFJYuhI9BCfQ8lsQzDzwWR9fOonwtQ12Wmw2LPZPEPzyA");
         var newUser = await _auth.signInWithEmailAndPassword(
-            email: user.userEmail,
-            password: user.password,
+          email: user.userEmail,
+          password: user.password,
         );
 
         print("User signed in: ${newUser.email}, ${newUser.uid}");
@@ -343,15 +353,15 @@ class _LoginState extends State<Login> {
       }
     }
   }
+
 // Sign-in with email
   _signInWithEmail() {
-    _auth.signInWithEmailAndPassword(
-        email: user.userEmail,
-        password: user.password)
-        .catchError((error){
+    _auth
+        .signInWithEmailAndPassword(
+            email: user.userEmail, password: user.password)
+        .catchError((error) {
       print("Something went wrong! ${error.toString()}");
-    })
-        .then((newUser){
+    }).then((newUser) {
       print("User signed in: ${newUser.email}");
     });
   }

@@ -1,4 +1,5 @@
 import 'package:evgeshayoga/old_files/marathons_data.dart';
+import 'package:evgeshayoga/utils/style.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
@@ -16,13 +17,9 @@ class ProgramScreen extends StatelessWidget {
         centerTitle: true,
         title: Text(
           program["title"],
-          style: TextStyle(
-            fontFamily: "GarageGothic",
-            fontSize: 30,
-            color: Color.fromRGBO(94, 101, 111, 1),
-          ),
+          style: Style.headerTextStyle,
         ),
-        backgroundColor: Color.fromRGBO(242, 206, 210, 1),
+        backgroundColor: Style.pinkMain,
       ),
       body: Container(
         padding: const EdgeInsets.all(25),

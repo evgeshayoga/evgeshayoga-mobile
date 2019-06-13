@@ -1,4 +1,5 @@
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/cupertino.dart';
 
 class User {
   int userId;
@@ -44,6 +45,8 @@ class UserPurchases {
         this.programs[purchase["id"]] = purchase;
       });
     }
+    print(userPrograms);
+    print(this.programs);
   }
 
 
