@@ -14,7 +14,7 @@ class Style {
     color: Color.fromRGBO(94, 101, 111, 1),
   );
   static final headerTextStyle = const TextStyle(
-    fontFamily: "GarageGothic",
+    fontFamily: "BebasNeue",
     fontWeight: FontWeight.bold,
     fontSize: 30,
     color: Color.fromRGBO(94, 101, 111, 1),

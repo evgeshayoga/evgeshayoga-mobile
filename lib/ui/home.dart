@@ -89,7 +89,7 @@ class Home extends StatelessWidget {
                     'ЙОГА С ЖЕНЕЙ',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontFamily: "GarageGothic",
+                      fontFamily: "BebasNeue",
                       fontSize: 30 * animation.titleSize.value,
                       fontWeight: FontWeight.w800,
 //                      letterSpacing: 0,
@@ -101,10 +101,10 @@ class Home extends StatelessWidget {
                     'СВОБОДА В ДВИЖЕНИИ',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontFamily: "GarageGothic",
+                      fontFamily: "BebasNeue",
                       fontSize: 20 * animation.titleSize.value,
-                      fontWeight: FontWeight.w200,
-                      letterSpacing: -1,
+                      fontWeight: FontWeight.w400,
+                      letterSpacing: -0.5,
                       color: Style.blueGrey
                           .withOpacity(animation.titleOpacity.value),
                     ),
@@ -128,7 +128,7 @@ class Home extends StatelessWidget {
                 },
                 color: Colors.white,
                 child: new Text(
-                  "Перейти к рограммам",
+                  "Перейти к программам",
                   style: Style.regularTextStyle,
                 ),
               ),

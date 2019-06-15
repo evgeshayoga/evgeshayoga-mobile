@@ -1,3 +1,4 @@
+import 'package:evgeshayoga/models/program.dart';
 import 'package:evgeshayoga/old_files/marathons_data.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +9,6 @@ class ProgramScreen extends StatelessWidget {
 
 
   @override
-
   ProgramScreen(this.program, {Key key}) : super(key: key);
 
   Widget build(BuildContext context) {
@@ -28,6 +28,7 @@ class ProgramScreen extends StatelessWidget {
             Container(
               child: Text(program["content"]),
             ),
+            ProgramBuilder(program["id"]),
 //            Container(
 //              child: ListView.builder(
 //                itemCount: null,

@@ -1,3 +1,4 @@
+import 'package:evgeshayoga/utils/style.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -25,7 +26,7 @@ class Program {
 class ProgramBuilder extends StatefulWidget {
   int id;
 
-  ProgramBuilder(Key key, this.id) : super(key: key);
+  ProgramBuilder(this.id, {Key key}) : super(key: key);
 
   @override
   _ProgramBuilderState createState() => _ProgramBuilderState();
@@ -33,26 +34,27 @@ class ProgramBuilder extends StatefulWidget {
 
 class _ProgramBuilderState extends State<ProgramBuilder> {
   final FirebaseDatabase database = FirebaseDatabase.instance;
-  DatabaseReference dbProgramsReference;
   Program program;
 
   @override
   void initState() {
     super.initState();
-    dbProgramsReference = database.reference().child("marathons");
-    program = Program(widget.id);
+    database
+        .reference()
+        .child("marathons")
+        .child('${widget.id}')
+        .once()
+        .then((snapshot) {
+      setState(() {
+        program = Program.fromSnapshot(snapshot);
+      });
+    });
   }
 
   Widget build(BuildContext context) {
-    return Text("");
+    if (program == null) {
+      return Text("Loading");
+    }
+    return Text(program.title, style: Style.headerTextStyle,);
   }
-}
-
-_getSelectedProgram(id, snapshot) {
-  Program selectedProgram;
-  List<Program> allPrograms = snapshot["marathons"];
-  selectedProgram = allPrograms.singleWhere((item) {
-    return item.id == id;
-  });
-  print(selectedProgram);
 }

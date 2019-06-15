@@ -95,8 +95,9 @@ flutter:
     - family: BebasNeue
       fonts:
         - asset: fonts/BebasNeue-Bold.ttf
-        - asset: fonts/BebasNeue-Thin.ttf
-          weight: 200
+          weight: 800
+        - asset: fonts/BebasNeue-Book.ttf
+          weight: 400
     - family: Nunito
       fonts:
         - asset: fonts/Nunito-Regular.ttf
