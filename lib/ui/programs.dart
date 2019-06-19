@@ -2,6 +2,7 @@ import 'package:evgeshayoga/models/user.dart';
 import 'package:evgeshayoga/ui/profile_screen.dart';
 import 'package:evgeshayoga/ui/program_screen.dart';
 import 'package:evgeshayoga/ui/purchases_screen.dart';
+import 'package:evgeshayoga/utils/date_formatter.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -283,7 +284,7 @@ class _ProgramsState extends State<Programs> {
               onTap: () {
                 var router =
                     new MaterialPageRoute(builder: (BuildContext context) {
-                  return ProgramScreen(program);
+                  return ProgramScreen(program["title"], program["id"]);
                 });
                 Navigator.of(context).push(router);
               },
@@ -296,7 +297,9 @@ class _ProgramsState extends State<Programs> {
                   "https://evgeshayoga.com" + program["thumbnailUrl"])),
           Padding(
               padding: const EdgeInsets.all(12.0),
-              child: dateFormatted(purchases[program["id"]]["availableTill"])
+              child: Text("Доступен до " +
+                dateFormatted(purchases[program["id"]]["availableTill"]), style: Style.regularTextStyle,
+              )
 //            Text("Available till " + purchases["marathons"][index]["availableTill"],
 //                style: TextStyle(
 //                  height: 1.5,
@@ -310,13 +313,13 @@ class _ProgramsState extends State<Programs> {
     );
   }
 
-  Widget dateFormatted(date) {
-    var parsedDate = DateTime.parse(date);
-    var formatter = DateFormat("d.MM.y");
-    String formatted = formatter.format(parsedDate);
-    return Text(
-      "Доступен до " + formatted,
-      style: Style.regularTextStyle,
-    );
-  }
+//  Widget dateFormatted(date) {
+//    var parsedDate = DateTime.parse(date);
+//    var formatter = DateFormat("d.MM.y");
+//    String formatted = formatter.format(parsedDate);
+//    return Text(
+//      "Доступен до " + formatted,
+//      style: Style.regularTextStyle,
+//    );
+//  }
 }

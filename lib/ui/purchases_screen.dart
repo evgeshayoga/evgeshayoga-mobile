@@ -1,5 +1,7 @@
 import 'package:evgeshayoga/models/program.dart';
 import 'package:evgeshayoga/models/user.dart';
+import 'package:evgeshayoga/ui/program_screen.dart';
+import 'package:evgeshayoga/utils/date_formatter.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -30,7 +32,14 @@ class _PurchasesScreenState extends State<PurchasesScreen> {
       purchases.add(Padding(
         padding: EdgeInsets.all(8),
       ));
-      purchases.add(Text(item["title"]));
+      purchases.add(
+          purchasesListItem(item["title"], item["id"], item["availableTill"]));
+      purchases.add(
+        Divider(
+          height: 7,
+          color: Style.pinkDark,
+        ),
+      );
     });
 
     return Scaffold(
@@ -44,9 +53,9 @@ class _PurchasesScreenState extends State<PurchasesScreen> {
         ),
         automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
-        title: Image.asset(
-          'assets/images/logo.png',
-          height: 40,
+        title: Text(
+          "Покупки",
+          style: Style.headerTextStyle,
         ),
         centerTitle: true,
       ),
@@ -56,19 +65,73 @@ class _PurchasesScreenState extends State<PurchasesScreen> {
             Padding(
               padding: EdgeInsets.only(top: 20.0),
             ),
-            Text(
-              "Purchases",
-              textAlign: TextAlign.center,
-              style: Style.header2TextStyle,
-            ),
+//            Text(
+//              "Purchases",
+//              textAlign: TextAlign.center,
+//              style: Style.header2TextStyle,
+//            ),
             Center(
               child: Column(
-                children: purchases,
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Expanded(
+                          flex: 2,
+                          child: Text(
+                            "Программа",
+                            textAlign: TextAlign.center,
+                            style: Style.header2TextStyle,
+                          )),
+                      Expanded(
+                          flex: 1,
+                          child: Text(
+                            "Доступ до",
+                            textAlign: TextAlign.center,
+                            style: Style.header2TextStyle,
+                          ))
+                    ],
+                  ),
+                  Column(
+                    children: purchases,
+                  ),
+                ],
               ),
             )
           ],
         ),
       ),
+    );
+  }
+
+  Widget purchasesListItem(purchaseTitle, purchaseId, availableTill) {
+    return Row(
+      children: <Widget>[
+        Expanded(
+          flex: 2,
+          child: FlatButton(
+            splashColor: Style.pinkLight,
+            child: Text(
+              purchaseTitle,
+              textAlign: TextAlign.center,
+              style: Style.regularTextStyle,
+            ),
+            onPressed: () {
+              var router =
+                  new MaterialPageRoute(builder: (BuildContext context) {
+                return ProgramScreen(purchaseTitle, purchaseId);
+              });
+              Navigator.of(context).push(router);
+            },
+          ),
+        ),
+        Expanded(
+            flex: 1,
+            child: Text(
+              dateFormatted(availableTill),
+              style: Style.regularTextStyle,
+            )),
+      ],
     );
   }
 }

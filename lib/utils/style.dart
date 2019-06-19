@@ -6,24 +6,24 @@ class Style {
   static final pinkLight = const Color.fromRGBO(249, 231, 231, 1);
   static final blueGrey = const Color.fromRGBO(94, 101, 111, 1);
 
-  static final regularTextStyle = const TextStyle(
+  static final regularTextStyle = TextStyle(
     fontFamily: "Nunito",
     letterSpacing: -0.3,
     fontWeight: FontWeight.normal,
     fontSize: 18,
-    color: Color.fromRGBO(94, 101, 111, 1),
+    color: blueGrey,
   );
-  static final headerTextStyle = const TextStyle(
+  static final headerTextStyle = TextStyle(
     fontFamily: "BebasNeue",
     fontWeight: FontWeight.bold,
     fontSize: 30,
-    color: Color.fromRGBO(94, 101, 111, 1),
+    color: blueGrey,
   );
-  static final header2TextStyle = const TextStyle(
+  static final header2TextStyle = TextStyle(
     fontFamily: "Nunito",
     height: 1.5,
     fontSize: 22,
     fontWeight: FontWeight.w800,
-    color: Color.fromRGBO(94, 101, 111, 1),
+    color: blueGrey,
   );
 }

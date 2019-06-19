@@ -11,7 +11,13 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-//        automaticallyImplyLeading: false,
+        leading: Builder(
+          builder: (BuildContext context) {
+            return BackButton(
+              color: Style.blueGrey,
+            );
+          },
+        ),
         backgroundColor: Colors.white,
         title: Image.asset(
           'assets/images/logo.png',
@@ -19,6 +25,7 @@ class ProfileScreen extends StatelessWidget {
         ),
         centerTitle: true,
       ),
+      backgroundColor: Style.pinkLight,
       body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -27,9 +34,15 @@ class ProfileScreen extends StatelessWidget {
                 user.userName,
                 style: Style.header2TextStyle,
               ),
+              Padding(
+                padding: EdgeInsets.all(8),
+              ),
               Text(
                 user.userEmail,
                 style: Style.regularTextStyle,
+              ),
+              Padding(
+                padding: EdgeInsets.all(8),
               ),
               Text(
                 user.phoneNumber,

@@ -5,18 +5,18 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
 class ProgramScreen extends StatelessWidget {
-  final Map program;
+  final String programTitle;
+  final int programId;
 
 
   @override
-  ProgramScreen(this.program, {Key key}) : super(key: key);
+  ProgramScreen(this.programTitle, this.programId, {Key key}) : super(key: key);
 
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(
-          program["title"],
+        title: Text(programTitle,
           style: Style.headerTextStyle,
         ),
         backgroundColor: Style.pinkMain,
@@ -25,10 +25,7 @@ class ProgramScreen extends StatelessWidget {
         padding: const EdgeInsets.all(25),
         child: ListView(
           children: <Widget>[
-            Container(
-              child: Text(program["content"]),
-            ),
-            ProgramBuilder(program["id"]),
+            ProgramBuilder(programId),
 //            Container(
 //              child: ListView.builder(
 //                itemCount: null,

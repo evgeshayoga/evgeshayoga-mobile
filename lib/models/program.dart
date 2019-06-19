@@ -55,6 +55,6 @@ class _ProgramBuilderState extends State<ProgramBuilder> {
     if (program == null) {
       return Text("Loading");
     }
-    return Text(program.title, style: Style.headerTextStyle,);
+    return Text(program.content, style: Style.regularTextStyle,);
   }
 }
