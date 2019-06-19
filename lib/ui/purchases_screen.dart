@@ -52,10 +52,10 @@ class _PurchasesScreenState extends State<PurchasesScreen> {
           },
         ),
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.white,
+        backgroundColor: Style.pinkMain,
         title: Text(
           "Покупки",
-          style: Style.headerTextStyle,
+          style: Style.titleTextStyle,
         ),
         centerTitle: true,
       ),
@@ -65,30 +65,25 @@ class _PurchasesScreenState extends State<PurchasesScreen> {
             Padding(
               padding: EdgeInsets.only(top: 20.0),
             ),
-//            Text(
-//              "Purchases",
-//              textAlign: TextAlign.center,
-//              style: Style.header2TextStyle,
-//            ),
             Center(
               child: Column(
                 children: <Widget>[
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+//                    mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Expanded(
                           flex: 2,
                           child: Text(
                             "Программа",
                             textAlign: TextAlign.center,
-                            style: Style.header2TextStyle,
+                            style: Style.headerTextStyle,
                           )),
                       Expanded(
                           flex: 1,
                           child: Text(
                             "Доступ до",
                             textAlign: TextAlign.center,
-                            style: Style.header2TextStyle,
+                            style: Style.headerTextStyle,
                           ))
                     ],
                   ),
@@ -129,6 +124,7 @@ class _PurchasesScreenState extends State<PurchasesScreen> {
             flex: 1,
             child: Text(
               dateFormatted(availableTill),
+              textAlign: TextAlign.center,
               style: Style.regularTextStyle,
             )),
       ],

@@ -70,7 +70,7 @@ class _ProgramsState extends State<Programs> {
                           ),
                         ),
                         Padding(padding: new EdgeInsets.fromLTRB(0, 0, 0, 0)),
-                        Text(user.userName, style: Style.header2TextStyle,
+                        Text(user.userName, style: Style.headerTextStyle,
                         ),
                       ],
                     ),
@@ -119,7 +119,7 @@ class _ProgramsState extends State<Programs> {
               child: RaisedButton(
                 onPressed: () {
                   _auth.signOut();
-                  print("Signed out");
+//                  print("Signed out");
                   Navigator.of(context).popUntil(ModalRoute.withName('/'));
                 },
                 color: Color.fromRGBO(242, 206, 210, 1),
@@ -141,7 +141,7 @@ class _ProgramsState extends State<Programs> {
           ),
 
 
-          title: Text("ПРОГРАММЫ", style: Style.headerTextStyle,
+          title: Text("ПРОГРАММЫ", style: Style.titleTextStyle,
           ),
           centerTitle: true,
           backgroundColor: Color.fromRGBO(242, 206, 210, 1),
@@ -192,7 +192,7 @@ class _ProgramsState extends State<Programs> {
               title: Text(
                 programTitle,
                 textAlign: TextAlign.center,
-                style: Style.header2TextStyle,
+                style: Style.headerTextStyle,
               ),
               subtitle: Image.network(thumbnailUrl),
               onTap: () {
@@ -218,7 +218,7 @@ class _ProgramsState extends State<Programs> {
       title: Text(
         programTitle,
         textAlign: TextAlign.center,
-        style: Style.header2TextStyle,
+        style: Style.headerTextStyle,
       ),
       content: Text("Программа не активна",
           textAlign: TextAlign.center, style: Style.regularTextStyle,
@@ -243,7 +243,7 @@ class _ProgramsState extends State<Programs> {
             title: Text(
               program["title"],
               textAlign: TextAlign.center,
-              style: Style.header2TextStyle,
+              style: Style.headerTextStyle,
             ),
             subtitle: Stack(
               children: <Widget>[
@@ -291,7 +291,7 @@ class _ProgramsState extends State<Programs> {
               title: Text(
                 program["title"],
                 textAlign: TextAlign.center,
-                style: Style.header2TextStyle,
+                style: Style.headerTextStyle,
               ),
               subtitle: Image.network(
                   "https://evgeshayoga.com" + program["thumbnailUrl"])),

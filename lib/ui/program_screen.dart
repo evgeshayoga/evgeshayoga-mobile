@@ -1,5 +1,6 @@
 import 'package:evgeshayoga/models/program.dart';
 import 'package:evgeshayoga/old_files/marathons_data.dart';
+import 'package:evgeshayoga/ui/programs/program_builder.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
@@ -15,9 +16,16 @@ class ProgramScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: Builder(
+          builder: (BuildContext context) {
+            return BackButton(
+              color: Style.blueGrey,
+            );
+          },
+        ),
         centerTitle: true,
         title: Text(programTitle,
-          style: Style.headerTextStyle,
+          style: Style.titleTextStyle,
         ),
         backgroundColor: Style.pinkMain,
       ),

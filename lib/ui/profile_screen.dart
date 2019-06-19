@@ -32,7 +32,7 @@ class ProfileScreen extends StatelessWidget {
             children: <Widget>[
               Text(
                 user.userName,
-                style: Style.header2TextStyle,
+                style: Style.headerTextStyle,
               ),
               Padding(
                 padding: EdgeInsets.all(8),

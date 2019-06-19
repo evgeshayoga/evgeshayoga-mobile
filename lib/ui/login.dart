@@ -6,11 +6,10 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter/services.dart' show PlatformException;
 import 'package:url_launcher/url_launcher.dart';
-
-//import 'package:evgeshayoga/utils/database_helper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:progress_hud/progress_hud.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -18,22 +17,17 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-////  var db = new DatabaseHelper();
-//  final TextEditingController _emailController = new TextEditingController();
-//  final TextEditingController _passwordController = new TextEditingController();
+
   DatabaseReference databaseReference;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignin = GoogleSignIn();
   final _loginFormKey = GlobalKey<FormState>();
   User user = User("", "", "", "");
   String loginAlert = "";
+  ProgressHUD _progressHUD;
+  bool _loading = true;
 
-//  void _erase() {
-//    setState(() {
-//      _emailController.clear();
-//      _passwordController.clear();
-//    });
-//  }
+
   static const int tabletBreakpoint = 600;
 
   Widget _buildLandscapeLayout() {
@@ -258,8 +252,33 @@ class _LoginState extends State<Login> {
     );
   }
 
+
+  @override
+  void initState() {
+    super.initState();
+    _progressHUD = new ProgressHUD(
+      backgroundColor: Colors.black12,
+      color: Colors.white,
+      containerColor: Colors.blue,
+      borderRadius: 5.0,
+      text: 'Loading...',
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+
+    void dismissProgressHUD() {
+      setState(() {
+        if (_loading) {
+          _progressHUD.state.dismiss();
+        } else {
+          _progressHUD.state.show();
+        }
+        _loading = !_loading;
+      });
+    }
+
     Widget loginPageContent;
     var shortestSide = MediaQuery.of(context).size.shortestSide;
     var orientation = MediaQuery.of(context).orientation;
@@ -296,7 +315,6 @@ class _LoginState extends State<Login> {
     if (_loginFormKey.currentState.validate()) {
       _loginFormKey.currentState.save();
       _loginFormKey.currentState.reset();
-      print("${user.userEmail}, ${user.password}");
       try {
         var response = await http.post(
           "https://evgeshayoga.com/api/auth",
@@ -315,29 +333,10 @@ class _LoginState extends State<Login> {
           password: user.password,
         );
 
-        print("User signed in: ${newUser.email}, ${newUser.uid}");
         var router = new MaterialPageRoute(builder: (BuildContext context) {
           return Programs(userUid: newUser.uid);
         });
         Navigator.of(context).push(router);
-//        FirebaseDatabase.instance
-//            .reference()
-//            .child("Users")
-//            .child(newUser.uid)
-//            .once()
-//            .then((DataSnapshot snapshot) {
-//          Map<dynamic, dynamic> values = snapshot.value;
-//          user.userName = values["userName"];
-//          user.userFamilyName = values["userFamilyName"];
-//          print(
-//              "Sending Name ${user.userName} Sending Family Name ${user.userFamilyName}");
-//
-//          var router = new MaterialPageRoute(builder: (BuildContext context) {
-//            return Marathons(
-//                name: user.userName, familyName: user.userFamilyName);
-//          });
-//          Navigator.of(context).push(router);
-//        });
       } on PlatformException catch (e) {
         print("platform exception");
         print(e.toString());
@@ -365,60 +364,4 @@ class _LoginState extends State<Login> {
       print("User signed in: ${newUser.email}");
     });
   }
-
-// Sign-in with Google
-//  Future<FirebaseUser> googleSignIn() async {
-//    GoogleSignInAccount googleSignInAccount = await _googleSignin.signIn();
-//    GoogleSignInAuthentication googleSignInAuthentication =
-//        await googleSignInAccount.authentication;
-//    AuthCredential credential = GoogleAuthProvider.getCredential(
-//        accessToken: googleSignInAuthentication.accessToken,
-//        idToken: googleSignInAuthentication.idToken);
-//    FirebaseUser googleUser = await _auth.signInWithCredential(credential);
-//    print("User is ${googleUser.displayName}");
-//    var router = new MaterialPageRoute(builder: (BuildContext context) {
-//      return Marathons(name: googleUser.displayName, familyName: googleUser.email);
-//    });
-//    Navigator.of(context).push(router);
-//  }
 }
-
-// OLD LOGIN
-//  checkUser() async {
-////    var allUsers = await db.getUsers();
-////    print(allUsers);
-////   await db.deleteUser(2);
-//
-//    String enteredEmail = _emailController.text.toString().trim();
-//    String enteredPassword = _passwordController.text.toString().trim();
-//
-//    if (enteredEmail.isEmpty) {
-//      setState(() {
-//        loginAlert = "Email is empty";
-//      });
-//      return;
-//    }
-//    if (enteredPassword.isEmpty) {
-//      setState(() {
-//        loginAlert = "Password is empty";
-//      });
-//      return;
-//    }
-//    var user = await db.getUser(enteredEmail);
-//    if (user == null) {
-//      setState(() {
-//        loginAlert = "No such user";
-//      });
-//      return;
-//    }
-//    if (user.password != enteredPassword) {
-//      setState(() {
-//        loginAlert = "Wrong password";
-//      });
-//      return;
-//    }
-//    var router = new MaterialPageRoute(builder: (BuildContext context) {
-//      return Marathons(name: user.userName, familyName: user.userFamilyName);
-//    });
-//    Navigator.of(context).push(router);
-//  }

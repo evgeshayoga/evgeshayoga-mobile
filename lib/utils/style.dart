@@ -13,13 +13,13 @@ class Style {
     fontSize: 18,
     color: blueGrey,
   );
-  static final headerTextStyle = TextStyle(
+  static final titleTextStyle = TextStyle(
     fontFamily: "BebasNeue",
     fontWeight: FontWeight.bold,
     fontSize: 30,
     color: blueGrey,
   );
-  static final header2TextStyle = TextStyle(
+  static final headerTextStyle = TextStyle(
     fontFamily: "Nunito",
     height: 1.5,
     fontSize: 22,
