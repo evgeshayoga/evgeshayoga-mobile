@@ -1,6 +1,6 @@
-import 'package:evgeshayoga/models/program.dart';
 import 'package:evgeshayoga/models/user.dart';
 import 'package:evgeshayoga/ui/program_screen.dart';
+import 'package:evgeshayoga/utils/check_is_available.dart';
 import 'package:evgeshayoga/utils/date_formatter.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:flutter/material.dart';
@@ -8,8 +8,9 @@ import 'package:firebase_database/firebase_database.dart';
 
 class PurchasesScreen extends StatefulWidget {
   User user;
+  final String userUid;
 
-  PurchasesScreen(this.user, {Key key}) : super(key: key);
+  PurchasesScreen(this.user, this.userUid, {Key key}) : super(key: key);
 
   @override
   _PurchasesScreenState createState() => _PurchasesScreenState();
@@ -17,18 +18,25 @@ class PurchasesScreen extends StatefulWidget {
 
 class _PurchasesScreenState extends State<PurchasesScreen> {
   final FirebaseDatabase database = FirebaseDatabase.instance;
-  DatabaseReference dbProgramsReference;
+  DatabaseReference dbUserPurchasesReference;
+  List<Widget> purchases = [];
 
   @override
   void initState() {
     super.initState();
-    dbProgramsReference = database.reference().child("marathons");
+//    purchases = buildPurchases(widget.user.getPurchases().programs);
+
+    dbUserPurchasesReference = database
+        .reference()
+        .child("users")
+        .child(widget.userUid)
+        .child("purchases");
+    dbUserPurchasesReference.onValue.listen(_onPurchasesUpdated);
   }
 
-  @override
-  Widget build(BuildContext context) {
+  List<Widget> buildPurchases(Map<int, dynamic> programs) {
     List<Widget> purchases = [];
-    widget.user.getPurchases().programs.forEach((idx, item) {
+    programs.forEach((idx, item) {
       purchases.add(Padding(
         padding: EdgeInsets.all(8),
       ));
@@ -41,7 +49,11 @@ class _PurchasesScreenState extends State<PurchasesScreen> {
         ),
       );
     });
+    return purchases;
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: Builder(
@@ -112,11 +124,36 @@ class _PurchasesScreenState extends State<PurchasesScreen> {
               style: Style.regularTextStyle,
             ),
             onPressed: () {
-              var router =
-                  new MaterialPageRoute(builder: (BuildContext context) {
-                return ProgramScreen(purchaseTitle, purchaseId);
-              });
-              Navigator.of(context).push(router);
+              if (isAvailable(availableTill)) {
+                var router = MaterialPageRoute(builder: (BuildContext context) {
+                  return ProgramScreen(purchaseTitle, purchaseId);
+                });
+                Navigator.of(context).push(router);
+              } else {
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: Text(
+                      purchaseTitle,
+                      textAlign: TextAlign.center,
+                      style: Style.headerTextStyle,
+                    ),
+                    content: Text(
+                      "Программа не доступна",
+                      textAlign: TextAlign.center,
+                      style: Style.regularTextStyle,
+                    ),
+                    actions: <Widget>[
+                      FlatButton(
+                        child: Text('OK'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  ),
+                );
+              }
             },
           ),
         ),
@@ -129,5 +166,12 @@ class _PurchasesScreenState extends State<PurchasesScreen> {
             )),
       ],
     );
+  }
+
+  void _onPurchasesUpdated(Event event) {
+    var up = UserPurchases(event.snapshot.value);
+    setState(() {
+      purchases = buildPurchases(up.programs);
+    });
   }
 }

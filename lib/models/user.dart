@@ -45,8 +45,6 @@ class UserPurchases {
         this.programs[purchase["id"]] = purchase;
       });
     }
-    print(userPrograms);
-    print(this.programs);
   }
 
 

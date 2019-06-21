@@ -2,7 +2,6 @@ import 'package:evgeshayoga/models/program.dart';
 import 'package:evgeshayoga/ui/programs/week_screen.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 
@@ -73,9 +72,12 @@ class _ProgramBuilderState extends State<ProgramBuilder> {
       children: <Widget>[
         Column(
           children: <Widget>[
-            HtmlWidget(
-              program.content,
-              webView: true,
+            DefaultTextStyle(
+              child: HtmlWidget(
+                program.content,
+                webView: true,
+              ),
+              style: Theme.of(context).textTheme.body1,
             )
           ],
         ),
