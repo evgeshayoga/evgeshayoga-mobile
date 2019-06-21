@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:evgeshayoga/models/user.dart';
 import 'package:evgeshayoga/ui/program_screen.dart';
 import 'package:evgeshayoga/utils/check_is_available.dart';
@@ -5,6 +7,7 @@ import 'package:evgeshayoga/utils/date_formatter.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:http/http.dart' as http;
 
 class PurchasesScreen extends StatefulWidget {
   User user;
@@ -70,6 +73,18 @@ class _PurchasesScreenState extends State<PurchasesScreen> {
           style: Style.titleTextStyle,
         ),
         centerTitle: true,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.update),
+            onPressed:(){
+              http.post(
+                "https://evgeshayoga.com/api/sync",
+                body: json.encode({"id": widget.user.userId}),
+                headers: {'Content-Type': 'application/json'},
+              );
+            } ,
+          )
+        ],
       ),
       body: Center(
         child: ListView(

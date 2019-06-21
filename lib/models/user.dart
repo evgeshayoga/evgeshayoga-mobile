@@ -39,6 +39,9 @@ class UserPurchases {
 
   UserPurchases(Map<dynamic, dynamic> dbData) {
     this.programs = {};
+    if (dbData == null) {
+      return;
+    }
     List userPrograms = dbData["marathons"];
     if (userPrograms != null) {
       userPrograms.forEach((purchase) {
