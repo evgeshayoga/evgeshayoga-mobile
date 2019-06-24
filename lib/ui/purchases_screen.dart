@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:evgeshayoga/models/user.dart';
-import 'package:evgeshayoga/ui/program_screen.dart';
+import 'package:evgeshayoga/ui/programs/program_screen.dart';
 import 'package:evgeshayoga/utils/check_is_available.dart';
 import 'package:evgeshayoga/utils/date_formatter.dart';
 import 'package:evgeshayoga/utils/style.dart';

@@ -1,7 +1,7 @@
 import 'package:evgeshayoga/models/program.dart';
 import 'package:evgeshayoga/models/user.dart';
-import 'package:evgeshayoga/ui/drawer_programs_screen.dart';
-import 'package:evgeshayoga/ui/program_screen.dart';
+import 'package:evgeshayoga/ui/programs/drawer_programs_screen.dart';
+import 'package:evgeshayoga/ui/programs/program_screen.dart';
 import 'package:evgeshayoga/utils/check_is_available.dart';
 import 'package:evgeshayoga/utils/date_formatter.dart';
 import 'package:evgeshayoga/utils/style.dart';
@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 class Programs extends StatefulWidget {
   final String userUid;
@@ -24,6 +25,17 @@ class _ProgramsState extends State<Programs> {
   DatabaseReference dbUsersReference;
   DatabaseReference dbProgramsReference;
   User user;
+  bool _isInAsyncCall = false;
+
+  void _showProgressIndicator() {
+    print("************* in progess ***************");
+    FocusScope.of(context).requestFocus(new FocusNode());
+    setState(
+      () {
+        _isInAsyncCall = true;
+      },
+    );
+  }
 
   @override
   void initState() {
@@ -67,33 +79,42 @@ class _ProgramsState extends State<Programs> {
           centerTitle: true,
           backgroundColor: Color.fromRGBO(242, 206, 210, 1),
         ),
-        body: WillPopScope(
-          onWillPop: () async {
-            Future.value(false);
-          },
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              Flexible(
-                child: FirebaseAnimatedList(
-                  query: dbProgramsReference,
-                  sort: (sa, sb) {
-                    return sb.value["id"] - sa.value["id"];
-                  },
-                  itemBuilder: (_, DataSnapshot snapshot,
-                      Animation<double> animation, int index) {
-                    var program = Program.fromSnapshot(snapshot);
-                    if (!program.isActive) {
-                      return _inactiveProgram();
-                    }
-                    if (programs.containsKey(program.id) && isAvailable(programs[program.id]["availableTill"])) {
-                      return _availableProgram(programs, snapshot.value);
-                    }
-                    return _notAvailableProgram(programs, snapshot.value);
-                  },
-                ),
-              )
-            ],
+        body: ModalProgressHUD(
+          color: Colors.white,
+          inAsyncCall: _isInAsyncCall,
+          progressIndicator: CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(Style.pinkMain),
+          ),
+          child: WillPopScope(
+            onWillPop: () async {
+              Future.value(false);
+            },
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                Flexible(
+                  child: FirebaseAnimatedList(
+                    query: dbProgramsReference,
+                    sort: (sa, sb) {
+                      return sb.value["id"] - sa.value["id"];
+                    },
+                    itemBuilder: (_, DataSnapshot snapshot,
+                        Animation<double> animation, int index) {
+                      var program = Program.fromSnapshot(snapshot);
+                      if (!program.isActive) {
+                        return _inactiveProgram();
+                      }
+                      if (programs.containsKey(program.id) &&
+                          isAvailable(programs[program.id]["availableTill"])) {
+                        return _availableProgram(programs, snapshot.value);
+                      }
+                      return _notAvailableProgram(
+                          programs, snapshot.value, context);
+                    },
+                  ),
+                )
+              ],
+            ),
           ),
         ));
   }
@@ -126,7 +147,7 @@ class _ProgramsState extends State<Programs> {
     showDialog(context: context, builder: (context) => alert);
   }
 
-  Widget _notAvailableProgram(purchases, program) {
+  Widget _notAvailableProgram(purchases, program, BuildContext context) {
     return Card(
         child: Column(
       children: <Widget>[
@@ -145,13 +166,42 @@ class _ProgramsState extends State<Programs> {
                   child: Image.asset('assets/images/lock.png'),
                 ),
               ],
-            )),
+            ),
+            onTap: () {
+              _unavailableProgDialog(context, program["title"]);
+            }),
 //        buttonIfPurchasable(purchases, program),
         Padding(
           padding: EdgeInsets.only(bottom: 15),
         )
       ],
     ));
+  }
+
+  _unavailableProgDialog(BuildContext context, title) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+            title: Text(
+              title,
+              textAlign: TextAlign.center,
+              style: Style.headerTextStyle,
+            ),
+            content: Text(
+              "Программа не доступна",
+              textAlign: TextAlign.center,
+              style: Style.regularTextStyle,
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          ),
+    );
   }
 
   Widget buttonIfPurchasable(purchases, program) {
@@ -171,7 +221,7 @@ class _ProgramsState extends State<Programs> {
         },
       );
     }
-    return null;
+    return Container();
   }
 
   Widget _availableProgram(purchases, program) {
@@ -179,12 +229,15 @@ class _ProgramsState extends State<Programs> {
       child: Column(
         children: <Widget>[
           ListTile(
-              onTap: () {
+              onTap: () async {
+                _showProgressIndicator();
                 var router =
                     new MaterialPageRoute(builder: (BuildContext context) {
                   return ProgramScreen(program["title"], program["id"]);
                 });
-                Navigator.of(context).push(router);
+                await Navigator.of(context).push(router).then((value) {
+                  _isInAsyncCall = false;
+                });
               },
               title: Text(
                 program["title"],
@@ -199,42 +252,9 @@ class _ProgramsState extends State<Programs> {
                 "Доступен до " +
                     dateFormatted(purchases[program["id"]]["availableTill"]),
                 style: Style.regularTextStyle,
-              )
-//            Text("Available till " + purchases["marathons"][index]["availableTill"],
-//                style: TextStyle(
-//                  height: 1.5,
-//                  fontSize: 17,
-//                  fontWeight: FontWeight.w400,
-//                  color: Colors.blueGrey,
-//                ) ),
-              )
+              ))
         ],
       ),
     );
   }
-
-  programsCheck(snapshot) {
-    if (!snapshot.value["isActive"] ||
-        !isAvailable(user.getPurchases().programs[snapshot.value["id"]]
-            ["availableTill"])) {
-      return _inactiveProgram();
-    } else if (!user
-            .getPurchases()
-            .programs
-            .containsKey(snapshot.value["id"]) ||
-        !user.getPurchases().programs[snapshot.value["id"]]["isPurchased"]) {
-      return _notAvailableProgram(user.getPurchases().programs, snapshot.value);
-    }
-    return _availableProgram(user.getPurchases().programs, snapshot.value);
-  }
-
-//  Widget dateFormatted(date) {
-//    var parsedDate = DateTime.parse(date);
-//    var formatter = DateFormat("d.MM.y");
-//    String formatted = formatter.format(parsedDate);
-//    return Text(
-//      "Доступен до " + formatted,
-//      style: Style.regularTextStyle,
-//    );
-//  }
 }

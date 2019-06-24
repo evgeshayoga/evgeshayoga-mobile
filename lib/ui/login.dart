@@ -1,5 +1,5 @@
 import 'package:evgeshayoga/models/user.dart';
-import 'package:evgeshayoga/ui/programs.dart';
+import 'package:evgeshayoga/ui/programs/programs.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -7,9 +7,8 @@ import 'dart:convert';
 import 'package:flutter/services.dart' show PlatformException;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:progress_hud/progress_hud.dart';
+import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -17,16 +16,30 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-
   DatabaseReference databaseReference;
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final GoogleSignIn _googleSignin = GoogleSignIn();
   final _loginFormKey = GlobalKey<FormState>();
   User user = User("", "", "", "");
   String loginAlert = "";
-  ProgressHUD _progressHUD;
-  bool _loading = true;
 
+//  bool _saving = false;
+  bool _isInAsyncCall = false;
+
+  void _showProgressIndicator() {
+    FocusScope.of(context).requestFocus(new FocusNode());
+    setState(() {
+      _isInAsyncCall = true;
+    });
+
+    //Simulate a service call
+//    print('submitting to backend...');
+//    new Future.delayed(
+//        new Duration(seconds: 4),() {
+//      setState(() {
+//        _saving = false;
+//      });
+//    });
+  }
 
   static const int tabletBreakpoint = 600;
 
@@ -252,33 +265,13 @@ class _LoginState extends State<Login> {
     );
   }
 
-
   @override
   void initState() {
     super.initState();
-    _progressHUD = new ProgressHUD(
-      backgroundColor: Colors.black12,
-      color: Colors.white,
-      containerColor: Colors.blue,
-      borderRadius: 5.0,
-      text: 'Loading...',
-    );
   }
 
   @override
   Widget build(BuildContext context) {
-
-    void dismissProgressHUD() {
-      setState(() {
-        if (_loading) {
-          _progressHUD.state.dismiss();
-        } else {
-          _progressHUD.state.show();
-        }
-        _loading = !_loading;
-      });
-    }
-
     Widget loginPageContent;
     var shortestSide = MediaQuery.of(context).size.shortestSide;
     var orientation = MediaQuery.of(context).orientation;
@@ -302,12 +295,23 @@ class _LoginState extends State<Login> {
         automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
         title: Image.asset(
-          'assets/images/logo.png', alignment: Alignment.center, fit: BoxFit.contain, repeat: ImageRepeat.noRepeat,
+          'assets/images/logo.png',
+          alignment: Alignment.center,
+          fit: BoxFit.contain,
+          repeat: ImageRepeat.noRepeat,
           height: 35,
         ),
         centerTitle: true,
       ),
-      body: loginPageContent,
+      body: ModalProgressHUD(
+        color: Colors.white,
+        child: loginPageContent,
+        inAsyncCall: _isInAsyncCall,
+        opacity: 0.5,
+        progressIndicator: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(Style.pinkMain),
+        ),
+      ),
     );
   }
 
@@ -316,6 +320,7 @@ class _LoginState extends State<Login> {
       _loginFormKey.currentState.save();
       _loginFormKey.currentState.reset();
       try {
+        _showProgressIndicator();
         var response = await http.post(
           "https://evgeshayoga.com/api/auth",
           body:
@@ -327,7 +332,6 @@ class _LoginState extends State<Login> {
         if (error != null) {
           throw new Exception(error);
         }
-//        var newUser = await _auth.signInWithCustomToken(token: "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJmaXJlYmFzZS1hZG1pbnNkay1vbGhlOUBldmdlc2hheW9nYS1iYTM5Ny5pYW0uZ3NlcnZpY2VhY2NvdW50LmNvbSIsInN1YiI6ImZpcmViYXNlLWFkbWluc2RrLW9saGU5QGV2Z2VzaGF5b2dhLWJhMzk3LmlhbS5nc2VydmljZWFjY291bnQuY29tIiwiYXVkIjoiaHR0cHM6XC9cL2lkZW50aXR5dG9vbGtpdC5nb29nbGVhcGlzLmNvbVwvZ29vZ2xlLmlkZW50aXR5LmlkZW50aXR5dG9vbGtpdC52MS5JZGVudGl0eVRvb2xraXQiLCJ1aWQiOiJwaHAwMDAwMDE2MiIsImlhdCI6MTU1ODM3ODg5MCwiZXhwIjoxNTU4MzgyNDkwfQ.Dp7TALS9yODHkvqYNx9YjVyR39rxMzLB7N1j7vtNEZVKIPm4384TGJ3RQs5ubLZmTvKTeEq-RB7EXlC0o2H2qt0tciZj5TTZG6ZJ_FDtjz3TsQXB9-R99KFNnyebRuqCtuoCj_rhzT95_IHEdVGFkaum0rE64Gtvh0s_9bMdKwYVE08MM5ZwBFzsnxc-dDHG6deMCZbNjANC5ntndZnYTdMyLTusu80WrAfB9kJJRZU5W9Kj-PLkV832CoymyDEy2kZUI5KQWwBDERw4EdQl0TGMjcNdUL9vL5d09sIBouFJYuhI9BCfQ8lsQzDzwWR9fOonwtQ12Wmw2LPZPEPzyA");
         var newUser = await _auth.signInWithEmailAndPassword(
           email: user.userEmail,
           password: user.password,
@@ -351,17 +355,5 @@ class _LoginState extends State<Login> {
         });
       }
     }
-  }
-
-// Sign-in with email
-  _signInWithEmail() {
-    _auth
-        .signInWithEmailAndPassword(
-            email: user.userEmail, password: user.password)
-        .catchError((error) {
-      print("Something went wrong! ${error.toString()}");
-    }).then((newUser) {
-      print("User signed in: ${newUser.email}");
-    });
   }
 }

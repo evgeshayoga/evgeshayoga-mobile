@@ -1,5 +1,5 @@
 import 'package:evgeshayoga/ui/animation.dart';
-import 'package:evgeshayoga/ui/programs.dart';
+import 'package:evgeshayoga/ui/programs/programs.dart';
 import 'package:evgeshayoga/ui/registration_page.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:firebase_auth/firebase_auth.dart';

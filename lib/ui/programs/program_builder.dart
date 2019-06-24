@@ -4,6 +4,7 @@ import 'package:evgeshayoga/utils/style.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 class ProgramBuilder extends StatefulWidget {
   int id;
@@ -17,6 +18,16 @@ class ProgramBuilder extends StatefulWidget {
 class _ProgramBuilderState extends State<ProgramBuilder> {
   final FirebaseDatabase database = FirebaseDatabase.instance;
   Program program;
+  bool _isInAsyncCall = false;
+
+  void _showProgressIndicator() {
+    FocusScope.of(context).requestFocus(new FocusNode());
+    setState(
+      () {
+        _isInAsyncCall = true;
+      },
+    );
+  }
 
   @override
   void initState() {
@@ -35,7 +46,10 @@ class _ProgramBuilderState extends State<ProgramBuilder> {
 
   Widget build(BuildContext context) {
     if (program == null) {
-      return Text("Loading");
+      return ModalProgressHUD(
+        inAsyncCall: _isInAsyncCall,
+        child: Container(),
+      );
     }
     List<Widget> programWeeks = [];
     program.getWeeks().forEach((week) {

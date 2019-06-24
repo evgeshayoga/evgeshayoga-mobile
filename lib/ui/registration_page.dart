@@ -1,5 +1,5 @@
 import 'package:evgeshayoga/models/user.dart';
-import 'package:evgeshayoga/ui/programs.dart';
+import 'package:evgeshayoga/ui/programs/programs.dart';
 import 'package:evgeshayoga/old_files/date_formatter.dart';
 import 'package:evgeshayoga/ui/login.dart';
 import 'package:flutter/material.dart';

@@ -1,5 +1,5 @@
 import 'package:evgeshayoga/old_files/marathons_data.dart';
-import 'package:evgeshayoga/ui/program_screen.dart';
+import 'package:evgeshayoga/ui/programs/program_screen.dart';
 import 'package:flutter/material.dart';
 
 class MarathonCard extends StatelessWidget {

@@ -1,7 +1,7 @@
 import 'package:evgeshayoga/old_files/marathons_data.dart';
 import 'package:evgeshayoga/ui/login.dart';
 import 'package:evgeshayoga/old_files/marathon_card.dart';
-import 'package:evgeshayoga/ui/marathon_poweryoga.dart';
+import 'package:evgeshayoga/old_files/marathon_poweryoga.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
