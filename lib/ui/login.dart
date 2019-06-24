@@ -20,7 +20,7 @@ class _LoginState extends State<Login> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final _loginFormKey = GlobalKey<FormState>();
   User user = User("", "", "", "");
-  String loginAlert = "";
+  String _loginAlert = "";
 
 //  bool _saving = false;
   bool _isInAsyncCall = false;
@@ -145,7 +145,7 @@ class _LoginState extends State<Login> {
           Padding(padding: new EdgeInsets.all(10.5)),
           Center(
             child: Text(
-              loginAlert,
+              _loginAlert,
               style: TextStyle(
                 fontFamily: "Nunito",
                 color: Colors.red,
@@ -256,7 +256,7 @@ class _LoginState extends State<Login> {
           Padding(padding: new EdgeInsets.all(10.5)),
           Center(
             child: Text(
-              loginAlert,
+              _loginAlert,
               style: TextStyle(color: Colors.red),
             ),
           )
@@ -345,13 +345,15 @@ class _LoginState extends State<Login> {
         print("platform exception");
         print(e.toString());
         setState(() {
-          loginAlert = e.message;
+          _loginAlert = e.message;
+          _isInAsyncCall = false;
         });
       } on Exception catch (e) {
         print("exception");
         print(e.toString());
         setState(() {
-          loginAlert = e.toString();
+          _loginAlert = e.toString();
+          _isInAsyncCall = false;
         });
       }
     }

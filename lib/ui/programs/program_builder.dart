@@ -18,16 +18,6 @@ class ProgramBuilder extends StatefulWidget {
 class _ProgramBuilderState extends State<ProgramBuilder> {
   final FirebaseDatabase database = FirebaseDatabase.instance;
   Program program;
-  bool _isInAsyncCall = false;
-
-  void _showProgressIndicator() {
-    FocusScope.of(context).requestFocus(new FocusNode());
-    setState(
-      () {
-        _isInAsyncCall = true;
-      },
-    );
-  }
 
   @override
   void initState() {
@@ -46,9 +36,17 @@ class _ProgramBuilderState extends State<ProgramBuilder> {
 
   Widget build(BuildContext context) {
     if (program == null) {
-      return ModalProgressHUD(
-        inAsyncCall: _isInAsyncCall,
-        child: Container(),
+      return Container(
+        height: 300,
+        child: ModalProgressHUD(
+          color: Colors.transparent,
+          progressIndicator: CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(Style.pinkMain),
+          ),
+          inAsyncCall: true,
+//          opacity: 1,
+          child: Text("Загружается...", textAlign: TextAlign.center,),
+        ),
       );
     }
     List<Widget> programWeeks = [];

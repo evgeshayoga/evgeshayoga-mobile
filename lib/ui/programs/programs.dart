@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 class Programs extends StatefulWidget {
   final String userUid;
@@ -25,17 +24,6 @@ class _ProgramsState extends State<Programs> {
   DatabaseReference dbUsersReference;
   DatabaseReference dbProgramsReference;
   User user;
-  bool _isInAsyncCall = false;
-
-  void _showProgressIndicator() {
-    print("************* in progess ***************");
-    FocusScope.of(context).requestFocus(new FocusNode());
-    setState(
-      () {
-        _isInAsyncCall = true;
-      },
-    );
-  }
 
   @override
   void initState() {
@@ -56,67 +44,61 @@ class _ProgramsState extends State<Programs> {
   Widget build(BuildContext context) {
     var programs = user.getPurchases().programs;
     return Scaffold(
-        drawer: drawerProgramScreen(user, context, widget.userUid),
-        appBar: AppBar(
-          leading: Builder(
-            builder: (BuildContext context) {
-              return IconButton(
-                icon: const Icon(
-                  Icons.menu,
-                  color: Colors.blueGrey,
-                ),
-                onPressed: () {
-                  Scaffold.of(context).openDrawer();
-                },
-                tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-              );
-            },
-          ),
-          title: Text(
-            "ПРОГРАММЫ",
-            style: Style.titleTextStyle,
-          ),
-          centerTitle: true,
-          backgroundColor: Color.fromRGBO(242, 206, 210, 1),
+      drawer: drawerProgramScreen(user, context, widget.userUid),
+      appBar: AppBar(
+        leading: Builder(
+          builder: (BuildContext context) {
+            return IconButton(
+              icon: const Icon(
+                Icons.menu,
+                color: Colors.blueGrey,
+              ),
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+              tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+            );
+          },
         ),
-        body: ModalProgressHUD(
-          color: Colors.white,
-          inAsyncCall: _isInAsyncCall,
-          progressIndicator: CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation<Color>(Style.pinkMain),
-          ),
-          child: WillPopScope(
-            onWillPop: () async {
-              Future.value(false);
-            },
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                Flexible(
-                  child: FirebaseAnimatedList(
-                    query: dbProgramsReference,
-                    sort: (sa, sb) {
-                      return sb.value["id"] - sa.value["id"];
-                    },
-                    itemBuilder: (_, DataSnapshot snapshot,
-                        Animation<double> animation, int index) {
-                      var program = Program.fromSnapshot(snapshot);
-                      if (!program.isActive) {
-                        return _inactiveProgram();
-                      }
-                      if (programs.containsKey(program.id) &&
-                          isAvailable(programs[program.id]["availableTill"])) {
-                        return _availableProgram(programs, snapshot.value);
-                      }
-                      return _notAvailableProgram(
-                          programs, snapshot.value, context);
-                    },
-                  ),
-                )
-              ],
-            ),
-          ),
-        ));
+        title: Text(
+          "ПРОГРАММЫ",
+          style: Style.titleTextStyle,
+        ),
+        centerTitle: true,
+        backgroundColor: Color.fromRGBO(242, 206, 210, 1),
+      ),
+      body: WillPopScope(
+        onWillPop: () async {
+          Future.value(false);
+        },
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            Flexible(
+              child: FirebaseAnimatedList(
+                query: dbProgramsReference,
+                sort: (sa, sb) {
+                  return sb.value["id"] - sa.value["id"];
+                },
+                itemBuilder: (_, DataSnapshot snapshot,
+                    Animation<double> animation, int index) {
+                  var program = Program.fromSnapshot(snapshot);
+                  if (!program.isActive) {
+                    return _inactiveProgram();
+                  }
+                  if (programs.containsKey(program.id) &&
+                      isAvailable(programs[program.id]["availableTill"])) {
+                    return _availableProgram(programs, snapshot.value);
+                  }
+                  return _notAvailableProgram(
+                      programs, snapshot.value, context);
+                },
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 
   Widget _inactiveProgram() {
@@ -229,15 +211,13 @@ class _ProgramsState extends State<Programs> {
       child: Column(
         children: <Widget>[
           ListTile(
-              onTap: () async {
-                _showProgressIndicator();
+              onTap: () {
+//                _showProgressIndicator();
                 var router =
                     new MaterialPageRoute(builder: (BuildContext context) {
                   return ProgramScreen(program["title"], program["id"]);
                 });
-                await Navigator.of(context).push(router).then((value) {
-                  _isInAsyncCall = false;
-                });
+                Navigator.of(context).push(router);
               },
               title: Text(
                 program["title"],
