@@ -39,10 +39,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
       _registrationFormKey.currentState.save();
       print("_createUser ${user.userEmail} , ${user.password}");
       try {
-        var firebaseUser = await _auth.createUserWithEmailAndPassword(
+        FirebaseUser firebaseUser = (await _auth.createUserWithEmailAndPassword(
           email: "${user.userEmail}",
           password: "${user.password}",
-        );
+        )).user;
 //        user.dateCreated = dateFormatted();
         print("Created user ${firebaseUser.uid} ${firebaseUser.displayName}");
         print("Email ${firebaseUser.email}");

@@ -332,10 +332,10 @@ class _LoginState extends State<Login> {
         if (error != null) {
           throw new Exception(error);
         }
-        var newUser = await _auth.signInWithEmailAndPassword(
+        FirebaseUser newUser = (await _auth.signInWithEmailAndPassword(
           email: user.userEmail,
           password: user.password,
-        );
+        )).user;
 
         var router = new MaterialPageRoute(builder: (BuildContext context) {
           return Programs(userUid: newUser.uid);

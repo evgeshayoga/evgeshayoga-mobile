@@ -188,9 +188,9 @@ SPEC CHECKSUMS:
   connectivity: c72716e202a1225ec4810740d5cb56b8ae3bf4cc
   device_info: 3ebad48f726348f69abd802f3334a8d1ed795fbd
   Firebase: 8432d732974498afd5987e9001a05f90f1a3d625
-  firebase_auth: ba238762663f6b3503cc5468c50d652df1306185
-  firebase_core: 44f31f51532812598f0f9f4af0caa705b9edfc19
-  firebase_database: 083e0cc5badd5f5dde7d22eaca980b42b199f59e
+  firebase_auth: 1e3b7bdd37b9fbd4ef75ba1d985b00be09e02d3d
+  firebase_core: ae55ea92448ec8675d325da4db22cf3b4d58a54d
+  firebase_database: d4f066a1b01f309676d0d2678ec600d6af18ad97
   FirebaseAnalytics: 470ddab7253b21ad5a40bebd4a9903d7ae19386a
   FirebaseAuth: 7fa2cc010b93770831a4e7a60651b52c3b8d111a
   FirebaseAuthInterop: 0ffa57668be100582bb7643d4fcb7615496c41fc
@@ -218,4 +218,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 3389836f37640698630b8f0670315d626d5f1469
 
-COCOAPODS: 1.7.2
+COCOAPODS: 1.7.5

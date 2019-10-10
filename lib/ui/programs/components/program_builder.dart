@@ -1,4 +1,7 @@
 import 'package:evgeshayoga/models/program.dart';
+import 'package:evgeshayoga/models/video_model.dart';
+import 'package:evgeshayoga/old_files/video.dart';
+import 'package:evgeshayoga/ui/programs/chewie_player.dart';
 import 'package:evgeshayoga/ui/programs/week_screen.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -18,6 +21,7 @@ class ProgramBuilder extends StatefulWidget {
 class _ProgramBuilderState extends State<ProgramBuilder> {
   final FirebaseDatabase database = FirebaseDatabase.instance;
   Program program;
+  List<VideoModel> videos = [];
 
   @override
   void initState() {
@@ -30,6 +34,7 @@ class _ProgramBuilderState extends State<ProgramBuilder> {
         .then((snapshot) {
       setState(() {
         program = Program.fromSnapshot(snapshot);
+        videos = program.getVideos();
       });
     });
   }
@@ -45,7 +50,10 @@ class _ProgramBuilderState extends State<ProgramBuilder> {
           ),
           inAsyncCall: true,
 //          opacity: 1,
-          child: Text("Загружается...", textAlign: TextAlign.center,),
+          child: Text(
+            "Загружается...",
+            textAlign: TextAlign.center,
+          ),
         ),
       );
     }
@@ -80,6 +88,46 @@ class _ProgramBuilderState extends State<ProgramBuilder> {
       ));
     });
 
+    List<Widget> videoBlocks = [];
+    videos.forEach((video) {
+      videoBlocks.add(Container(
+        margin: EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: <BoxShadow>[
+            BoxShadow(
+              color: Style.blueGrey.withOpacity(0.3),
+              blurRadius: 3,
+            )
+          ],
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ListTile(
+            title: Text(
+              video.title + ". " + video.subtitle,
+              style: Style.titleTextStyle,
+            ),
+            subtitle: Column(
+              children: <Widget>[
+                ChewieVideo(video.hls),
+                video.content == null
+                    ? null
+                    : Text(
+                        video.content,
+                        style: Style.regularTextStyle,
+                      ),
+//              Padding(padding: const EdgeInsets.only(bottom: 8.0))
+//              Divider(
+//                color: Style.blueGrey,
+//              )
+              ],
+            ),
+          ),
+        ),
+      ));
+    });
+
     return Column(
       children: <Widget>[
         Column(
@@ -93,7 +141,10 @@ class _ProgramBuilderState extends State<ProgramBuilder> {
             )
           ],
         ),
-        Column(children: programWeeks)
+        Column(
+          children: programWeeks,
+        ),
+        Column(children: videoBlocks),
       ],
     );
   }
