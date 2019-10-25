@@ -6,8 +6,10 @@ import 'package:video_player/video_player.dart';
 
 class ChewieVideo extends StatefulWidget {
   String videoUrl='';
+  String videoThumbnail='';
+//  String thumbnailUrl = "https://evgeshayoga.com/images/userfiles/images/t/w1-2-pra.png";
 
-  ChewieVideo(this.videoUrl); //  final String title;
+  ChewieVideo(this.videoUrl, this.videoThumbnail); //  final String title;
 
   @override
   State<StatefulWidget> createState() {
@@ -26,10 +28,14 @@ class _ChewieVideoState extends State<ChewieVideo> {
     _videoPlayerController = VideoPlayerController.network(widget.videoUrl);
     _chewieController = ChewieController(
       videoPlayerController: _videoPlayerController,
-//      aspectRatio: 3 / 2,
-      autoInitialize: true,
+      aspectRatio: 3 / 2,
+      autoInitialize: widget.videoThumbnail == null || widget.videoThumbnail == '' ? true : false,
       autoPlay: false,
       looping: false,
+      placeholder: Container(
+//        color: Colors.blueGrey,
+        child: Image.network(widget.videoThumbnail),
+      )
       // Try playing around with some of these other options:
 
       // showControls: false,
