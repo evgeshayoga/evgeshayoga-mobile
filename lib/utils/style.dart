@@ -12,6 +12,7 @@ class Style {
     fontWeight: FontWeight.normal,
     fontSize: 18,
     color: blueGrey,
+
   );
   static final titleTextStyle = TextStyle(
     fontFamily: "BebasNeue",

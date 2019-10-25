@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:evgeshayoga/models/program.dart';
 import 'package:evgeshayoga/models/user.dart';
 import 'package:evgeshayoga/ui/programs/components/drawer_programs_screen.dart';
@@ -8,7 +9,9 @@ import 'package:evgeshayoga/utils/style.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
+import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:http/http.dart' as http;
 
 class Programs extends StatefulWidget {
   final String userUid;
@@ -20,10 +23,12 @@ class Programs extends StatefulWidget {
 }
 
 class _ProgramsState extends State<Programs> {
+  static const int tabletBreakpoint = 600;
   final FirebaseDatabase database = FirebaseDatabase.instance;
   DatabaseReference dbUsersReference;
   DatabaseReference dbProgramsReference;
   User user;
+  Map<String, dynamic> userProgramsStatuses;
 
   @override
   void initState() {
@@ -34,17 +39,30 @@ class _ProgramsState extends State<Programs> {
     user = User("", "", "", "");
 
     dbUsersReference.once().then((snapshot) {
-      setState(() {
-        user = User.fromSnapshot(snapshot);
+      getUserProgramsStatuses(widget.userUid).then((statuses) {
+        setState(() {
+          user = User.fromSnapshot(snapshot);
+          userProgramsStatuses = statuses;
+        });
+        debugPrint("Status is " + userProgramsStatuses.toString());
+        debugPrint("User id is " + widget.userUid);
       });
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    var shortestSide = MediaQuery.of(context).size.shortestSide;
+    var orientation = MediaQuery.of(context).orientation;
+    var isLandscape = true;
+    if (orientation == Orientation.portrait &&
+        shortestSide < tabletBreakpoint) {
+      isLandscape = false;
+    }
+
     var programs = user.getPurchases().programs;
     return Scaffold(
-      drawer: drawerProgramScreen(user, context, widget.userUid),
+      drawer: drawerProgramScreen(user, context, widget.userUid, isLandscape),
       appBar: AppBar(
         leading: Builder(
           builder: (BuildContext context) {
@@ -82,16 +100,54 @@ class _ProgramsState extends State<Programs> {
                 },
                 itemBuilder: (_, DataSnapshot snapshot,
                     Animation<double> animation, int index) {
+                  if (snapshot == null) {
+                    debugPrint("Snapshot is null");
+                  } else if (userProgramsStatuses == null) {
+                    debugPrint("Status is null");
+                  }
+
+                  if (snapshot == null || userProgramsStatuses == null) {
+                    return Container(
+                      height: 300,
+                      child: ModalProgressHUD(
+                        color: Colors.transparent,
+                        progressIndicator: CircularProgressIndicator(
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Style.pinkMain),
+                        ),
+                        inAsyncCall: true,
+                        child: Text(
+                          "Загружается...",
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    );
+                  }
+
                   var program = Program.fromSnapshot(snapshot);
+
                   if (!program.isActive) {
                     return _inactiveProgram();
                   }
-                  if (programs.containsKey(program.id) &&
-                      isAvailable(programs[program.id]["availableTill"])) {
-                    return _availableProgram(programs, snapshot.value);
+
+                  if (isViewable(userProgramsStatuses, program.id)) {
+                    String date = userProgramsStatuses[program.id.toString()]
+                            ["availableTill"]
+                        .toString();
+
+//                    debugPrint("Viewable? " + userProgramsStatus[program.id.toString()]["isViewable"].toString());
+//                    debugPrint("Available? " + (isAvailable(userProgramsStatus[program.id.toString()]
+//                    ["availableTill"].toString())).toString());
+                    return _availableProgram(date, snapshot.value, isLandscape);
                   }
+
+//                  if (programs.containsKey(program.id) &&
+//                      isAvailable(programs[program.id]["availableTill"])) {
+////                    debugPrint(program.id.toString()+userProgramsStatus[program.id.toString()]["isViewable"].toString());
+//                    return _availableProgram(programs, snapshot.value);
+//                  }
                   return _notAvailableProgram(
-                      programs, snapshot.value, context);
+                      programs, snapshot.value, context, isLandscape);
                 },
               ),
             )
@@ -129,112 +185,209 @@ class _ProgramsState extends State<Programs> {
     showDialog(context: context, builder: (context) => alert);
   }
 
-  Widget _notAvailableProgram(purchases, program, BuildContext context) {
-    return Card(
-        child: Column(
-      children: <Widget>[
-        ListTile(
-            title: Text(
-              program["title"],
-              textAlign: TextAlign.center,
-              style: Style.headerTextStyle,
-            ),
-            subtitle: Stack(
-              children: <Widget>[
-                Image.network(
-                    "https://evgeshayoga.com" + program["thumbnailUrl"]),
-                Opacity(
-                  opacity: 0.4,
-                  child: Image.asset('assets/images/lock.png'),
+  Widget _notAvailableProgram(
+      purchases, program, BuildContext context, isLandscape) {
+    String thumbnailUrl = program["thumbnailUrl"];
+    Text title = Text(
+      program["title"],
+      textAlign: TextAlign.center,
+      style: Style.headerTextStyle,
+    );
+    return Container(
+//      height: MediaQuery.of(context).size.height - 80,
+      child: Card(
+          child: GestureDetector(
+              onTap: () {
+                _unavailableProgDialog(context, program["title"]);
+              },
+              child: isLandscape
+                  ? Row(
+                      children: <Widget>[
+                        Expanded(
+                          flex: 2,
+                          child: Column(
+                            children: <Widget>[
+                              title,
+                              Text(
+                                "Программа недоступна ",
+                                style: Style.regularTextStyle,
+                              )
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          flex: 3,
+                          child: _notAvailableProgramStack(thumbnailUrl),
+                        )
+                      ],
+                    )
+                  : Column(
+                      children: <Widget>[
+                        ListTile(
+                          title: title,
+                          subtitle: _notAvailableProgramStack(thumbnailUrl),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 15),
+                        )
+                      ],
+                    ))),
+    );
+  }
+
+  Widget _notAvailableProgramStack(thumbnailUrl) {
+    return ConstrainedBox(
+      constraints: BoxConstraints(minHeight: 100, maxHeight: 300),
+      child: Stack(
+        children: <Widget>[
+          Container(
+              alignment: Alignment.center,
+              child: Image.network("https://evgeshayoga.com" + thumbnailUrl)),
+          Container(
+            alignment: Alignment.center,
+            child: Opacity(
+              opacity: 0.5,
+                child: Icon(
+                  Icons.lock,
+                  color: Style.blueGrey,
+                  size: 150.0,
                 ),
-              ],
             ),
-            onTap: () {
-              _unavailableProgDialog(context, program["title"]);
-            }),
-//        buttonIfPurchasable(purchases, program),
-        Padding(
-          padding: EdgeInsets.only(bottom: 15),
-        )
-      ],
-    ));
+          ),
+        ],
+      ),
+    );
   }
 
   _unavailableProgDialog(BuildContext context, title) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-            title: Text(
-              title,
-              textAlign: TextAlign.center,
-              style: Style.headerTextStyle,
-            ),
-            content: Text(
-              "Программа не доступна",
-              textAlign: TextAlign.center,
-              style: Style.regularTextStyle,
-            ),
-            actions: <Widget>[
-              FlatButton(
-                child: Text('OK'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          ),
-    );
-  }
-
-  Widget buttonIfPurchasable(purchases, program) {
-    if (purchases[program["id"]]["isPurchasable"]) {
-      return MaterialButton(
-        child: Text(
-          "Купить",
+        title: Text(
+          title,
+          textAlign: TextAlign.center,
+          style: Style.headerTextStyle,
+        ),
+        content: Text(
+          "Программа недоступна",
+          textAlign: TextAlign.center,
           style: Style.regularTextStyle,
         ),
-        color: Style.pinkMain,
-        onPressed: () async {
-          var url =
-              'https://evgeshayoga.com/marathons/' + program["id"].toString();
-          if (await canLaunch(url)) {
-            await launch(url);
-          }
-        },
-      );
-    }
-    return Container();
-  }
-
-  Widget _availableProgram(purchases, program) {
-    return Card(
-      child: Column(
-        children: <Widget>[
-          ListTile(
-              onTap: () {
-//                _showProgressIndicator();
-                var router =
-                    new MaterialPageRoute(builder: (BuildContext context) {
-                  return ProgramScreen(program["title"], program["id"]);
-                });
-                Navigator.of(context).push(router);
-              },
-              title: Text(
-                program["title"],
-                textAlign: TextAlign.center,
-                style: Style.headerTextStyle,
-              ),
-              subtitle: Image.network(
-                  "https://evgeshayoga.com" + program["thumbnailUrl"])),
-          Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Text(
-                "Доступен до " +
-                    dateFormatted(purchases[program["id"]]["availableTill"]),
-                style: Style.regularTextStyle,
-              ))
+        actions: <Widget>[
+          FlatButton(
+            child: Text('OK'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
         ],
       ),
     );
   }
+
+//  Widget buttonIfPurchasable(purchases, program) {
+//    if (purchases[program["id"]]["isPurchasable"]) {
+//      return MaterialButton(
+//        child: Text(
+//          "Купить",
+//          style: Style.regularTextStyle,
+//        ),
+//        color: Style.pinkMain,
+//        onPressed: () async {
+//          var url =
+//              'https://evgeshayoga.com/marathons/' + program["id"].toString();
+//          if (await canLaunch(url)) {
+//            await launch(url);
+//          }
+//        },
+//      );
+//    }
+//    return Container();
+//  }
+
+  Widget _availableProgram(date, program, isLandscape) {
+    ConstrainedBox programThumbnail = ConstrainedBox(
+      constraints: BoxConstraints(minHeight: 100, maxHeight: 300),
+      child: Container(
+        alignment: Alignment.center,
+        child: Image.network(
+          "https://evgeshayoga.com" + program["thumbnailUrl"],
+        ),
+      ),
+    );
+
+    Text title = Text(
+      program["title"],
+      textAlign: TextAlign.center,
+      style: Style.headerTextStyle,
+    );
+
+    return Container(
+//      height: MediaQuery.of(context).size.height -80,
+      child: Card(
+        child: GestureDetector(
+          onTap: () {
+            var router = new MaterialPageRoute(builder: (BuildContext context) {
+              return ProgramScreen(program["title"], program["id"]);
+            });
+            Navigator.of(context).push(router);
+          },
+          child: isLandscape
+              ? Row(
+                  children: <Widget>[
+                    Expanded(
+                      flex: 2,
+                      child: Column(
+                        children: <Widget>[
+                          title,
+                          Text(
+                            "Доступен до " + dateFormatted(date),
+                            style: Style.regularTextStyle,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      flex: 3,
+                      child: programThumbnail,
+                    )
+                  ],
+                )
+              : Column(
+                  children: <Widget>[
+                    ListTile(title: title, subtitle: programThumbnail),
+                    Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Text(
+                        "Доступен до " + dateFormatted(date),
+                        style: Style.regularTextStyle,
+                      ),
+                    )
+                  ],
+                ),
+        ),
+      ),
+    );
+  }
+}
+
+Future<Map<String, dynamic>> getUserProgramsStatuses(String uid) async {
+  var response = await http.get(
+    "https://evgeshayoga.com/api/users/" + uid + "/marathons",
+  );
+  Map<String, dynamic> data = json.decode(response.body);
+  String error = data["error"];
+  if (error != null) {
+    throw new Exception(error);
+  }
+  return data;
+}
+
+bool isViewable(Map userProgramsStatuses, int programId) {
+  if (userProgramsStatuses != null || programId != null) {
+    return (userProgramsStatuses[programId.toString()]["isViewable"] &&
+        isAvailable(userProgramsStatuses[programId.toString()]["availableTill"]
+            .toString()));
+  } else
+    return false;
 }

@@ -1,7 +1,7 @@
 import 'package:evgeshayoga/models/program.dart';
 import 'package:evgeshayoga/models/video_model.dart';
-import 'package:evgeshayoga/old_files/video.dart';
-import 'package:evgeshayoga/ui/programs/chewie_player.dart';
+import 'package:evgeshayoga/ui/programs/components/chewie_video.dart';
+import 'package:evgeshayoga/ui/programs/components/video_blocks_column.dart';
 import 'package:evgeshayoga/ui/programs/week_screen.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -59,17 +59,7 @@ class _ProgramBuilderState extends State<ProgramBuilder> {
     }
     List<Widget> programWeeks = [];
     program.getWeeks().forEach((week) {
-      programWeeks.add(Container(
-        margin: EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: <BoxShadow>[
-            BoxShadow(
-              color: Style.blueGrey.withOpacity(0.3),
-              blurRadius: 3,
-            )
-          ],
-        ),
+      programWeeks.add(Card(
         child: ListTile(
           title: Text(
             week.title,
@@ -88,46 +78,6 @@ class _ProgramBuilderState extends State<ProgramBuilder> {
       ));
     });
 
-    List<Widget> videoBlocks = [];
-    videos.forEach((video) {
-      videoBlocks.add(Container(
-        margin: EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: <BoxShadow>[
-            BoxShadow(
-              color: Style.blueGrey.withOpacity(0.3),
-              blurRadius: 3,
-            )
-          ],
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: ListTile(
-            title: Text(
-              video.title + ". " + video.subtitle,
-              style: Style.titleTextStyle,
-            ),
-            subtitle: Column(
-              children: <Widget>[
-                ChewieVideo(video.hls),
-                video.content == null
-                    ? null
-                    : Text(
-                        video.content,
-                        style: Style.regularTextStyle,
-                      ),
-//              Padding(padding: const EdgeInsets.only(bottom: 8.0))
-//              Divider(
-//                color: Style.blueGrey,
-//              )
-              ],
-            ),
-          ),
-        ),
-      ));
-    });
-
     return Column(
       children: <Widget>[
         Column(
@@ -137,14 +87,15 @@ class _ProgramBuilderState extends State<ProgramBuilder> {
                 program.content,
                 webView: true,
               ),
-              style: Theme.of(context).textTheme.body1,
+              style: Style.regularTextStyle,
+              textAlign: TextAlign.justify,
             )
           ],
         ),
         Column(
           children: programWeeks,
         ),
-        Column(children: videoBlocks),
+        VideoBlocks(videos),
       ],
     );
   }

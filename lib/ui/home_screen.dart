@@ -1,12 +1,10 @@
-import 'package:evgeshayoga/ui/programs/components/chewie_player.dart';
-import 'package:evgeshayoga/ui/animation.dart';
-import 'package:evgeshayoga/ui/programs/programs.dart';
-import 'package:evgeshayoga/ui/registration_page.dart';
-import 'package:evgeshayoga/ui/video_test_page.dart';
+import 'package:evgeshayoga/ui/programs/components/chewie_video.dart';
+import 'package:evgeshayoga/utils/animation.dart';
+import 'package:evgeshayoga/ui/programs/programs_screen.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'login.dart';
+import 'login_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:meta/meta.dart';
 
@@ -83,8 +81,8 @@ class Home extends StatelessWidget {
             ),
           ),
           Container(
-            alignment: Alignment.topCenter,
-            margin: EdgeInsets.fromLTRB(0, 70, 0, 0),
+            alignment: isLandscape ? Alignment.topRight : Alignment.topCenter,
+            margin: isLandscape ? EdgeInsets.fromLTRB(0, 70, 70, 0) : EdgeInsets.only(top: 70),
             child: Column(
               children: <Widget>[
                 Text(
@@ -136,25 +134,6 @@ class Home extends StatelessWidget {
               ),
             ),
           ),
-//          Container(
-//            alignment: Alignment.topCenter,
-//            margin: EdgeInsets.fromLTRB(0, 200, 0, 0),
-//            child: new MaterialButton(
-//              minWidth: 120,
-//              onPressed: ()  {
-//                var router =
-//                new MaterialPageRoute(builder: (BuildContext context) {
-//                  return VideoTestPage();
-//                });
-//                Navigator.of(context).push(router);
-//              },
-//              color: Colors.white,
-//              child: new Text(
-//                "Video",
-//                style: Style.regularTextStyle,
-//              ),
-//            ),
-//          ),
         ],
       ),
     ));

@@ -1,23 +1,25 @@
 import 'package:firebase_database/firebase_database.dart';
 
-class Video {
+class VideoModel {
   String content;
-  String videoUrl;
+  String hls;
   String iframe;
   String picture;
   String subtitle;
   String title;
+  String thumbnail;
 
 
-  Video({this.content, this.videoUrl, this.iframe, this.picture, this.subtitle,
-    this.title});
+  VideoModel({this.content, this.hls, this.iframe, this.picture, this.subtitle,
+    this.title, this.thumbnail});
 
-//  Video.fromSnapshot(DataSnapshot snapshot)
-//      :
-//        content = snapshot.value["content"],
-//        videoUrl = snapshot.value["hls"],
-//        iframe = snapshot.value["iframe"],
-//        picture = snapshot.value["picture"],
-//        subtitle = snapshot.value["subtitle"],
-//        title = snapshot.value["title"];
+  VideoModel.fromObject(dynamic value)
+      :
+        content = value["content"],
+        hls = value["hls"],
+        iframe = value["iframe"],
+        picture = value["picture"],
+        subtitle = value["subtitle"],
+        title = value["title"],
+        thumbnail = value["thumbnail"] != null ? value["thumbnail"] : '';
 }

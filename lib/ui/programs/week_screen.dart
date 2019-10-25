@@ -2,9 +2,11 @@ import 'package:evgeshayoga/models/week.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+import 'package:evgeshayoga/ui/programs/components/video_blocks_column.dart';
 
 class WeekScreen extends StatelessWidget {
   Week week;
+
   WeekScreen(this.week);
 
   @override
@@ -20,14 +22,21 @@ class WeekScreen extends StatelessWidget {
         ),
         centerTitle: true,
         backgroundColor: Style.pinkMain,
-        title: Text(week.title, style: Style.titleTextStyle,),
+        title: Text(
+          week.title,
+          style: Style.titleTextStyle,
+        ),
       ),
       body: ListView(
+        padding: EdgeInsets.all(8),
         children: <Widget>[
-          HtmlWidget(week.content)
+          DefaultTextStyle(
+              style: Style.regularTextStyle,
+              textAlign: TextAlign.justify,
+              child: HtmlWidget(week.content)),
+          VideoBlocks(week.getVideos()),
         ],
       ),
     );
   }
-
 }

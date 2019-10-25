@@ -1,6 +1,5 @@
 import 'package:evgeshayoga/models/program.dart';
-import 'package:evgeshayoga/old_files/marathons_data.dart';
-import 'package:evgeshayoga/ui/programs/program_builder.dart';
+import 'package:evgeshayoga/ui/programs/components/program_builder.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
@@ -30,7 +29,7 @@ class ProgramScreen extends StatelessWidget {
         backgroundColor: Style.pinkMain,
       ),
       body: Container(
-        padding: const EdgeInsets.all(25),
+        padding: const EdgeInsets.fromLTRB(8, 25, 8, 25),
         child: ListView(
           children: <Widget>[
             ProgramBuilder(programId),

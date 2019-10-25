@@ -1,5 +1,5 @@
 import 'package:evgeshayoga/models/user.dart';
-import 'package:evgeshayoga/ui/programs/programs.dart';
+import 'package:evgeshayoga/ui/programs/programs_screen.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -48,11 +48,14 @@ class _LoginState extends State<Login> {
       color: Colors.white,
       child: ListView(
         children: <Widget>[
-          Image.asset(
-            'assets/images/evgeshayoga_landscape.jpg',
-            fit: BoxFit.cover,
+          Container(
             height: 240,
-            alignment: FractionalOffset.bottomCenter,
+            child: Image.asset(
+              'assets/images/evgeshayoga_landscape.jpg',
+              fit: BoxFit.cover,
+              height: 240,
+              alignment: FractionalOffset.bottomCenter,
+            ),
           ),
           Padding(
             padding: const EdgeInsets.only(top: 20.0),
@@ -162,8 +165,11 @@ class _LoginState extends State<Login> {
       color: Colors.white,
       child: ListView(
         children: <Widget>[
-          Image.asset(
-            'assets/images/evgeshayoga_landscape.jpg',
+          Container(
+            height: 240,
+            child: Image.asset(
+              'assets/images/evgeshayoga_landscape.jpg',
+            ),
           ),
           Padding(
             padding: const EdgeInsets.only(top: 20.0),
@@ -255,9 +261,12 @@ class _LoginState extends State<Login> {
 //                    ))),
           Padding(padding: new EdgeInsets.all(10.5)),
           Center(
-            child: Text(
-              _loginAlert,
-              style: TextStyle(color: Colors.red),
+            child: Padding(
+              padding: const EdgeInsets.all(18.0),
+              child: Text(
+                _loginAlert,
+                style: TextStyle(color: Colors.red),
+              ),
             ),
           )
         ],
@@ -336,7 +345,7 @@ class _LoginState extends State<Login> {
           email: user.userEmail,
           password: user.password,
         )).user;
-
+//        debugPrint(newUser.uid);
         var router = new MaterialPageRoute(builder: (BuildContext context) {
           return Programs(userUid: newUser.uid);
         });

@@ -1,50 +1,45 @@
-import 'dart:convert';
-
-import 'package:evgeshayoga/models/user.dart';
 import 'package:evgeshayoga/ui/programs/program_screen.dart';
+import 'package:evgeshayoga/ui/programs/programs_screen.dart';
 import 'package:evgeshayoga/utils/check_is_available.dart';
 import 'package:evgeshayoga/utils/date_formatter.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:http/http.dart' as http;
+import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 class PurchasesScreen extends StatefulWidget {
-  User user;
   final String userUid;
 
-  PurchasesScreen(this.user, this.userUid, {Key key}) : super(key: key);
+  PurchasesScreen(this.userUid, {Key key}) : super(key: key);
 
   @override
   _PurchasesScreenState createState() => _PurchasesScreenState();
 }
 
 class _PurchasesScreenState extends State<PurchasesScreen> {
-  final FirebaseDatabase database = FirebaseDatabase.instance;
-  DatabaseReference dbUserPurchasesReference;
-  List<Widget> purchases = [];
+  Map<String, dynamic> userProgramsStatuses = {};
 
   @override
   void initState() {
     super.initState();
 //    purchases = buildPurchases(widget.user.getPurchases().programs);
 
-    dbUserPurchasesReference = database
-        .reference()
-        .child("users")
-        .child(widget.userUid)
-        .child("purchases");
-    dbUserPurchasesReference.onValue.listen(_onPurchasesUpdated);
+    getUserProgramsStatuses(widget.userUid).then((statuses) {
+      setState(() {
+        userProgramsStatuses = statuses;
+      });
+    });
   }
 
-  List<Widget> buildPurchases(Map<int, dynamic> programs) {
+  List<Widget> buildPurchases(programs) {
     List<Widget> purchases = [];
-    programs.forEach((idx, item) {
+    final purchasedPrograms = Map.from(programs)..removeWhere((k, v) => v["isPurchased"] == false);
+
+    purchasedPrograms.forEach((k, v) {
       purchases.add(Padding(
         padding: EdgeInsets.all(8),
       ));
       purchases.add(
-          purchasesListItem(item["title"], item["id"], item["availableTill"]));
+          purchasesListItem(v));
       purchases.add(
         Divider(
           height: 7,
@@ -77,17 +72,29 @@ class _PurchasesScreenState extends State<PurchasesScreen> {
           IconButton(
             icon: Icon(Icons.update),
             onPressed:(){
-              http.post(
-                "https://evgeshayoga.com/api/sync",
-                body: json.encode({"id": widget.user.userId}),
-                headers: {'Content-Type': 'application/json'},
-              );
+              getUserProgramsStatuses(widget.userUid).then((statuses) {
+                setState(() {
+                  userProgramsStatuses = statuses;
+                });
+              });
             } ,
           )
         ],
       ),
       body: Center(
-        child: ListView(
+        child: userProgramsStatuses == null ?
+        ModalProgressHUD(
+          color: Colors.transparent,
+          progressIndicator: CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(Style.pinkMain),
+          ),
+          inAsyncCall: true,
+          child: Text(
+            "Загружается...",
+            textAlign: TextAlign.center,
+          ),
+        )
+        : ListView(
           children: <Widget>[
             Padding(
               padding: EdgeInsets.only(top: 20.0),
@@ -96,7 +103,6 @@ class _PurchasesScreenState extends State<PurchasesScreen> {
               child: Column(
                 children: <Widget>[
                   Row(
-//                    mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Expanded(
                           flex: 2,
@@ -115,7 +121,7 @@ class _PurchasesScreenState extends State<PurchasesScreen> {
                     ],
                   ),
                   Column(
-                    children: purchases,
+                    children: buildPurchases(userProgramsStatuses),
                   ),
                 ],
               ),
@@ -126,7 +132,7 @@ class _PurchasesScreenState extends State<PurchasesScreen> {
     );
   }
 
-  Widget purchasesListItem(purchaseTitle, purchaseId, availableTill) {
+  Widget purchasesListItem(purchase) {
     return Row(
       children: <Widget>[
         Expanded(
@@ -134,14 +140,14 @@ class _PurchasesScreenState extends State<PurchasesScreen> {
           child: FlatButton(
             splashColor: Style.pinkLight,
             child: Text(
-              purchaseTitle,
+              purchase["title"],
               textAlign: TextAlign.center,
               style: Style.regularTextStyle,
             ),
             onPressed: () {
-              if (isAvailable(availableTill)) {
+              if (isAvailable(purchase["availableTill"])) {
                 var router = MaterialPageRoute(builder: (BuildContext context) {
-                  return ProgramScreen(purchaseTitle, purchaseId);
+                  return ProgramScreen(purchase["title"], purchase["id"]);
                 });
                 Navigator.of(context).push(router);
               } else {
@@ -149,7 +155,7 @@ class _PurchasesScreenState extends State<PurchasesScreen> {
                   context: context,
                   builder: (context) => AlertDialog(
                     title: Text(
-                      purchaseTitle,
+                      purchase["title"],
                       textAlign: TextAlign.center,
                       style: Style.headerTextStyle,
                     ),
@@ -175,18 +181,18 @@ class _PurchasesScreenState extends State<PurchasesScreen> {
         Expanded(
             flex: 1,
             child: Text(
-              dateFormatted(availableTill),
+              dateFormatted(purchase["availableTill"]),
               textAlign: TextAlign.center,
               style: Style.regularTextStyle,
             )),
       ],
     );
   }
-
-  void _onPurchasesUpdated(Event event) {
-    var up = UserPurchases(event.snapshot.value);
-    setState(() {
-      purchases = buildPurchases(up.programs);
-    });
-  }
+//
+//  void _onPurchasesUpdated(Event event) {
+//    var up = UserPurchases(event.snapshot.value);
+//    setState(() {
+//      purchases = buildPurchases(up.programs);
+//    });
+//  }
 }
