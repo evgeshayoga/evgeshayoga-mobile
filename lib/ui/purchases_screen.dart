@@ -32,14 +32,14 @@ class _PurchasesScreenState extends State<PurchasesScreen> {
 
   List<Widget> buildPurchases(programs) {
     List<Widget> purchases = [];
-    final purchasedPrograms = Map.from(programs)..removeWhere((k, v) => v["isPurchased"] == false);
+    final purchasedPrograms = Map.from(programs)
+      ..removeWhere((k, v) => v["isPurchased"] == false);
 
     purchasedPrograms.forEach((k, v) {
       purchases.add(Padding(
         padding: EdgeInsets.all(8),
       ));
-      purchases.add(
-          purchasesListItem(v));
+      purchases.add(purchasesListItem(v));
       purchases.add(
         Divider(
           height: 7,
@@ -71,63 +71,63 @@ class _PurchasesScreenState extends State<PurchasesScreen> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.update),
-            onPressed:(){
+            onPressed: () {
               getUserProgramsStatuses(widget.userUid).then((statuses) {
                 setState(() {
                   userProgramsStatuses = statuses;
                 });
               });
-            } ,
+            },
           )
         ],
       ),
       body: Center(
-        child: userProgramsStatuses == null ?
-        ModalProgressHUD(
-          color: Colors.transparent,
-          progressIndicator: CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation<Color>(Style.pinkMain),
-          ),
-          inAsyncCall: true,
-          child: Text(
-            "Загружается...",
-            textAlign: TextAlign.center,
-          ),
-        )
-        : ListView(
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(top: 20.0),
-            ),
-            Center(
-              child: Column(
+        child: userProgramsStatuses == null
+            ? ModalProgressHUD(
+                color: Colors.transparent,
+                progressIndicator: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Style.pinkMain),
+                ),
+                inAsyncCall: true,
+                child: Text(
+                  "Загружается...",
+                  textAlign: TextAlign.center,
+                ),
+              )
+            : ListView(
                 children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                          flex: 2,
-                          child: Text(
-                            "Программа",
-                            textAlign: TextAlign.center,
-                            style: Style.headerTextStyle,
-                          )),
-                      Expanded(
-                          flex: 1,
-                          child: Text(
-                            "Доступ до",
-                            textAlign: TextAlign.center,
-                            style: Style.headerTextStyle,
-                          ))
-                    ],
+                  Padding(
+                    padding: EdgeInsets.only(top: 20.0),
                   ),
-                  Column(
-                    children: buildPurchases(userProgramsStatuses),
-                  ),
+                  Center(
+                    child: Column(
+                      children: <Widget>[
+                        Row(
+                          children: <Widget>[
+                            Expanded(
+                                flex: 2,
+                                child: Text(
+                                  "Программа",
+                                  textAlign: TextAlign.center,
+                                  style: Style.headerTextStyle,
+                                )),
+                            Expanded(
+                                flex: 1,
+                                child: Text(
+                                  "Доступ до",
+                                  textAlign: TextAlign.center,
+                                  style: Style.headerTextStyle,
+                                ))
+                          ],
+                        ),
+                        Column(
+                          children: buildPurchases(userProgramsStatuses),
+                        ),
+                      ],
+                    ),
+                  )
                 ],
               ),
-            )
-          ],
-        ),
       ),
     );
   }
@@ -179,20 +179,14 @@ class _PurchasesScreenState extends State<PurchasesScreen> {
           ),
         ),
         Expanded(
-            flex: 1,
-            child: Text(
-              dateFormatted(purchase["availableTill"]),
-              textAlign: TextAlign.center,
-              style: Style.regularTextStyle,
-            )),
+          flex: 1,
+          child: Text(
+            dateFormatted(purchase["availableTill"]),
+            textAlign: TextAlign.center,
+            style: Style.regularTextStyle,
+          ),
+        ),
       ],
     );
   }
-//
-//  void _onPurchasesUpdated(Event event) {
-//    var up = UserPurchases(event.snapshot.value);
-//    setState(() {
-//      purchases = buildPurchases(up.programs);
-//    });
-//  }
 }

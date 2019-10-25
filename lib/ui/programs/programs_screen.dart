@@ -85,7 +85,7 @@ class _ProgramsState extends State<Programs> {
       ),
       body: WillPopScope(
         onWillPop: () async {
-          Future.value(false);
+          return Future.value(false);
         },
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
@@ -98,7 +98,6 @@ class _ProgramsState extends State<Programs> {
                 },
                 itemBuilder: (_, DataSnapshot snapshot,
                     Animation<double> animation, int index) {
-
                   if (snapshot == null || userProgramsStatuses == null) {
                     return Container(
                       height: 300,
@@ -179,42 +178,44 @@ class _ProgramsState extends State<Programs> {
     return Container(
 //      height: MediaQuery.of(context).size.height - 80,
       child: Card(
-          child: GestureDetector(
-              onTap: () {
-                _unavailableProgDialog(context, program["title"]);
-              },
-              child: isLandscape
-                  ? Row(
-                      children: <Widget>[
-                        Expanded(
-                          flex: 2,
-                          child: Column(
-                            children: <Widget>[
-                              title,
-                              Text(
-                                "Программа недоступна ",
-                                style: Style.regularTextStyle,
-                              )
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          flex: 3,
-                          child: _notAvailableProgramStack(thumbnailUrl),
-                        )
-                      ],
+        child: GestureDetector(
+          onTap: () {
+            _unavailableProgDialog(context, program["title"]);
+          },
+          child: isLandscape
+              ? Row(
+                  children: <Widget>[
+                    Expanded(
+                      flex: 2,
+                      child: Column(
+                        children: <Widget>[
+                          title,
+                          Text(
+                            "Программа недоступна ",
+                            style: Style.regularTextStyle,
+                          )
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      flex: 3,
+                      child: _notAvailableProgramStack(thumbnailUrl),
                     )
-                  : Column(
-                      children: <Widget>[
-                        ListTile(
-                          title: title,
-                          subtitle: _notAvailableProgramStack(thumbnailUrl),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(bottom: 15),
-                        )
-                      ],
-                    ))),
+                  ],
+                )
+              : Column(
+                  children: <Widget>[
+                    ListTile(
+                      title: title,
+                      subtitle: _notAvailableProgramStack(thumbnailUrl),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 15),
+                    )
+                  ],
+                ),
+        ),
+      ),
     );
   }
 
@@ -230,11 +231,11 @@ class _ProgramsState extends State<Programs> {
             alignment: Alignment.center,
             child: Opacity(
               opacity: 0.5,
-                child: Icon(
-                  Icons.lock,
-                  color: Style.blueGrey,
-                  size: 150.0,
-                ),
+              child: Icon(
+                Icons.lock,
+                color: Style.blueGrey,
+                size: 150.0,
+              ),
             ),
           ),
         ],

@@ -6,7 +6,8 @@ import 'package:evgeshayoga/utils/style.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MaterialApp(
+  runApp(
+    MaterialApp(
       theme: ThemeData(
           primaryColor: Style.pinkMain,
           textTheme: TextTheme(
@@ -22,5 +23,7 @@ void main() {
         '/home': (BuildContext context) => HomeAnimator(),
         '/login': (BuildContext context) => Login(),
         '/programs': (BuildContext context) => Programs(),
-      }));
+      },
+    ),
+  );
 }

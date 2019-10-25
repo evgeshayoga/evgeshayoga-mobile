@@ -76,9 +76,7 @@ class _ChewieVideoState extends State<ChewieVideo> {
         height: 230,
         child: Stack(
           children: <Widget>[
-            Container(
-                alignment: Alignment.center,
-                child: chewie),
+            Container(alignment: Alignment.center, child: chewie),
             Container(
               color: Colors.white,
             ),
@@ -90,13 +88,13 @@ class _ChewieVideoState extends State<ChewieVideo> {
               child: Stack(
                 children: <Widget>[
                   Container(
-                    alignment: Alignment.center,
-                    height: 56,
-                    width: 56,
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.9),
-                    shape: BoxShape.circle,
-                  ),
+                      alignment: Alignment.center,
+                      height: 56,
+                      width: 56,
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.9),
+                        shape: BoxShape.circle,
+                      ),
                   ),
                   Icon(
                     Icons.play_circle_filled,

@@ -27,30 +27,29 @@ class ProfileScreen extends StatelessWidget {
       ),
       backgroundColor: Style.pinkLight,
       body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                user.userName,
-                style: Style.headerTextStyle,
-              ),
-              Padding(
-                padding: EdgeInsets.all(8),
-              ),
-              Text(
-                user.userEmail,
-                style: Style.regularTextStyle,
-              ),
-              Padding(
-                padding: EdgeInsets.all(8),
-              ),
-              Text(
-                user.phoneNumber,
-                style: Style.regularTextStyle,
-              )
-            ],
-          )
-
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              user.userName,
+              style: Style.headerTextStyle,
+            ),
+            Padding(
+              padding: EdgeInsets.all(8),
+            ),
+            Text(
+              user.userEmail,
+              style: Style.regularTextStyle,
+            ),
+            Padding(
+              padding: EdgeInsets.all(8),
+            ),
+            Text(
+              user.phoneNumber,
+              style: Style.regularTextStyle,
+            )
+          ],
+        ),
       ),
     );
   }
