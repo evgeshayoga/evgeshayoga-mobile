@@ -1,8 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:evgeshayoga/ui/programs/programs_screen.dart';
-import 'package:evgeshayoga/utils/animator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 
 class StartScreen extends StatefulWidget {
   StartScreen({Key key}) : super(key: key);

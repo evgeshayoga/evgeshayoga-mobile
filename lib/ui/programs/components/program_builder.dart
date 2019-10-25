@@ -1,6 +1,5 @@
 import 'package:evgeshayoga/models/program.dart';
 import 'package:evgeshayoga/models/video_model.dart';
-import 'package:evgeshayoga/ui/programs/components/chewie_video.dart';
 import 'package:evgeshayoga/ui/programs/components/video_blocks_column.dart';
 import 'package:evgeshayoga/ui/programs/week_screen.dart';
 import 'package:evgeshayoga/utils/style.dart';

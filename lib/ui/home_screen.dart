@@ -1,19 +1,16 @@
-import 'package:evgeshayoga/ui/programs/components/chewie_video.dart';
 import 'package:evgeshayoga/utils/animation.dart';
-import 'package:evgeshayoga/ui/programs/programs_screen.dart';
 import 'package:evgeshayoga/utils/style.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'login_screen.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:meta/meta.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+import 'login_screen.dart';
 
 class Home extends StatelessWidget {
   Home({@required AnimationController controller})
       : animation = HomeAnimation(controller);
 
   final HomeAnimation animation;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
   static const int tabletBreakpoint = 600;
 
   Widget _buildHomeLayout(BuildContext context, bool isLandscape) {
@@ -110,28 +107,6 @@ class Home extends StatelessWidget {
                   ),
                 ),
               ],
-            ),
-          ),
-          Container(
-            alignment: Alignment.topCenter,
-            margin: EdgeInsets.fromLTRB(0, 150, 0, 0),
-            child: new MaterialButton(
-              minWidth: 120,
-              onPressed: () async {
-                FirebaseUser user = (await _auth.signInWithEmailAndPassword(
-                        email: "***REMOVED***", password: "***REMOVED***"))
-                    .user;
-                var router =
-                    new MaterialPageRoute(builder: (BuildContext context) {
-                  return Programs(userUid: user.uid);
-                });
-                Navigator.of(context).push(router);
-              },
-              color: Colors.white,
-              child: new Text(
-                "Перейти к программам",
-                style: Style.regularTextStyle,
-              ),
             ),
           ),
         ],

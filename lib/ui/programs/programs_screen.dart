@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:evgeshayoga/models/program.dart';
 import 'package:evgeshayoga/models/user.dart';
 import 'package:evgeshayoga/ui/programs/components/drawer_programs_screen.dart';
@@ -6,12 +7,11 @@ import 'package:evgeshayoga/ui/programs/program_screen.dart';
 import 'package:evgeshayoga/utils/check_is_available.dart';
 import 'package:evgeshayoga/utils/date_formatter.dart';
 import 'package:evgeshayoga/utils/style.dart';
-import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
-import 'package:modal_progress_hud/modal_progress_hud.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 class Programs extends StatefulWidget {
   final String userUid;
@@ -44,8 +44,6 @@ class _ProgramsState extends State<Programs> {
           user = User.fromSnapshot(snapshot);
           userProgramsStatuses = statuses;
         });
-        debugPrint("Status is " + userProgramsStatuses.toString());
-        debugPrint("User id is " + widget.userUid);
       });
     });
   }
@@ -100,11 +98,6 @@ class _ProgramsState extends State<Programs> {
                 },
                 itemBuilder: (_, DataSnapshot snapshot,
                     Animation<double> animation, int index) {
-                  if (snapshot == null) {
-                    debugPrint("Snapshot is null");
-                  } else if (userProgramsStatuses == null) {
-                    debugPrint("Status is null");
-                  }
 
                   if (snapshot == null || userProgramsStatuses == null) {
                     return Container(
@@ -134,18 +127,8 @@ class _ProgramsState extends State<Programs> {
                     String date = userProgramsStatuses[program.id.toString()]
                             ["availableTill"]
                         .toString();
-
-//                    debugPrint("Viewable? " + userProgramsStatus[program.id.toString()]["isViewable"].toString());
-//                    debugPrint("Available? " + (isAvailable(userProgramsStatus[program.id.toString()]
-//                    ["availableTill"].toString())).toString());
                     return _availableProgram(date, snapshot.value, isLandscape);
                   }
-
-//                  if (programs.containsKey(program.id) &&
-//                      isAvailable(programs[program.id]["availableTill"])) {
-////                    debugPrint(program.id.toString()+userProgramsStatus[program.id.toString()]["isViewable"].toString());
-//                    return _availableProgram(programs, snapshot.value);
-//                  }
                   return _notAvailableProgram(
                       programs, snapshot.value, context, isLandscape);
                 },

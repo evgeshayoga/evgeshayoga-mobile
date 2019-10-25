@@ -2,8 +2,8 @@ import 'package:evgeshayoga/models/user.dart';
 import 'package:evgeshayoga/ui/profile_screen.dart';
 import 'package:evgeshayoga/ui/purchases_screen.dart';
 import 'package:evgeshayoga/utils/style.dart';
-import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 
 
 Widget drawerProgramScreen(User user, context, userUid, isLandscape){
@@ -21,7 +21,7 @@ Widget drawerProgramScreen(User user, context, userUid, isLandscape){
                 child: Column(
                   children: <Widget>[
                     ListTile(
-                      contentPadding: EdgeInsets.only(top: 25),
+                      contentPadding: isLandscape ? EdgeInsets.only(top: 10) : EdgeInsets.only(top: 40),
                       title: isLandscape
                           ? Text("")
                           : CircleAvatar(
@@ -41,7 +41,7 @@ Widget drawerProgramScreen(User user, context, userUid, isLandscape){
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(top: 20),
+            padding: EdgeInsets.only(top: 0),
           ),
           Expanded(
             flex: 3,

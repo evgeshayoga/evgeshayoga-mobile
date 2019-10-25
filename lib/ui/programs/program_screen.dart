@@ -1,8 +1,6 @@
-import 'package:evgeshayoga/models/program.dart';
 import 'package:evgeshayoga/ui/programs/components/program_builder.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:flutter/material.dart';
-import 'package:video_player/video_player.dart';
 
 class ProgramScreen extends StatelessWidget {
   final String programTitle;

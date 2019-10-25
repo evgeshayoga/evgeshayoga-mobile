@@ -1,8 +1,8 @@
 import 'package:evgeshayoga/models/week.dart';
+import 'package:evgeshayoga/ui/programs/components/video_blocks_column.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
-import 'package:evgeshayoga/ui/programs/components/video_blocks_column.dart';
 
 class WeekScreen extends StatelessWidget {
   Week week;
@@ -31,9 +31,13 @@ class WeekScreen extends StatelessWidget {
         padding: EdgeInsets.all(8),
         children: <Widget>[
           DefaultTextStyle(
-              style: Style.regularTextStyle,
-              textAlign: TextAlign.justify,
-              child: HtmlWidget(week.content)),
+            child: HtmlWidget(
+              week.content,
+              webView: true,
+            ),
+            style: Style.regularTextStyle,
+            textAlign: TextAlign.justify,
+          ),
           VideoBlocks(week.getVideos()),
         ],
       ),

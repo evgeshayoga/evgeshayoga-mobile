@@ -1,14 +1,15 @@
+import 'dart:convert';
+
 import 'package:evgeshayoga/models/user.dart';
 import 'package:evgeshayoga/ui/programs/programs_screen.dart';
 import 'package:evgeshayoga/utils/style.dart';
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'package:flutter/services.dart' show PlatformException;
-import 'package:url_launcher/url_launcher.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show PlatformException;
+import 'package:http/http.dart' as http;
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -32,7 +33,6 @@ class _LoginState extends State<Login> {
     });
 
     //Simulate a service call
-//    print('submitting to backend...');
 //    new Future.delayed(
 //        new Duration(seconds: 4),() {
 //      setState(() {
@@ -345,7 +345,6 @@ class _LoginState extends State<Login> {
           email: user.userEmail,
           password: user.password,
         )).user;
-//        debugPrint(newUser.uid);
         var router = new MaterialPageRoute(builder: (BuildContext context) {
           return Programs(userUid: newUser.uid);
         });

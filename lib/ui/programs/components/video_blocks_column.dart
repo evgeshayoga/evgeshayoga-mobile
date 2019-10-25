@@ -1,6 +1,7 @@
+import 'package:evgeshayoga/models/video_model.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:flutter/material.dart';
-import 'package:evgeshayoga/models/video_model.dart';
+
 import 'chewie_video.dart';
 
 class VideoBlocks extends StatelessWidget {

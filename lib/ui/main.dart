@@ -1,12 +1,9 @@
+import 'package:evgeshayoga/ui/login_screen.dart';
 import 'package:evgeshayoga/ui/programs/programs_screen.dart';
 import 'package:evgeshayoga/utils/animator.dart';
 import 'package:evgeshayoga/utils/getStartScreen.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:flutter/material.dart';
-import 'package:evgeshayoga/ui/login_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-
-import 'home_screen.dart';
 
 void main() {
   runApp(MaterialApp(

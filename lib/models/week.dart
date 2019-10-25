@@ -1,5 +1,4 @@
 import 'package:evgeshayoga/models/video_model.dart';
-import 'package:firebase_database/firebase_database.dart';
 
 class Week {
   String content;

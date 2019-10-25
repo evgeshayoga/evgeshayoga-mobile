@@ -50,13 +50,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.9.8+1"
-  cloud_firestore:
-    dependency: "direct main"
-    description:
-      name: cloud_firestore
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.12.9+5"
   collection:
     dependency: transitive
     description:
@@ -99,13 +92,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.2"
-  device_info:
-    dependency: "direct main"
-    description:
-      name: device_info
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.4.1"
   firebase_auth:
     dependency: "direct main"
     description:
@@ -114,7 +100,7 @@ packages:
     source: hosted
     version: "0.14.0+5"
   firebase_core:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: firebase_core
       url: "https://pub.dartlang.org"
@@ -165,13 +151,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.3+4"
-  google_sign_in:
-    dependency: "direct main"
-    description:
-      name: google_sign_in
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "4.0.7"
   html:
     dependency: transitive
     description:
@@ -284,13 +263,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.0.5"
-  shared_preferences:
-    dependency: "direct main"
-    description:
-      name: shared_preferences
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.5.4"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -304,7 +276,7 @@ packages:
     source: hosted
     version: "1.5.5"
   sqflite:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: sqflite
       url: "https://pub.dartlang.org"
