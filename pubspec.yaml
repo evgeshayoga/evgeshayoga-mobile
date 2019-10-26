@@ -63,18 +63,10 @@ flutter:
   #  - images/a_dot_burr.jpeg
   #  - images/a_dot_ham.jpeg
   assets:
-    - assets/images/marathon_beginners_cover.png
-    - assets/images/marathon_poweryoga_cover.jpg
-    - assets/images/yoga_logo.png
-    - assets/images/planet.png
-    - assets/videos/butterfly.mp4
     - assets/images/logo.png
     - assets/images/evgeshayoga_landscape.jpg
-    - assets/images/evgeshayoga_portrait.jpg
     - assets/images/photo_3_portrait.jpg
     - assets/images/avatar.png
-    - assets/images/lock.png
-
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
