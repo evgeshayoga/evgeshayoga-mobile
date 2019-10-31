@@ -246,7 +246,7 @@ class _LoginState extends State<Login> {
               },
               color: Style.pinkMain,
               child: Text(
-                "Зарегестрироваться",
+                "Зарегистрироваться",
                 style: Style.regularTextStyle,
               ),
             ),
