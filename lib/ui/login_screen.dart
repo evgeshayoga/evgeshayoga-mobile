@@ -314,7 +314,7 @@ class _LoginState extends State<Login> {
       ),
       body: ModalProgressHUD(
         color: Colors.white,
-        child: loginPageContent,
+        child: SafeArea(child: loginPageContent),
         inAsyncCall: _isInAsyncCall,
         opacity: 0.5,
         progressIndicator: CircularProgressIndicator(
@@ -344,7 +344,8 @@ class _LoginState extends State<Login> {
         FirebaseUser newUser = (await _auth.signInWithEmailAndPassword(
           email: user.userEmail,
           password: user.password,
-        )).user;
+        ))
+            .user;
         var router = new MaterialPageRoute(builder: (BuildContext context) {
           return Programs(userUid: newUser.uid);
         });

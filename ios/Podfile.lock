@@ -157,9 +157,9 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   connectivity: 6e94255659cc86dcbef1d452ad3e0491bb1b3e75
   Firebase: 8432d732974498afd5987e9001a05f90f1a3d625
-  firebase_auth: 1e3b7bdd37b9fbd4ef75ba1d985b00be09e02d3d
-  firebase_core: ae55ea92448ec8675d325da4db22cf3b4d58a54d
-  firebase_database: d4f066a1b01f309676d0d2678ec600d6af18ad97
+  firebase_auth: d99b993c1405096e66c58211b1cd956c23eed1c5
+  firebase_core: 971ffa0fb29e49b80a2ad295eb1ad1cdbd680ec4
+  firebase_database: 9fb71952703b719484bc1de5347522a11b6ccc38
   FirebaseAnalytics: 470ddab7253b21ad5a40bebd4a9903d7ae19386a
   FirebaseAuth: 7fa2cc010b93770831a4e7a60651b52c3b8d111a
   FirebaseAuthInterop: 0ffa57668be100582bb7643d4fcb7615496c41fc
