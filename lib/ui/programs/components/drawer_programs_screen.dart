@@ -13,33 +13,37 @@ Widget drawerProgramScreen(User user, context, userUid, isLandscape) {
       child: Column(
         children: <Widget>[
           Expanded(
-            flex: 2,
+            flex: 3,
             child: Container(
               color: Style.pinkMain,
-              alignment: Alignment.center,
               child: Center(
-                child: Column(
-                  children: <Widget>[
-                    ListTile(
-                      contentPadding: isLandscape
-                          ? EdgeInsets.only(top: 10)
-                          : EdgeInsets.only(top: 40),
-                      title: isLandscape
-                          ? Text("")
-                          : CircleAvatar(
-                              backgroundColor: Colors.white,
-                              child: Image.asset(
-                                'assets/images/avatar.png',
-                                height: 75,
-                              ),
-                              minRadius: 60,
+                child: Container(
+                  child: ListTile(
+//                  contentPadding: isLandscape
+//                      ? EdgeInsets.only(top: 10)
+//                      : EdgeInsets.only(top: 10),
+                    title: isLandscape
+                        ? Text("")
+                        : CircleAvatar(
+                            backgroundColor: Colors.white,
+                            child: Image.asset(
+                              'assets/images/avatar.png',
+                              height: 75,
                             ),
+                            minRadius: 40,
+                            maxRadius: 75,
+                          ),
+                    subtitle: Padding(
+                      padding: isLandscape
+                          ? const EdgeInsets.only(top: 0.0)
+                          : const EdgeInsets.only(top: 10.0),
+                      child: Text(
+                        user.userName,
+                        style: Style.headerTextStyle,
+                        textAlign: TextAlign.center,
+                      ),
                     ),
-                    Text(
-                      user.userName,
-                      style: Style.headerTextStyle,
-                    ),
-                  ],
+                  ),
                 ),
               ),
             ),
