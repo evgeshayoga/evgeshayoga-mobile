@@ -5,6 +5,8 @@ class Style {
   static final pinkDark = const Color.fromRGBO(175, 111, 120, 1);
   static final pinkLight = const Color.fromRGBO(249, 231, 231, 1);
   static final blueGrey = const Color.fromRGBO(94, 101, 111, 1);
+  static final lightBlue = const Color.fromRGBO(175, 184, 196, 1);
+
 
   static final regularTextStyle = TextStyle(
     fontFamily: "Nunito",

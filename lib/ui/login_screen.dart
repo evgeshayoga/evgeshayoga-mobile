@@ -1,7 +1,8 @@
 import 'dart:convert';
 
 import 'package:evgeshayoga/models/user.dart';
-import 'package:evgeshayoga/ui/programs/programs_screen.dart';
+import 'package:evgeshayoga/ui/programs/content_screen.dart';
+//import 'package:evgeshayoga/ui/programs/programs_screen.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -48,95 +49,104 @@ class _LoginState extends State<Login> {
       color: Colors.white,
       child: ListView(
         children: <Widget>[
-          Container(
-            height: 240,
-            child: Image.asset(
-              'assets/images/evgeshayoga_landscape.jpg',
-              fit: BoxFit.cover,
-              height: 240,
-              alignment: FractionalOffset.bottomCenter,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 20.0),
-          ),
-          Container(
-            height: 170,
-            alignment: Alignment(0.0, 0.0),
-            color: Colors.white,
-            child: Container(
-              width: 500,
-              child: Form(
-                key: _loginFormKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    TextFormField(
-//                          controller: _emailController,
-                      decoration: const InputDecoration(
-                        icon: Icon(Icons.email),
-                        hintText: 'Введите свой email',
-                        labelText: 'Email',
-                      ),
-                      onSaved: (value) => user.userEmail = value.trim(),
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return 'Введите email';
-                        }
-                      },
-                    ),
-                    TextFormField(
-//                          controller: _passwordController,
-                      obscureText: true,
-                      decoration: const InputDecoration(
-                        icon: Icon(Icons.lock),
-                        hintText: 'Введите свой пароль',
-                        labelText: 'Пароль',
-                      ),
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return 'Введите пароль';
-                        }
-                      },
-                      onSaved: (value) => user.password = value.trim(),
-                    ),
-                  ],
+          Row(
+            children: <Widget>[
+              Expanded(
+                flex: 4,
+                child: Container(
+                  height: MediaQuery.of(context).size.shortestSide - 120,
+                  child: Image.asset(
+                    'assets/images/evgeshayoga_landscape.jpg',
+                    fit: BoxFit.cover,
+//                    height: MediaQuery.of(context).size.shortestSide,
+                    alignment: FractionalOffset.bottomRight,
+                  ),
                 ),
               ),
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.only(left: 150, right: 150),
-            child: RaisedButton(
-              onPressed: userLogIn,
-              color: Color.fromRGBO(242, 206, 210, .75),
-              child: Text(
-                "Войти",
-                style: Style.regularTextStyle,
-              ),
-            ),
-          ),
-          Text(
-            "или",
-            textAlign: TextAlign.center,
-            style: Style.regularTextStyle,
-          ),
-          Container(
-            margin: const EdgeInsets.only(left: 150, right: 150),
-            child: RaisedButton(
-              onPressed: () async {
-                var url = 'https://evgeshayoga.com/register';
-                if (await canLaunch(url)) {
-                  await launch(url);
-                }
-              },
-              color: Color.fromRGBO(242, 206, 210, .75),
-              child: Text(
-                "Зарегестрироваться",
-                style: Style.regularTextStyle,
-              ),
-            ),
-          ),
+              Expanded(
+                flex: 5,
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      padding: const EdgeInsets.only(top: 20, right: 20, left: 20),
+                      height: 170,
+                      alignment: Alignment(0.0, 0.0),
+                      color: Colors.white,
+                      child: Container(
+                        width: 500,
+                        child: Form(
+                          key: _loginFormKey,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              TextFormField(
+//                          controller: _emailController,
+                                decoration: const InputDecoration(
+                                  icon: Icon(Icons.email),
+                                  hintText: 'Введите свой email',
+                                  labelText: 'Email',
+                                ),
+                                onSaved: (value) => user.userEmail = value.trim(),
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return 'Введите email';
+                                  }
+                                },
+                              ),
+                              TextFormField(
+//                          controller: _passwordController,
+                                obscureText: true,
+                                decoration: const InputDecoration(
+                                  icon: Icon(Icons.lock),
+                                  hintText: 'Введите свой пароль',
+                                  labelText: 'Пароль',
+                                ),
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return 'Введите пароль';
+                                  }
+                                },
+                                onSaved: (value) => user.password = value.trim(),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: 200,
+//                      margin: const EdgeInsets.only(left: 150, right: 150),
+                      child: RaisedButton(
+                        onPressed: userLogIn,
+                        color: Color.fromRGBO(242, 206, 210, .75),
+                        child: Text(
+                          "Войти",
+                          style: Style.regularTextStyle,
+                        ),
+                      ),
+                    ),
+                    Text(
+                      "или",
+                      textAlign: TextAlign.center,
+                      style: Style.regularTextStyle,
+                    ),
+                    Container(
+//                      margin: const EdgeInsets.only(left: 150, right: 150),
+                      width: 200,
+                      child: RaisedButton(
+                        onPressed: () async {
+                          var url = 'https://evgeshayoga.com/register';
+                          if (await canLaunch(url)) {
+                            await launch(url);
+                          }
+                        },
+                        color: Color.fromRGBO(242, 206, 210, .75),
+                        child: Text(
+                          "Зарегестрироваться",
+                          style: Style.regularTextStyle,
+                        ),
+                      ),
+                    ),
 //            Center(
 //                child: RaisedButton(
 //                    onPressed: googleSignIn,
@@ -145,16 +155,26 @@ class _LoginState extends State<Login> {
 //                      "Sign-in with Google",
 //                      style: TextStyle(color: Colors.black, fontSize: 16.9),
 //                    ))),
-          Padding(padding: new EdgeInsets.all(10.5)),
-          Center(
-            child: Text(
-              _loginAlert,
-              style: TextStyle(
-                fontFamily: "Nunito",
-                color: Colors.red,
-              ),
-            ),
-          )
+                    Padding(padding: new EdgeInsets.all(10.5)),
+                    Center(
+                      child: Text(
+                        _loginAlert,
+                        style: TextStyle(
+                          fontFamily: "Nunito",
+                          color: Colors.red,
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+              )
+            ],
+          ),
+
+//          Padding(
+//            padding: const EdgeInsets.only(top: 20.0),
+//          ),
+
         ],
       ),
     );
@@ -285,8 +305,11 @@ class _LoginState extends State<Login> {
     var shortestSide = MediaQuery.of(context).size.shortestSide;
     var orientation = MediaQuery.of(context).orientation;
 
-    if (orientation == Orientation.portrait &&
-        shortestSide < tabletBreakpoint) {
+    if (orientation == Orientation.portrait
+//        && shortestSide < tabletBreakpoint
+    ) {
+//      debugPrint("ORIENTATION ${orientation.toString()}");
+//      debugPrint("SHORTEST ${shortestSide.toString()}");
       loginPageContent = _buildPortraitLayout();
     } else {
       loginPageContent = _buildLandscapeLayout();
@@ -347,7 +370,7 @@ class _LoginState extends State<Login> {
         ))
             .user;
         var router = new MaterialPageRoute(builder: (BuildContext context) {
-          return Programs(userUid: newUser.uid);
+          return ContentScreen(userUid: newUser.uid);
         });
         Navigator.of(context).push(router);
       } on PlatformException catch (e) {

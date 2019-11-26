@@ -1,9 +1,11 @@
 import 'dart:convert';
-
 import 'package:evgeshayoga/models/program.dart';
 import 'package:evgeshayoga/models/user.dart';
 import 'package:evgeshayoga/ui/programs/components/drawer_programs_screen.dart';
 import 'package:evgeshayoga/ui/programs/program_screen.dart';
+import 'package:evgeshayoga/ui/programs/yoga_online.dart';
+import 'package:evgeshayoga/ui/programs/programs_screen.dart';
+import 'package:evgeshayoga/ui/programs/yoga_online.dart';
 import 'package:evgeshayoga/utils/check_is_available.dart';
 import 'package:evgeshayoga/utils/date_formatter.dart';
 import 'package:evgeshayoga/utils/style.dart';
@@ -13,16 +15,16 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
-class Programs extends StatefulWidget {
+class ContentScreen extends StatefulWidget {
   final String userUid;
 
-  Programs({Key key, this.userUid}) : super(key: key);
+  ContentScreen({Key key, this.userUid}) : super(key: key);
 
   @override
-  _ProgramsState createState() => _ProgramsState();
+  _ContentScreenState createState() => _ContentScreenState();
 }
 
-class _ProgramsState extends State<Programs> {
+class _ContentScreenState extends State<ContentScreen> {
   static const int tabletBreakpoint = 600;
   final FirebaseDatabase database = FirebaseDatabase.instance;
   DatabaseReference dbUsersReference;
@@ -59,54 +61,64 @@ class _ProgramsState extends State<Programs> {
     }
 
     var programs = user.getPurchases().programs;
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: <Widget>[
-        Flexible(
-          child: FirebaseAnimatedList(
-            query: dbProgramsReference,
-            sort: (sa, sb) {
-              return sb.value["id"] - sa.value["id"];
-            },
-            itemBuilder: (_, DataSnapshot snapshot, Animation<double> animation,
-                int index) {
-              if (snapshot == null || userProgramsStatuses == null) {
-                return Container(
-                  height: 300,
-                  child: ModalProgressHUD(
-                    color: Colors.transparent,
-                    progressIndicator: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(Style.pinkMain),
-                    ),
-                    inAsyncCall: true,
-                    child: Center(
-                      child: Text(
-                        "Загружается...",
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  ),
-                );
-              }
-
-              var program = Program.fromSnapshot(snapshot);
-
-              if (!program.isActive) {
-                return _inactiveProgram();
-              }
-
-              if (isViewable(userProgramsStatuses, program.id)) {
-                String date = userProgramsStatuses[program.id.toString()]
-                        ["availableTill"]
-                    .toString();
-                return _availableProgram(date, snapshot.value, isLandscape);
-              }
-              return _notAvailableProgram(
-                  programs, snapshot.value, context, isLandscape);
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        drawer: drawerProgramScreen(user, context, widget.userUid, isLandscape),
+        appBar: AppBar(
+          leading: Builder(
+            builder: (BuildContext context) {
+              return IconButton(
+                icon: const Icon(
+                  Icons.menu,
+                  color: Colors.blueGrey,
+                ),
+                onPressed: () {
+                  Scaffold.of(context).openDrawer();
+                },
+                tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+              );
             },
           ),
-        )
-      ],
+          title: Image.asset(
+            'assets/images/logo.png',
+            alignment: Alignment.center,
+            fit: BoxFit.contain,
+            repeat: ImageRepeat.noRepeat,
+            height: 35,
+          ),
+          bottom: TabBar(
+            indicatorColor: Style.pinkDark,
+            unselectedLabelColor: Colors.white,
+            labelColor: Style.blueGrey,
+            tabs: [
+              Tab(
+                text: "Программы",
+//                icon: new Icon(Icons.audiotrack),
+              ),
+              Tab(
+                text: "Йога-онлайн",
+//                icon: new Icon(Icons.beach_access),
+              ),
+            ],
+          ),
+          centerTitle: true,
+          backgroundColor: Color.fromRGBO(242, 206, 210, 1),
+        ),
+        body: WillPopScope(
+          onWillPop: () async {
+            return Future.value(false);
+          },
+          child: TabBarView(
+            children: <Widget>[
+              Programs(
+                userUid: widget.userUid,
+              ),
+              YogaOnline(),
+            ],
+          ),
+        ),
+      ),
     );
   }
 

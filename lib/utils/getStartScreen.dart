@@ -1,4 +1,5 @@
-import 'package:evgeshayoga/ui/programs/programs_screen.dart';
+import 'package:evgeshayoga/ui/programs/content_screen.dart';
+//import 'package:evgeshayoga/ui/programs/programs_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -18,7 +19,7 @@ class _StartScreenState extends State<StartScreen> {
       } else {
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (BuildContext context) {
-          return Programs(userUid: currentUser.uid);
+          return ContentScreen(userUid: currentUser.uid);
         }));
       }
     });
