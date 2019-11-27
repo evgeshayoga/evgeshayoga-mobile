@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:evgeshayoga/models/user.dart';
 import 'package:evgeshayoga/ui/programs/content_screen.dart';
+
 //import 'package:evgeshayoga/ui/programs/programs_screen.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -26,6 +27,7 @@ class _LoginState extends State<Login> {
 
 //  bool _saving = false;
   bool _isInAsyncCall = false;
+  bool _isTablet = false;
 
   void _showProgressIndicator() {
     FocusScope.of(context).requestFocus(new FocusNode());
@@ -64,89 +66,92 @@ class _LoginState extends State<Login> {
                 ),
               ),
               Expanded(
-                flex: 5,
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      padding: const EdgeInsets.only(top: 20, right: 20, left: 20),
-                      height: 170,
-                      alignment: Alignment(0.0, 0.0),
-                      color: Colors.white,
-                      child: Container(
-                        width: 500,
-                        child: Form(
-                          key: _loginFormKey,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              TextFormField(
+                  flex: 5,
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        padding:
+                            const EdgeInsets.only(top: 20, right: 20, left: 20),
+                        height: 170,
+                        alignment: Alignment(0.0, 0.0),
+                        color: Colors.white,
+                        child: Container(
+                          width: 500,
+                          child: Form(
+                            key: _loginFormKey,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                TextFormField(
 //                          controller: _emailController,
-                                decoration: const InputDecoration(
-                                  icon: Icon(Icons.email),
-                                  hintText: 'Введите свой email',
-                                  labelText: 'Email',
+                                  decoration: const InputDecoration(
+                                    icon: Icon(Icons.email),
+                                    hintText: 'Введите свой email',
+                                    labelText: 'Email',
+                                  ),
+                                  onSaved: (value) =>
+                                      user.userEmail = value.trim(),
+                                  validator: (value) {
+                                    if (value.isEmpty) {
+                                      return 'Введите email';
+                                    }
+                                  },
                                 ),
-                                onSaved: (value) => user.userEmail = value.trim(),
-                                validator: (value) {
-                                  if (value.isEmpty) {
-                                    return 'Введите email';
-                                  }
-                                },
-                              ),
-                              TextFormField(
+                                TextFormField(
 //                          controller: _passwordController,
-                                obscureText: true,
-                                decoration: const InputDecoration(
-                                  icon: Icon(Icons.lock),
-                                  hintText: 'Введите свой пароль',
-                                  labelText: 'Пароль',
+                                  obscureText: true,
+                                  decoration: const InputDecoration(
+                                    icon: Icon(Icons.lock),
+                                    hintText: 'Введите свой пароль',
+                                    labelText: 'Пароль',
+                                  ),
+                                  validator: (value) {
+                                    if (value.isEmpty) {
+                                      return 'Введите пароль';
+                                    }
+                                  },
+                                  onSaved: (value) =>
+                                      user.password = value.trim(),
                                 ),
-                                validator: (value) {
-                                  if (value.isEmpty) {
-                                    return 'Введите пароль';
-                                  }
-                                },
-                                onSaved: (value) => user.password = value.trim(),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    Container(
-                      width: 200,
+                      Container(
+                        width: 200,
 //                      margin: const EdgeInsets.only(left: 150, right: 150),
-                      child: RaisedButton(
-                        onPressed: userLogIn,
-                        color: Color.fromRGBO(242, 206, 210, .75),
-                        child: Text(
-                          "Войти",
-                          style: Style.regularTextStyle,
+                        child: RaisedButton(
+                          onPressed: userLogIn,
+                          color: Color.fromRGBO(242, 206, 210, .75),
+                          child: Text(
+                            "Войти",
+                            style: Style.regularTextStyle,
+                          ),
                         ),
                       ),
-                    ),
-                    Text(
-                      "или",
-                      textAlign: TextAlign.center,
-                      style: Style.regularTextStyle,
-                    ),
-                    Container(
+                      Text(
+                        "или",
+                        textAlign: TextAlign.center,
+                        style: Style.regularTextStyle,
+                      ),
+                      Container(
 //                      margin: const EdgeInsets.only(left: 150, right: 150),
-                      width: 200,
-                      child: RaisedButton(
-                        onPressed: () async {
-                          var url = 'https://evgeshayoga.com/register';
-                          if (await canLaunch(url)) {
-                            await launch(url);
-                          }
-                        },
-                        color: Color.fromRGBO(242, 206, 210, .75),
-                        child: Text(
-                          "Зарегестрироваться",
-                          style: Style.regularTextStyle,
+                        width: 200,
+                        child: RaisedButton(
+                          onPressed: () async {
+                            var url = 'https://evgeshayoga.com/register';
+                            if (await canLaunch(url)) {
+                              await launch(url);
+                            }
+                          },
+                          color: Color.fromRGBO(242, 206, 210, .75),
+                          child: Text(
+                            "Зарегестрироваться",
+                            style: Style.regularTextStyle,
+                          ),
                         ),
                       ),
-                    ),
 //            Center(
 //                child: RaisedButton(
 //                    onPressed: googleSignIn,
@@ -155,26 +160,24 @@ class _LoginState extends State<Login> {
 //                      "Sign-in with Google",
 //                      style: TextStyle(color: Colors.black, fontSize: 16.9),
 //                    ))),
-                    Padding(padding: new EdgeInsets.all(10.5)),
-                    Center(
-                      child: Text(
-                        _loginAlert,
-                        style: TextStyle(
-                          fontFamily: "Nunito",
-                          color: Colors.red,
+                      Padding(padding: new EdgeInsets.all(10.5)),
+                      Center(
+                        child: Text(
+                          _loginAlert,
+                          style: TextStyle(
+                            fontFamily: "Nunito",
+                            color: Colors.red,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                )
-              )
+                    ],
+                  ))
             ],
           ),
 
 //          Padding(
 //            padding: const EdgeInsets.only(top: 20.0),
 //          ),
-
         ],
       ),
     );
@@ -183,94 +186,110 @@ class _LoginState extends State<Login> {
   Widget _buildPortraitLayout() {
     return Container(
       color: Colors.white,
-      child: ListView(
-        children: <Widget>[
-          Container(
-            height: 240,
-            child: Image.asset(
-              'assets/images/evgeshayoga_landscape.jpg',
+        child: ListView(
+          children: <Widget>[
+            Container(
+              height: _isTablet ? 400 : 240,
+              child: Image.asset(
+                'assets/images/evgeshayoga_landscape.jpg',
+                fit: BoxFit.cover,
+                alignment: FractionalOffset.bottomRight,
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 20.0),
-          ),
-          Container(
-            height: 170,
-            alignment: Alignment(0.0, 0.0),
-            color: Colors.white,
-            child: Container(
-              width: 300,
-              child: Form(
-                key: _loginFormKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    TextFormField(
+            Padding(
+              padding: const EdgeInsets.only(top: 20.0),
+            ),
+            Container(
+              height: 170,
+              alignment: Alignment(0.0, 0.0),
+              color: Colors.white,
+              child: Container(
+                width: 300,
+                child: Form(
+                  key: _loginFormKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      TextFormField(
 //                          controller: _emailController,
-                      decoration: const InputDecoration(
-                        icon: Icon(Icons.email),
-                        hintText: 'Введите свой email',
-                        labelText: 'Email',
+                        decoration: const InputDecoration(
+                          icon: Icon(Icons.email),
+                          hintText: 'Введите свой email',
+                          labelText: 'Email',
+                        ),
+                        onSaved: (value) => user.userEmail = value.trim(),
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Введите email';
+                          }
+                        },
                       ),
-                      onSaved: (value) => user.userEmail = value.trim(),
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return 'Введите email';
-                        }
-                      },
-                    ),
-                    TextFormField(
+                      TextFormField(
 //                          controller: _passwordController,
-                      obscureText: true,
-                      decoration: const InputDecoration(
-                        icon: Icon(Icons.lock),
-                        hintText: 'Введите свой пароль',
-                        labelText: 'Пароль',
+                        obscureText: true,
+                        decoration: const InputDecoration(
+                          icon: Icon(Icons.lock),
+                          hintText: 'Введите свой пароль',
+                          labelText: 'Пароль',
+                        ),
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Введите пароль';
+                          }
+                        },
+                        onSaved: (value) => user.password = value.trim(),
                       ),
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return 'Введите пароль';
-                        }
-                      },
-                      onSaved: (value) => user.password = value.trim(),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-          Container(
-            margin: const EdgeInsets.only(left: 50, right: 50),
-            child: RaisedButton(
-              onPressed: userLogIn,
-              color: Style.pinkMain,
-              child: Text(
-                "Войти",
-                style: Style.regularTextStyle,
+            Container(
+              alignment: Alignment(0.0, 0.0),
+              child: Column(
+                children: <Widget>[
+                  Container(
+              width: 250,
+//              margin: _isTablet
+//                  ? const EdgeInsets.only(left: 200, right: 200)
+//                  : const EdgeInsets.only(left: 50, right: 50),
+                    child: RaisedButton(
+                      onPressed: userLogIn,
+                      color: Style.pinkMain,
+                      child: Text(
+                        "Войти",
+                        style: Style.regularTextStyle,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    "или",
+                    textAlign: TextAlign.center,
+                    style: Style.regularTextStyle,
+                  ),
+                  Container(
+
+                    width: 250,
+//              margin: _isTablet
+//                  ? const EdgeInsets.only(left: 200, right: 200)
+//                  : const EdgeInsets.only(left: 50, right: 50),
+                    child: RaisedButton(
+                      onPressed: () async {
+                        var url = 'https://evgeshayoga.com/register';
+                        if (await canLaunch(url)) {
+                          await launch(url);
+                        }
+                      },
+                      color: Style.pinkMain,
+                      child: Text(
+                        "Зарегистрироваться",
+                        style: Style.regularTextStyle,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-          ),
-          Text(
-            "или",
-            textAlign: TextAlign.center,
-            style: Style.regularTextStyle,
-          ),
-          Container(
-            margin: const EdgeInsets.only(left: 50, right: 50),
-            child: RaisedButton(
-              onPressed: () async {
-                var url = 'https://evgeshayoga.com/register';
-                if (await canLaunch(url)) {
-                  await launch(url);
-                }
-              },
-              color: Style.pinkMain,
-              child: Text(
-                "Зарегистрироваться",
-                style: Style.regularTextStyle,
-              ),
-            ),
-          ),
 //            Center(
 //                child: RaisedButton(
 //                    onPressed: googleSignIn,
@@ -279,18 +298,19 @@ class _LoginState extends State<Login> {
 //                      "Sign-in with Google",
 //                      style: TextStyle(color: Colors.black, fontSize: 16.9),
 //                    ))),
-          Padding(padding: new EdgeInsets.all(10.5)),
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.all(18.0),
-              child: Text(
-                _loginAlert,
-                style: TextStyle(color: Colors.red),
+            Padding(padding: new EdgeInsets.all(10.5)),
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.all(18.0),
+                child: Text(
+                  _loginAlert,
+                  style: TextStyle(color: Colors.red),
+                ),
               ),
-            ),
-          )
-        ],
-      ),
+            )
+          ],
+        ),
+
     );
   }
 
@@ -302,12 +322,18 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     Widget loginPageContent;
+
     var shortestSide = MediaQuery.of(context).size.shortestSide;
     var orientation = MediaQuery.of(context).orientation;
+    if (shortestSide > tabletBreakpoint) {
+      setState(() {
+        _isTablet = true;
+      });
+    }
 
     if (orientation == Orientation.portrait
 //        && shortestSide < tabletBreakpoint
-    ) {
+        ) {
 //      debugPrint("ORIENTATION ${orientation.toString()}");
 //      debugPrint("SHORTEST ${shortestSide.toString()}");
       loginPageContent = _buildPortraitLayout();
