@@ -93,12 +93,12 @@ class _ProgramsState extends State<Programs> {
               if (widget.userUid == 'xMcQSM0MRjVtlAEns8bxyddVWlI2'
                   || widget.userUid == "SI5ecDdX3qfH6igB4ileyL9sCiD3"
               ) {
-                debugPrint("USER PROGS: " + userProgramsStatuses[program.id.toString()]["id"].toString());
+//                debugPrint("USER PROGS: " + userProgramsStatuses[program.id.toString()]["id"].toString());
                 String date = userProgramsStatuses[program.id.toString()]
                 ["availableTill"]
                     .toString();
                 if (isAvailable(date)) {
-                  debugPrint("IS AVAILABLE? " + isAvailable(date).toString());
+//                  debugPrint("IS AVAILABLE? " + isAvailable(date).toString());
                   return _availableProgram(date, snapshot.value, isLandscape);
                 } else return Container();
               }
