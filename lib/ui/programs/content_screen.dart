@@ -81,7 +81,8 @@ class _ContentScreenState extends State<ContentScreen> {
             },
           ),
           title: Image.asset(
-            'assets/images/logo.png',
+            'assets/images/logo_white.png',
+//            'assets/images/logo.png',
             alignment: Alignment.center,
             fit: BoxFit.contain,
             repeat: ImageRepeat.noRepeat,
