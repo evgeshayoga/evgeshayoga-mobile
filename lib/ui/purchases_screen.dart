@@ -32,21 +32,42 @@ class _PurchasesScreenState extends State<PurchasesScreen> {
 
   List<Widget> buildPurchases(programs) {
     List<Widget> purchases = [];
-    final purchasedPrograms = Map.from(programs)
-      ..removeWhere((k, v) => v["isPurchased"] == false);
 
-    purchasedPrograms.forEach((k, v) {
-      purchases.add(Padding(
-        padding: EdgeInsets.all(8),
-      ));
-      purchases.add(purchasesListItem(v));
-      purchases.add(
-        Divider(
-          height: 7,
-          color: Style.pinkDark,
-        ),
-      );
-    });
+    if (widget.userUid == 'xMcQSM0MRjVtlAEns8bxyddVWlI2'
+        || widget.userUid == "SI5ecDdX3qfH6igB4ileyL9sCiD3" //ura's id
+    ) {
+      final purchasedPrograms = Map.from(programs);
+      purchasedPrograms.forEach((k, v) {
+        if (isAvailable(v["availableTill"])) {
+          purchases.add(Padding(
+            padding: EdgeInsets.all(8),
+          ));
+          purchases.add(purchasesListItem(v));
+          purchases.add(
+            Divider(
+              height: 7,
+              color: Style.pinkDark,
+            ),
+          );
+        }
+      });
+    } else {
+      final purchasedPrograms = Map.from(programs)
+        ..removeWhere((k, v) => v["isPurchased"] == false);
+
+      purchasedPrograms.forEach((k, v) {
+        purchases.add(Padding(
+          padding: EdgeInsets.all(8),
+        ));
+        purchases.add(purchasesListItem(v));
+        purchases.add(
+          Divider(
+            height: 7,
+            color: Style.pinkDark,
+          ),
+        );
+      });
+    }
     return purchases;
   }
 
