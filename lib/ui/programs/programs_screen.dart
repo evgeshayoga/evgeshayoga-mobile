@@ -88,21 +88,34 @@ class _ProgramsState extends State<Programs> {
                   ),
                 );
               }
-
+              debugPrint(index.toString());
               var program = Program.fromSnapshot(snapshot);
-
-              if (!program.isActive) {
-                return _inactiveProgram();
+              if (widget.userUid == 'xMcQSM0MRjVtlAEns8bxyddVWlI2'
+                  || widget.userUid == "SI5ecDdX3qfH6igB4ileyL9sCiD3"
+              ) {
+                debugPrint("USER PROGS: " + userProgramsStatuses[program.id.toString()]["id"].toString());
+                String date = userProgramsStatuses[program.id.toString()]
+                ["availableTill"]
+                    .toString();
+                if (isAvailable(date)) {
+                  debugPrint("IS AVAILABLE? " + isAvailable(date).toString());
+                  return _availableProgram(date, snapshot.value, isLandscape);
+                } else return Container();
+              }
+              else {
+               if (!program.isActive) {
+              return _inactiveProgram();
               }
 
               if (isViewable(userProgramsStatuses, program.id)) {
-                String date = userProgramsStatuses[program.id.toString()]
-                        ["availableTill"]
-                    .toString();
-                return _availableProgram(date, snapshot.value, isLandscape);
+              String date = userProgramsStatuses[program.id.toString()]
+              ["availableTill"]
+                  .toString();
+              return _availableProgram(date, snapshot.value, isLandscape);
               }
               return _notAvailableProgram(
-                  programs, snapshot.value, context, isLandscape);
+              programs, snapshot.value, context, isLandscape);
+              }
             },
           ),
         )
