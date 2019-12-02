@@ -1,5 +1,6 @@
 import 'package:evgeshayoga/models/user.dart';
 import 'package:evgeshayoga/models/yoga_online_lesson.dart';
+import 'package:evgeshayoga/ui/programs/lesson_screen.dart';
 import 'package:evgeshayoga/utils/check_is_available.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
@@ -8,7 +9,6 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
-
 
 class YogaOnline extends StatefulWidget {
   final String userUid;
@@ -25,7 +25,7 @@ class _YogaOnlineState extends State<YogaOnline> {
   DatabaseReference dbVideosReference;
   User user;
   Map<String, dynamic> userSubscriptionStatus;
-  bool hasAccess;
+  bool hasAccess = false;
 
   @override
   void initState() {
@@ -37,29 +37,20 @@ class _YogaOnlineState extends State<YogaOnline> {
       debugPrint(widget.userUid);
       setState(() {
         userSubscriptionStatus = subscription;
-        String expiryDate = userSubscriptionStatus['expiryDate'];
-        hasAccess = (userSubscriptionStatus['isSubscriptionActive'] &&
-            isAvailable(expiryDate));
+        hasAccess = userSubscriptionStatus['isSubscriptionActive'];
       });
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    var shortestSide = MediaQuery
-        .of(context)
-        .size
-        .shortestSide;
-    var orientation = MediaQuery
-        .of(context)
-        .orientation;
+    var shortestSide = MediaQuery.of(context).size.shortestSide;
+    var orientation = MediaQuery.of(context).orientation;
     var isLandscape = true;
     if (orientation == Orientation.portrait &&
         shortestSide < tabletBreakpoint) {
       isLandscape = false;
     }
-
-
 
     return hasAccess ? videoLessons(isLandscape) : Text('not available');
 //      Container(
@@ -85,7 +76,8 @@ class _YogaOnlineState extends State<YogaOnline> {
                     child: ModalProgressHUD(
                       color: Colors.transparent,
                       progressIndicator: CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation<Color>(Style.pinkMain),
+                        valueColor:
+                            AlwaysStoppedAnimation<Color>(Style.pinkMain),
                       ),
                       inAsyncCall: true,
                       child: Center(
@@ -129,31 +121,37 @@ class _YogaOnlineState extends State<YogaOnline> {
 //      height: MediaQuery.of(context).size.height -80,
       child: Card(
         child: GestureDetector(
-          onTap: () {},
+          onTap: () {
+            var router = new MaterialPageRoute(builder: (BuildContext context) {
+              return LessonScreen(
+                  yogaOnlineLesson.title, yogaOnlineLesson.id);
+            });
+            Navigator.of(context).push(router);
+          },
           child: isLandscape
               ? Row(
-            children: <Widget>[
-              Expanded(
-                flex: 2,
-                child: Column(
                   children: <Widget>[
-                    title,
+                    Expanded(
+                      flex: 2,
+                      child: Column(
+                        children: <Widget>[
+                          title,
 //                    Text(
 //                      "Доступен до " + dateFormatted(date),
 //                      style: Style.regularTextStyle,
 //                    ),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      flex: 3,
+                      child: programThumbnail,
+                    )
                   ],
-                ),
-              ),
-              Expanded(
-                flex: 3,
-                child: programThumbnail,
-              )
-            ],
-          )
+                )
               : Column(
-            children: <Widget>[
-              ListTile(title: title, subtitle: programThumbnail),
+                  children: <Widget>[
+                    ListTile(title: title, subtitle: programThumbnail),
 //              Padding(
 //                padding: const EdgeInsets.all(12.0),
 //                child: Text(
@@ -161,8 +159,8 @@ class _YogaOnlineState extends State<YogaOnline> {
 //                  style: Style.regularTextStyle,
 //                ),
 //              )
-            ],
-          ),
+                  ],
+                ),
         ),
       ),
     );
@@ -180,10 +178,4 @@ class _YogaOnlineState extends State<YogaOnline> {
     }
     return data;
   }
-
-//  bool hasAccess() {
-//    String expiryDate = userSubscriptionStatus['expiryDate'];
-//    return (userSubscriptionStatus['isSubscriptionActive'] &&
-//        isAvailable(expiryDate));
-//  }
 }
