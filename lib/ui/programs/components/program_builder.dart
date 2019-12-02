@@ -2,6 +2,7 @@ import 'package:evgeshayoga/models/program.dart';
 import 'package:evgeshayoga/models/video_model.dart';
 import 'package:evgeshayoga/ui/programs/components/video_blocks_column.dart';
 import 'package:evgeshayoga/ui/programs/week_screen.dart';
+import 'package:evgeshayoga/utils/ProgressHUD.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -42,18 +43,7 @@ class _ProgramBuilderState extends State<ProgramBuilder> {
     if (program == null) {
       return Container(
         height: 300,
-        child: ModalProgressHUD(
-          color: Colors.transparent,
-          progressIndicator: CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation<Color>(Style.pinkMain),
-          ),
-          inAsyncCall: true,
-//          opacity: 1,
-          child: Text(
-            "Загружается...",
-            textAlign: TextAlign.center,
-          ),
-        ),
+        child: progressHUD()
       );
     }
     List<Widget> programWeeks = [];

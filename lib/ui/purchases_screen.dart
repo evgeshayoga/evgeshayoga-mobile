@@ -1,5 +1,6 @@
 import 'package:evgeshayoga/ui/programs/program_screen.dart';
 import 'package:evgeshayoga/ui/programs/programs_screen.dart';
+import 'package:evgeshayoga/utils/ProgressHUD.dart';
 import 'package:evgeshayoga/utils/check_is_available.dart';
 import 'package:evgeshayoga/utils/date_formatter.dart';
 import 'package:evgeshayoga/utils/style.dart';
@@ -104,17 +105,7 @@ class _PurchasesScreenState extends State<PurchasesScreen> {
       ),
       body: Center(
         child: userProgramsStatuses == null
-            ? ModalProgressHUD(
-                color: Colors.transparent,
-                progressIndicator: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(Style.pinkMain),
-                ),
-                inAsyncCall: true,
-                child: Text(
-                  "Загружается...",
-                  textAlign: TextAlign.center,
-                ),
-              )
+            ? progressHUD()
             : ListView(
                 children: <Widget>[
                   Padding(

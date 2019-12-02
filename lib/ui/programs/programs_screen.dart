@@ -4,6 +4,7 @@ import 'package:evgeshayoga/models/program.dart';
 import 'package:evgeshayoga/models/user.dart';
 import 'package:evgeshayoga/ui/programs/components/drawer_programs_screen.dart';
 import 'package:evgeshayoga/ui/programs/program_screen.dart';
+import 'package:evgeshayoga/utils/ProgressHUD.dart';
 import 'package:evgeshayoga/utils/check_is_available.dart';
 import 'package:evgeshayoga/utils/date_formatter.dart';
 import 'package:evgeshayoga/utils/style.dart';
@@ -73,20 +74,7 @@ class _ProgramsState extends State<Programs> {
               if (snapshot == null || userProgramsStatuses == null) {
                 return Container(
                   height: 300,
-                  child: ModalProgressHUD(
-                    color: Colors.transparent,
-                    progressIndicator: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(Style.pinkMain),
-                    ),
-                    inAsyncCall: true,
-                    child: Center(
-                      child: Text(
-                        "Загружается...",
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  ),
-                );
+                    child: progressHUD());
               }
 //              debugPrint(index.toString());
               var program = Program.fromSnapshot(snapshot);

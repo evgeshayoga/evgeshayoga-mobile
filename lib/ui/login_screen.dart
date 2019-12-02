@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:evgeshayoga/models/user.dart';
 import 'package:evgeshayoga/ui/programs/content_screen.dart';
 import 'package:evgeshayoga/ui/programs_with_iap.dart';
+import 'package:evgeshayoga/utils/ProgressHUD.dart';
 
 //import 'package:evgeshayoga/ui/programs/programs_screen.dart';
 import 'package:evgeshayoga/utils/style.dart';
@@ -362,15 +363,7 @@ class _LoginState extends State<Login> {
         ),
         centerTitle: true,
       ),
-      body: ModalProgressHUD(
-        color: Colors.white,
-        child: SafeArea(child: loginPageContent),
-        inAsyncCall: _isInAsyncCall,
-        opacity: 0.5,
-        progressIndicator: CircularProgressIndicator(
-          valueColor: AlwaysStoppedAnimation<Color>(Style.pinkMain),
-        ),
-      ),
+      body: progressHUD(),
     );
   }
 

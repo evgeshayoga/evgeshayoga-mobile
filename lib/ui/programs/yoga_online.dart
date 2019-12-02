@@ -1,14 +1,13 @@
 import 'package:evgeshayoga/models/user.dart';
 import 'package:evgeshayoga/models/yoga_online_lesson.dart';
 import 'package:evgeshayoga/ui/programs/lesson_screen.dart';
-import 'package:evgeshayoga/utils/check_is_available.dart';
+import 'package:evgeshayoga/utils/ProgressHUD.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 class YogaOnline extends StatefulWidget {
   final String userUid;
@@ -52,7 +51,10 @@ class _YogaOnlineState extends State<YogaOnline> {
       isLandscape = false;
     }
 
-    return hasAccess ? videoLessons(isLandscape) : Text('not available');
+    if (userSubscriptionStatus == null) {
+      return progressHUD();
+    } else
+      return hasAccess ? videoLessons(isLandscape) : Text('not available');
 //      Container(
 //      child: Center(
 //        child: Text('Coming soon...'),
@@ -71,23 +73,7 @@ class _YogaOnlineState extends State<YogaOnline> {
                 var yogaOnlineLesson = YogaOnlineLesson.fromSnapshot(snapshot);
 
                 if (snapshot == null || userSubscriptionStatus == null) {
-                  return Container(
-                    height: 300,
-                    child: ModalProgressHUD(
-                      color: Colors.transparent,
-                      progressIndicator: CircularProgressIndicator(
-                        valueColor:
-                            AlwaysStoppedAnimation<Color>(Style.pinkMain),
-                      ),
-                      inAsyncCall: true,
-                      child: Center(
-                        child: Text(
-                          "Загружается...",
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ),
-                  );
+                  return progressHUD();
                 }
 
                 if (!yogaOnlineLesson.isActive) {
@@ -123,8 +109,7 @@ class _YogaOnlineState extends State<YogaOnline> {
         child: GestureDetector(
           onTap: () {
             var router = new MaterialPageRoute(builder: (BuildContext context) {
-              return LessonScreen(
-                  yogaOnlineLesson.title, yogaOnlineLesson.id);
+              return LessonScreen(yogaOnlineLesson.title, yogaOnlineLesson.id);
             });
             Navigator.of(context).push(router);
           },
