@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:evgeshayoga/models/user.dart';
 import 'package:evgeshayoga/ui/programs/content_screen.dart';
+import 'package:evgeshayoga/ui/programs_with_iap.dart';
 
 //import 'package:evgeshayoga/ui/programs/programs_screen.dart';
 import 'package:evgeshayoga/utils/style.dart';
@@ -396,7 +397,7 @@ class _LoginState extends State<Login> {
         ))
             .user;
         var router = new MaterialPageRoute(builder: (BuildContext context) {
-          return ContentScreen(userUid: newUser.uid);
+          return IAPScreen();
         });
         Navigator.of(context).push(router);
       } on PlatformException catch (e) {

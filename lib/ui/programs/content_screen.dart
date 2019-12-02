@@ -62,7 +62,7 @@ class _ContentScreenState extends State<ContentScreen> {
 
     var programs = user.getPurchases().programs;
     return DefaultTabController(
-      length: 1,
+      length: 2,
       child: Scaffold(
         drawer: drawerProgramScreen(user, context, widget.userUid, isLandscape),
         appBar: AppBar(
@@ -97,10 +97,10 @@ class _ContentScreenState extends State<ContentScreen> {
                 text: "Программы",
 //                icon: new Icon(Icons.audiotrack),
               ),
-//              Tab(
-//                text: "Йога-онлайн",
-////                icon: new Icon(Icons.beach_access),
-//              ),
+              Tab(
+                text: "Йога-онлайн",
+//                icon: new Icon(Icons.beach_access),
+              ),
             ],
           ),
           centerTitle: true,
@@ -115,7 +115,7 @@ class _ContentScreenState extends State<ContentScreen> {
               Programs(
                 userUid: widget.userUid,
               ),
-//              YogaOnline(),
+              YogaOnline(),
             ],
           ),
         ),

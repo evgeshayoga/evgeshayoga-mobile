@@ -1,4 +1,5 @@
 import 'package:evgeshayoga/ui/programs/content_screen.dart';
+import 'package:evgeshayoga/ui/programs_with_iap.dart';
 //import 'package:evgeshayoga/ui/programs/programs_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

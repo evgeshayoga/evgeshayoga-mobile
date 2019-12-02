@@ -88,7 +88,7 @@ class _ProgramsState extends State<Programs> {
                   ),
                 );
               }
-              debugPrint(index.toString());
+//              debugPrint(index.toString());
               var program = Program.fromSnapshot(snapshot);
               if (widget.userUid == 'xMcQSM0MRjVtlAEns8bxyddVWlI2'
                   || widget.userUid == "SI5ecDdX3qfH6igB4ileyL9sCiD3"
