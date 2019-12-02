@@ -1,18 +1,13 @@
 import 'dart:convert';
-
 import 'package:evgeshayoga/models/user.dart';
 import 'package:evgeshayoga/ui/programs/content_screen.dart';
-import 'package:evgeshayoga/ui/programs_with_iap.dart';
 import 'package:evgeshayoga/utils/ProgressHUD.dart';
-
-//import 'package:evgeshayoga/ui/programs/programs_screen.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show PlatformException;
 import 'package:http/http.dart' as http;
-import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Login extends StatefulWidget {
@@ -26,8 +21,6 @@ class _LoginState extends State<Login> {
   final _loginFormKey = GlobalKey<FormState>();
   User user = User("", "", "", "");
   String _loginAlert = "";
-
-//  bool _saving = false;
   bool _isInAsyncCall = false;
   bool _isTablet = false;
 
@@ -36,14 +29,6 @@ class _LoginState extends State<Login> {
     setState(() {
       _isInAsyncCall = true;
     });
-
-    //Simulate a service call
-//    new Future.delayed(
-//        new Duration(seconds: 4),() {
-//      setState(() {
-//        _saving = false;
-//      });
-//    });
   }
 
   static const int tabletBreakpoint = 600;
@@ -62,7 +47,6 @@ class _LoginState extends State<Login> {
                   child: Image.asset(
                     'assets/images/evgeshayoga_landscape.jpg',
                     fit: BoxFit.cover,
-//                    height: MediaQuery.of(context).size.shortestSide,
                     alignment: FractionalOffset.bottomRight,
                   ),
                 ),
@@ -85,7 +69,6 @@ class _LoginState extends State<Login> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
                                 TextFormField(
-//                          controller: _emailController,
                                   decoration: const InputDecoration(
                                     icon: Icon(Icons.email),
                                     hintText: 'Введите свой email',
@@ -97,10 +80,10 @@ class _LoginState extends State<Login> {
                                     if (value.isEmpty) {
                                       return 'Введите email';
                                     }
+                                    return null;
                                   },
                                 ),
                                 TextFormField(
-//                          controller: _passwordController,
                                   obscureText: true,
                                   decoration: const InputDecoration(
                                     icon: Icon(Icons.lock),
@@ -111,6 +94,7 @@ class _LoginState extends State<Login> {
                                     if (value.isEmpty) {
                                       return 'Введите пароль';
                                     }
+                                    return null;
                                   },
                                   onSaved: (value) =>
                                       user.password = value.trim(),
@@ -122,7 +106,6 @@ class _LoginState extends State<Login> {
                       ),
                       Container(
                         width: 200,
-//                      margin: const EdgeInsets.only(left: 150, right: 150),
                         child: RaisedButton(
                           onPressed: userLogIn,
                           color: Color.fromRGBO(242, 206, 210, .75),
@@ -138,7 +121,6 @@ class _LoginState extends State<Login> {
                         style: Style.regularTextStyle,
                       ),
                       Container(
-//                      margin: const EdgeInsets.only(left: 150, right: 150),
                         width: 200,
                         child: RaisedButton(
                           onPressed: () async {
@@ -154,14 +136,6 @@ class _LoginState extends State<Login> {
                           ),
                         ),
                       ),
-//            Center(
-//                child: RaisedButton(
-//                    onPressed: googleSignIn,
-//                    color: Colors.white,
-//                    child: Text(
-//                      "Sign-in with Google",
-//                      style: TextStyle(color: Colors.black, fontSize: 16.9),
-//                    ))),
                       Padding(padding: new EdgeInsets.all(10.5)),
                       Center(
                         child: Text(
@@ -224,6 +198,7 @@ class _LoginState extends State<Login> {
                           if (value.isEmpty) {
                             return 'Введите email';
                           }
+                          return null;
                         },
                       ),
                       TextFormField(
@@ -238,6 +213,7 @@ class _LoginState extends State<Login> {
                           if (value.isEmpty) {
                             return 'Введите пароль';
                           }
+                          return null;
                         },
                         onSaved: (value) => user.password = value.trim(),
                       ),
@@ -252,9 +228,6 @@ class _LoginState extends State<Login> {
                 children: <Widget>[
                   Container(
               width: 250,
-//              margin: _isTablet
-//                  ? const EdgeInsets.only(left: 200, right: 200)
-//                  : const EdgeInsets.only(left: 50, right: 50),
                     child: RaisedButton(
                       onPressed: userLogIn,
                       color: Style.pinkMain,
@@ -272,9 +245,6 @@ class _LoginState extends State<Login> {
                   Container(
 
                     width: 250,
-//              margin: _isTablet
-//                  ? const EdgeInsets.only(left: 200, right: 200)
-//                  : const EdgeInsets.only(left: 50, right: 50),
                     child: RaisedButton(
                       onPressed: () async {
                         var url = 'https://evgeshayoga.com/register';
@@ -292,14 +262,6 @@ class _LoginState extends State<Login> {
                 ],
               ),
             ),
-//            Center(
-//                child: RaisedButton(
-//                    onPressed: googleSignIn,
-//                    color: Colors.white,
-//                    child: Text(
-//                      "Sign-in with Google",
-//                      style: TextStyle(color: Colors.black, fontSize: 16.9),
-//                    ))),
             Padding(padding: new EdgeInsets.all(10.5)),
             Center(
               child: Padding(
@@ -334,10 +296,7 @@ class _LoginState extends State<Login> {
     }
 
     if (orientation == Orientation.portrait
-//        && shortestSide < tabletBreakpoint
         ) {
-//      debugPrint("ORIENTATION ${orientation.toString()}");
-//      debugPrint("SHORTEST ${shortestSide.toString()}");
       loginPageContent = _buildPortraitLayout();
     } else {
       loginPageContent = _buildLandscapeLayout();

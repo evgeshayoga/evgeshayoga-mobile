@@ -1,14 +1,8 @@
 import 'dart:async';
-import 'dart:convert';
 import 'package:evgeshayoga/models/user.dart';
-import 'package:evgeshayoga/ui/programs/components/drawer_content_screen.dart';
-import 'package:evgeshayoga/ui/programs/programs_screen.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'dart:io';
 

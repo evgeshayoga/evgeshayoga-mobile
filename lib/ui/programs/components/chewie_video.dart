@@ -1,5 +1,4 @@
 import 'package:chewie/chewie.dart';
-import 'package:chewie/src/chewie_player.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +17,6 @@ class ChewieVideo extends StatefulWidget {
 }
 
 class _ChewieVideoState extends State<ChewieVideo> {
-  TargetPlatform _platform;
   VideoPlayerController _videoPlayerController;
   ChewieController _chewieController;
   bool _initialized = false;

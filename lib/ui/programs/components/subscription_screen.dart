@@ -1,13 +1,10 @@
 import 'package:evgeshayoga/ui/programs/content_screen.dart' as prefix0;
-import 'package:evgeshayoga/ui/programs/program_screen.dart';
 import 'package:evgeshayoga/ui/programs/programs_screen.dart';
 import 'package:evgeshayoga/utils/ProgressHUD.dart';
-import 'package:evgeshayoga/utils/check_is_available.dart';
 import 'package:evgeshayoga/utils/date_formatter.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:flutter/material.dart';
 import 'package:evgeshayoga/ui/programs/yoga_online.dart';
-import 'package:evgeshayoga/utils/style.dart';
 
 class SubscriptionScreen extends StatefulWidget {
   final String userUid;

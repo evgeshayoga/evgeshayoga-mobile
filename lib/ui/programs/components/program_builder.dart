@@ -7,7 +7,6 @@ import 'package:evgeshayoga/utils/style.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
-import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 class ProgramBuilder extends StatefulWidget {
   int id;

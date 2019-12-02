@@ -1,8 +1,6 @@
 import 'dart:convert';
-
 import 'package:evgeshayoga/models/program.dart';
 import 'package:evgeshayoga/models/user.dart';
-import 'package:evgeshayoga/ui/programs/components/drawer_content_screen.dart';
 import 'package:evgeshayoga/ui/programs/program_screen.dart';
 import 'package:evgeshayoga/utils/ProgressHUD.dart';
 import 'package:evgeshayoga/utils/check_is_available.dart';
@@ -12,7 +10,6 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 class Programs extends StatefulWidget {
   final String userUid;
@@ -76,17 +73,14 @@ class _ProgramsState extends State<Programs> {
                   height: 300,
                     child: progressHUD());
               }
-//              debugPrint(index.toString());
               var program = Program.fromSnapshot(snapshot);
               if (widget.userUid == 'xMcQSM0MRjVtlAEns8bxyddVWlI2'
                   || widget.userUid == "SI5ecDdX3qfH6igB4ileyL9sCiD3"
               ) {
-//                debugPrint("USER PROGS: " + userProgramsStatuses[program.id.toString()]["id"].toString());
                 String date = userProgramsStatuses[program.id.toString()]
                 ["availableTill"]
                     .toString();
                 if (isAvailable(date)) {
-//                  debugPrint("IS AVAILABLE? " + isAvailable(date).toString());
                   return _availableProgram(date, snapshot.value, isLandscape);
                 } else return Container();
               }
@@ -148,7 +142,6 @@ class _ProgramsState extends State<Programs> {
       style: Style.headerTextStyle,
     );
     return Container(
-//      height: MediaQuery.of(context).size.height - 80,
       child: Card(
         child: GestureDetector(
           onTap: () {
@@ -240,26 +233,6 @@ class _ProgramsState extends State<Programs> {
       ),
     );
   }
-
-//  Widget buttonIfPurchasable(purchases, program) {
-//    if (purchases[program["id"]]["isPurchasable"]) {
-//      return MaterialButton(
-//        child: Text(
-//          "Купить",
-//          style: Style.regularTextStyle,
-//        ),
-//        color: Style.pinkMain,
-//        onPressed: () async {
-//          var url =
-//              'https://evgeshayoga.com/marathons/' + program["id"].toString();
-//          if (await canLaunch(url)) {
-//            await launch(url);
-//          }
-//        },
-//      );
-//    }
-//    return Container();
-//  }
 
   Widget _availableProgram(date, program, isLandscape) {
     ConstrainedBox programThumbnail = ConstrainedBox(

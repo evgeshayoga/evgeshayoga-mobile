@@ -20,9 +20,6 @@ Widget drawerProgramScreen(User user, context, userUid, isLandscape) {
               child: Center(
                 child: Container(
                   child: ListTile(
-//                  contentPadding: isLandscape
-//                      ? EdgeInsets.only(top: 10)
-//                      : EdgeInsets.only(top: 10),
                     title: isLandscape
                         ? Text("")
                         : CircleAvatar(

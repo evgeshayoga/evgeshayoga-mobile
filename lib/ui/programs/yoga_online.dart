@@ -33,7 +33,6 @@ class _YogaOnlineState extends State<YogaOnline> {
     user = User("", "", "", "");
 
     getUserSubscriptionStatus(widget.userUid).then((subscription) {
-//      debugPrint(widget.userUid);
       setState(() {
         userSubscriptionStatus = subscription;
         hasAccess = userSubscriptionStatus['isSubscriptionActive'];
@@ -59,11 +58,6 @@ class _YogaOnlineState extends State<YogaOnline> {
           : Center(
               child: Text('Вы не подписаны на Yoga Online'),
             );
-//      Container(
-//      child: Center(
-//        child: Text('Coming soon...'),
-//      ),
-//    );
   }
 
   Widget videoLessons(isLandscape) {
@@ -108,7 +102,6 @@ class _YogaOnlineState extends State<YogaOnline> {
     );
 
     return Container(
-//      height: MediaQuery.of(context).size.height -80,
       child: Card(
         child: GestureDetector(
           onTap: () {
@@ -125,10 +118,6 @@ class _YogaOnlineState extends State<YogaOnline> {
                       child: Column(
                         children: <Widget>[
                           title,
-//                    Text(
-//                      "Доступен до " + dateFormatted(date),
-//                      style: Style.regularTextStyle,
-//                    ),
                         ],
                       ),
                     ),
@@ -157,7 +146,6 @@ class _YogaOnlineState extends State<YogaOnline> {
 }
 
 Future<Map<String, dynamic>> getUserSubscriptionStatus(String uid) async {
-//  debugPrint(uid);
   var response = await http.get(
     "https://evgeshayoga.com/api/users/" + uid + "/videos",
   );

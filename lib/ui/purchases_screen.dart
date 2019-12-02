@@ -5,7 +5,6 @@ import 'package:evgeshayoga/utils/check_is_available.dart';
 import 'package:evgeshayoga/utils/date_formatter.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:flutter/material.dart';
-import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 class PurchasesScreen extends StatefulWidget {
   final String userUid;
@@ -22,7 +21,6 @@ class _PurchasesScreenState extends State<PurchasesScreen> {
   @override
   void initState() {
     super.initState();
-//    purchases = buildPurchases(widget.user.getPurchases().programs);
 
     getUserProgramsStatuses(widget.userUid).then((statuses) {
       setState(() {

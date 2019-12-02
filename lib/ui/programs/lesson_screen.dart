@@ -30,12 +30,6 @@ class LessonScreen extends StatelessWidget {
         child: ListView(
           children: <Widget>[
             LessonBuilder(lessonId),
-//            Container(
-//              child: ListView.builder(
-//                itemCount: null,
-//                itemBuilder: null,
-//              ),
-//            )
           ],
         ),
       ),
