@@ -54,7 +54,11 @@ class _YogaOnlineState extends State<YogaOnline> {
     if (userSubscriptionStatus == null) {
       return progressHUD();
     } else
-      return hasAccess ? videoLessons(isLandscape) : Text('not available');
+      return hasAccess
+          ? videoLessons(isLandscape)
+          : Center(
+              child: Text('Вы не подписаны на Yoga Online'),
+            );
 //      Container(
 //      child: Center(
 //        child: Text('Coming soon...'),
@@ -150,17 +154,17 @@ class _YogaOnlineState extends State<YogaOnline> {
       ),
     );
   }
+}
 
-  Future<Map<String, dynamic>> getUserSubscriptionStatus(String uid) async {
-    debugPrint(uid);
-    var response = await http.get(
-      "https://evgeshayoga.com/api/users/" + uid + "/videos",
-    );
-    Map<String, dynamic> data = json.decode(response.body);
-    String error = data["error"];
-    if (error != null) {
-      throw new Exception(error);
-    }
-    return data;
+Future<Map<String, dynamic>> getUserSubscriptionStatus(String uid) async {
+//  debugPrint(uid);
+  var response = await http.get(
+    "https://evgeshayoga.com/api/users/" + uid + "/videos",
+  );
+  Map<String, dynamic> data = json.decode(response.body);
+  String error = data["error"];
+  if (error != null) {
+    throw new Exception(error);
   }
+  return data;
 }

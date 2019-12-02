@@ -1,5 +1,6 @@
 import 'package:evgeshayoga/models/user.dart';
 import 'package:evgeshayoga/ui/profile_screen.dart';
+import 'package:evgeshayoga/ui/programs/components/subscription_screen.dart';
 import 'package:evgeshayoga/ui/purchases_screen.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -79,6 +80,20 @@ Widget drawerProgramScreen(User user, context, userUid, isLandscape) {
                     var router =
                         new MaterialPageRoute(builder: (BuildContext context) {
                       return PurchasesScreen(userUid);
+                    });
+                    Navigator.of(context).push(router);
+                  },
+                ),
+                ListTile(
+                  title: Text(
+                    "Подписка Yoga Online",
+                    textAlign: TextAlign.center,
+                    style: Style.regularTextStyle,
+                  ),
+                  onTap: () {
+                    var router =
+                    new MaterialPageRoute(builder: (BuildContext context) {
+                      return SubscriptionScreen(userUid);
                     });
                     Navigator.of(context).push(router);
                   },

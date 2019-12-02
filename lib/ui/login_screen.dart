@@ -363,7 +363,7 @@ class _LoginState extends State<Login> {
         ),
         centerTitle: true,
       ),
-      body: progressHUD(),
+      body: _isInAsyncCall ? progressHUD() : loginPageContent,
     );
   }
 
