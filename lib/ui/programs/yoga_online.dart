@@ -1,11 +1,14 @@
 import 'package:evgeshayoga/models/user.dart';
 import 'package:evgeshayoga/models/yoga_online_lesson.dart';
+import 'package:evgeshayoga/utils/check_is_available.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:modal_progress_hud/modal_progress_hud.dart';
+
 
 class YogaOnline extends StatefulWidget {
   final String userUid;
@@ -22,6 +25,7 @@ class _YogaOnlineState extends State<YogaOnline> {
   DatabaseReference dbVideosReference;
   User user;
   Map<String, dynamic> userSubscriptionStatus;
+  bool hasAccess;
 
   @override
   void initState() {
@@ -29,23 +33,35 @@ class _YogaOnlineState extends State<YogaOnline> {
     dbVideosReference = database.reference().child("videos");
     user = User("", "", "", "");
 
-//    getUserSubscriptionStatus(widget.userUid).then((subscription) {
-//      setState(() {
-//        userSubscriptionStatus = subscription;
-//      });
-//    });
+    getUserSubscriptionStatus(widget.userUid).then((subscription) {
+      debugPrint(widget.userUid);
+      setState(() {
+        userSubscriptionStatus = subscription;
+        String expiryDate = userSubscriptionStatus['expiryDate'];
+        hasAccess = (userSubscriptionStatus['isSubscriptionActive'] &&
+            isAvailable(expiryDate));
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    var shortestSide = MediaQuery.of(context).size.shortestSide;
-    var orientation = MediaQuery.of(context).orientation;
+    var shortestSide = MediaQuery
+        .of(context)
+        .size
+        .shortestSide;
+    var orientation = MediaQuery
+        .of(context)
+        .orientation;
     var isLandscape = true;
     if (orientation == Orientation.portrait &&
         shortestSide < tabletBreakpoint) {
       isLandscape = false;
     }
-    return videoLessons(isLandscape);
+
+
+
+    return hasAccess ? videoLessons(isLandscape) : Text('not available');
 //      Container(
 //      child: Center(
 //        child: Text('Coming soon...'),
@@ -62,12 +78,30 @@ class _YogaOnlineState extends State<YogaOnline> {
               itemBuilder: (_, DataSnapshot snapshot,
                   Animation<double> animation, int index) {
                 var yogaOnlineLesson = YogaOnlineLesson.fromSnapshot(snapshot);
-                debugPrint(yogaOnlineLesson.title);
-                return Column(
-                  children: <Widget>[
-                    _yogaOnlineLessonCard(yogaOnlineLesson, isLandscape),
-                  ],
-                );
+
+                if (snapshot == null || userSubscriptionStatus == null) {
+                  return Container(
+                    height: 300,
+                    child: ModalProgressHUD(
+                      color: Colors.transparent,
+                      progressIndicator: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(Style.pinkMain),
+                      ),
+                      inAsyncCall: true,
+                      child: Center(
+                        child: Text(
+                          "Загружается...",
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  );
+                }
+
+                if (!yogaOnlineLesson.isActive) {
+                  return Container();
+                }
+                return _yogaOnlineLessonCard(yogaOnlineLesson, isLandscape);
               }),
         )
       ],
@@ -98,28 +132,28 @@ class _YogaOnlineState extends State<YogaOnline> {
           onTap: () {},
           child: isLandscape
               ? Row(
+            children: <Widget>[
+              Expanded(
+                flex: 2,
+                child: Column(
                   children: <Widget>[
-                    Expanded(
-                      flex: 2,
-                      child: Column(
-                        children: <Widget>[
-                          title,
+                    title,
 //                    Text(
 //                      "Доступен до " + dateFormatted(date),
 //                      style: Style.regularTextStyle,
 //                    ),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      flex: 3,
-                      child: programThumbnail,
-                    )
                   ],
-                )
+                ),
+              ),
+              Expanded(
+                flex: 3,
+                child: programThumbnail,
+              )
+            ],
+          )
               : Column(
-                  children: <Widget>[
-                    ListTile(title: title, subtitle: programThumbnail),
+            children: <Widget>[
+              ListTile(title: title, subtitle: programThumbnail),
 //              Padding(
 //                padding: const EdgeInsets.all(12.0),
 //                child: Text(
@@ -127,22 +161,29 @@ class _YogaOnlineState extends State<YogaOnline> {
 //                  style: Style.regularTextStyle,
 //                ),
 //              )
-                  ],
-                ),
+            ],
+          ),
         ),
       ),
     );
   }
 
-//  Future<Map<String, dynamic>> getUserSubscriptionStatus(String uid) async {
-//    var response = await http.get(
-//      "https://evgeshayoga.com/api/users/" + uid + "/videos",
-//    );
-//    Map<String, dynamic> data = json.decode(response.body);
-//    String error = data["error"];
-//    if (error != null) {
-//      throw new Exception(error);
-//    }
-//    return data;
+  Future<Map<String, dynamic>> getUserSubscriptionStatus(String uid) async {
+    debugPrint(uid);
+    var response = await http.get(
+      "https://evgeshayoga.com/api/users/" + uid + "/videos",
+    );
+    Map<String, dynamic> data = json.decode(response.body);
+    String error = data["error"];
+    if (error != null) {
+      throw new Exception(error);
+    }
+    return data;
+  }
+
+//  bool hasAccess() {
+//    String expiryDate = userSubscriptionStatus['expiryDate'];
+//    return (userSubscriptionStatus['isSubscriptionActive'] &&
+//        isAvailable(expiryDate));
 //  }
 }

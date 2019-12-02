@@ -115,7 +115,7 @@ class _ContentScreenState extends State<ContentScreen> {
               Programs(
                 userUid: widget.userUid,
               ),
-              YogaOnline(),
+              YogaOnline(userUid: widget.userUid),
             ],
           ),
         ),
