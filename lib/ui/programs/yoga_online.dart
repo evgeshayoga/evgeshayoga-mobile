@@ -33,7 +33,7 @@ class _YogaOnlineState extends State<YogaOnline> {
     user = User("", "", "", "");
 
     getUserSubscriptionStatus(widget.userUid).then((subscription) {
-      debugPrint(widget.userUid);
+//      debugPrint(widget.userUid);
       setState(() {
         userSubscriptionStatus = subscription;
         hasAccess = userSubscriptionStatus['isSubscriptionActive'];

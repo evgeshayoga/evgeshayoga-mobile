@@ -390,7 +390,7 @@ class _LoginState extends State<Login> {
         ))
             .user;
         var router = new MaterialPageRoute(builder: (BuildContext context) {
-          return IAPScreen();
+          return ContentScreen(userUid: newUser.uid,);
         });
         Navigator.of(context).push(router);
       } on PlatformException catch (e) {

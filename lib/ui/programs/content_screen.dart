@@ -94,12 +94,10 @@ class _ContentScreenState extends State<ContentScreen> {
             labelColor: Style.blueGrey,
             tabs: [
               Tab(
-                text: "Программы",
-//                icon: new Icon(Icons.audiotrack),
+                text: "Йога-онлайн",
               ),
               Tab(
-                text: "Йога-онлайн",
-//                icon: new Icon(Icons.beach_access),
+                text: "Программы",
               ),
             ],
           ),
@@ -112,10 +110,10 @@ class _ContentScreenState extends State<ContentScreen> {
           },
           child: TabBarView(
             children: <Widget>[
+              YogaOnline(userUid: widget.userUid),
               Programs(
                 userUid: widget.userUid,
               ),
-              YogaOnline(userUid: widget.userUid),
             ],
           ),
         ),
