@@ -31,8 +31,8 @@ class _ChewieVideoState extends State<ChewieVideo> {
       autoInitialize: !hasThumbnail,
       autoPlay: false,
       looping: false,
+      allowedScreenSleep: false,
       // Try playing around with some of these other options:
-
       // showControls: false,
       // materialProgressColors: ChewieProgressColors(
       //   playedColor: Colors.red,
@@ -80,7 +80,8 @@ class _ChewieVideoState extends State<ChewieVideo> {
             ),
             Container(
                 alignment: Alignment.center,
-                child: Image.network(widget.videoThumbnail)),
+                child: widget.videoThumbnail.isNotEmpty ? Image.network(widget.videoThumbnail) : null,
+            ),
             Container(
               alignment: Alignment.center,
               child: Stack(
