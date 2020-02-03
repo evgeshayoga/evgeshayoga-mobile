@@ -5,6 +5,7 @@ import 'package:evgeshayoga/ui/programs/programs_screen.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 
 class ContentScreen extends StatefulWidget {
   final String userUid;
@@ -35,8 +36,7 @@ class _ContentScreenState extends State<ContentScreen> {
       setState(() {
         user = User.fromSnapshot(snapshot);
       });
-    }
-      );
+    });
   }
 
   @override
@@ -70,10 +70,10 @@ class _ContentScreenState extends State<ContentScreen> {
           ),
           title: Image.asset(
             'assets/images/logo_white.png',
-            alignment: Alignment.center,
+            alignment: Alignment.centerLeft,
             fit: BoxFit.contain,
             repeat: ImageRepeat.noRepeat,
-            height: 35,
+            height: 30,
           ),
           bottom: TabBar(
             indicatorColor: Style.pinkDark,
@@ -89,7 +89,31 @@ class _ContentScreenState extends State<ContentScreen> {
             ],
           ),
           centerTitle: true,
-          backgroundColor: Color.fromRGBO(242, 206, 210, 1),
+          backgroundColor: Style.pinkMain,
+          actions: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: GestureDetector(
+                onTap: () {},
+                child: Icon(
+                  Icons.search,
+                  size: 26.0,
+                  color: Style.blueGrey,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: GestureDetector(
+                onTap: () {},
+                child: Icon(
+                  AntDesign.filter,
+                  size: 26.0,
+                  color: Style.blueGrey,
+                ),
+              ),
+            )
+          ],
         ),
         body: WillPopScope(
           onWillPop: () async {
