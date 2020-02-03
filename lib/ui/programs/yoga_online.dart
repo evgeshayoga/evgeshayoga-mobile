@@ -119,6 +119,7 @@ class _YogaOnlineState extends State<YogaOnline> {
                       child: Column(
                         children: <Widget>[
                           title,
+                          additionalInfo(yogaOnlineLesson),
                         ],
                       ),
                     ),
@@ -131,48 +132,56 @@ class _YogaOnlineState extends State<YogaOnline> {
               : Column(
                   children: <Widget>[
                     ListTile(title: title, subtitle: programThumbnail),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(16, 8.0, 16, 8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: <Widget>[
-                          Row(
-                            children: <Widget>[
-                              Text(
-                                yogaOnlineLesson.levelName + "  ",
-                                style: Style.regularTextStyle,
-                              ),
-                              levelIcon(yogaOnlineLesson.level),
-                            ],
-                          ),
-//                    Text(" " +
-//                      yogaOnlineLesson.id.toString(),
-//                      style: Style.regularTextStyle,
-//                    ),
-                          Row(
-                            children: <Widget>[
-                              Icon(
-                                Icons.hourglass_empty,
-                                size: 16,
-                              ),
-                              Text(": " +
-                                  yogaOnlineLesson.duration.toString() +
-                                  " мин"),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(teachers(yogaOnlineLesson.teachers)),
-                    ),
+                    additionalInfo(yogaOnlineLesson),
                   ],
                 ),
         ),
       ),
     );
   }
+}
+
+Widget additionalInfo(yogaOnlineLesson){
+  return Column(
+    children: <Widget>[
+      Padding(
+        padding: const EdgeInsets.fromLTRB(16, 8.0, 16, 8.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                Text(
+                  yogaOnlineLesson.levelName + "  ",
+                  style: Style.regularTextStyle,
+                ),
+                levelIcon(yogaOnlineLesson.level),
+              ],
+            ),
+//                    Text(" " +
+//                      yogaOnlineLesson.id.toString(),
+//                      style: Style.regularTextStyle,
+//                    ),
+            Row(
+              children: <Widget>[
+                Icon(
+                  Icons.hourglass_empty,
+                  size: 16,
+                ),
+                Text(": " +
+                    yogaOnlineLesson.duration.toString() +
+                    " мин"),
+              ],
+            ),
+          ],
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(teachers(yogaOnlineLesson.teachers)),
+      ),
+    ],
+  );
 }
 
 String teachers(teachersList) {
