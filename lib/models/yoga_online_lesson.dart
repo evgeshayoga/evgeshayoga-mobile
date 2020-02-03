@@ -7,14 +7,29 @@ class YogaOnlineLesson {
   bool isActive;
   String thumbnailUrl;
   String title;
+  String subtitle;
   List videoBlocks;
+  int duration;
+  String levelName;
+  int level;
+  List teachers;
+  int type;
+  String typeName;
 
-  YogaOnlineLesson(this.id,
+  YogaOnlineLesson(
       {this.content,
-        this.isActive,
-        this.thumbnailUrl,
-        this.title,
-        this.videoBlocks});
+      this.id,
+      this.isActive,
+      this.thumbnailUrl,
+      this.title,
+      this.subtitle,
+      this.videoBlocks,
+      this.duration,
+      this.levelName,
+      this.level,
+      this.teachers,
+      this.type,
+      this.typeName});
 
   YogaOnlineLesson.fromSnapshot(DataSnapshot snapshot)
       : id = snapshot.value["id"],
@@ -22,7 +37,14 @@ class YogaOnlineLesson {
         isActive = snapshot.value["isActive"],
         thumbnailUrl = snapshot.value["thumbnailUrl"],
         title = snapshot.value["title"],
-        videoBlocks = snapshot.value["videoBlocks"];
+        subtitle = snapshot.value["subtitle"],
+        videoBlocks = snapshot.value["videoBlocks"],
+        duration = snapshot.value["duration"],
+        levelName = snapshot.value["level_name"],
+        level = snapshot.value["level"],
+        teachers = snapshot.value["teachers"],
+        type = snapshot.value["type"],
+        typeName = snapshot.value["type_name"];
 
 //  List<Week> getWeeks() {
 //    if (weeks == null || weeks.length == 0) {

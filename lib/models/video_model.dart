@@ -1,4 +1,3 @@
-
 class VideoModel {
   String content;
   String hls;
@@ -8,13 +7,17 @@ class VideoModel {
   String title;
   String thumbnail;
 
-
-  VideoModel({this.content, this.hls, this.iframe, this.picture, this.subtitle,
-    this.title, this.thumbnail});
+  VideoModel(
+      {this.content,
+      this.hls,
+      this.iframe,
+      this.picture,
+      this.subtitle,
+      this.title,
+      this.thumbnail});
 
   VideoModel.fromObject(dynamic value)
-      :
-        content = value["content"],
+      : content = value["content"],
         hls = value["hls"],
         iframe = value["iframe"],
         picture = value["picture"],

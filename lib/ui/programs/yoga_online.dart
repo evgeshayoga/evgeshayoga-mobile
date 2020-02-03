@@ -5,6 +5,7 @@ import 'package:evgeshayoga/utils/ProgressHUD.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:firebase_database/firebase_database.dart';
@@ -130,19 +131,78 @@ class _YogaOnlineState extends State<YogaOnline> {
               : Column(
                   children: <Widget>[
                     ListTile(title: title, subtitle: programThumbnail),
-//              Padding(
-//                padding: const EdgeInsets.all(12.0),
-//                child: Text(
-//                  "Доступен до " + dateFormatted(date),
-//                  style: Style.regularTextStyle,
-//                ),
-//              )
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 8.0, 16, 8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          Row(
+                            children: <Widget>[
+                              Text(
+                                yogaOnlineLesson.levelName + "  ",
+                                style: Style.regularTextStyle,
+                              ),
+                              levelIcon(yogaOnlineLesson.level),
+                            ],
+                          ),
+//                    Text(" " +
+//                      yogaOnlineLesson.id.toString(),
+//                      style: Style.regularTextStyle,
+//                    ),
+                          Row(
+                            children: <Widget>[
+                              Icon(
+                                Icons.hourglass_empty,
+                                size: 16,
+                              ),
+                              Text(": " +
+                                  yogaOnlineLesson.duration.toString() +
+                                  " мин"),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(teachers(yogaOnlineLesson.teachers)),
+                    ),
                   ],
                 ),
         ),
       ),
     );
   }
+}
+
+String teachers(teachersList) {
+  String teachersStr = '';
+  teachersList.forEach((teacher) {
+    teachersStr += ' ' + (teacher["name"]);
+  });
+  return teachersStr;
+}
+
+Widget levelIcon(level) {
+  Icon ic;
+  switch (level) {
+    case 0:
+      {
+        ic = Icon(MaterialCommunityIcons.signal_cellular_1, color: Style.blueGrey,);
+      }
+      break;
+    case 1:
+      {
+        ic = Icon(MaterialCommunityIcons.signal_cellular_2, color: Style.blueGrey);
+      }
+      break;
+    case 2:
+      {
+        ic = Icon(MaterialCommunityIcons.signal_cellular_3, color: Style.blueGrey);
+      }
+      break;
+  }
+  return ic;
 }
 
 Future<Map<String, dynamic>> getUserSubscriptionStatus(String uid) async {

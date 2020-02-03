@@ -119,15 +119,31 @@ class _ContentScreenState extends State<ContentScreen> {
           onWillPop: () async {
             return Future.value(false);
           },
-          child: TabBarView(
+          child: Stack(
             children: <Widget>[
-              YogaOnline(userUid: widget.userUid),
-              Programs(
-                userUid: widget.userUid,
+              TabBarView(
+                children: <Widget>[
+                  YogaOnline(
+                      userUid: widget.userUid
+                  ),
+                  Programs(
+                    userUid: widget.userUid,
+                  ),
+                ],
               ),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget filterContainer() {
+    return Container(
+      child: Column(
+        children: <Widget>[
+          Text("Filter"),
+        ],
       ),
     );
   }
