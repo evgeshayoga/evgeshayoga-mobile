@@ -27,7 +27,8 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
   User user;
   Map<String, dynamic> userSubscriptionStatus;
   bool hasAccess = false;
-  String _value;
+  String _selectedLevel;
+  String _selectedType;
   List videos = [];
 
   @override
@@ -77,6 +78,30 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
     return ddLevels;
   }
 
+  List<DropdownMenuItem> ddType() {
+    List<DropdownMenuItem> ddTypes = [];
+    Map types = {};
+    videos.forEach((video){
+      if (!types.containsKey(video["type"])){
+        types[video["type"]] = video["type_name"];
+      }
+    });
+    debugPrint(types.toString());
+    var keys = types.keys.toList();
+    debugPrint("keys"+keys.toString());
+    keys.forEach((key){
+      ddTypes.add(
+        DropdownMenuItem<String>(
+          value: key.toString(),
+          child: Text("" +
+              types[key],
+          ),
+        ),
+      );
+    });
+    return ddTypes;
+  }
+
   @override
   Widget build(BuildContext context) {
     var shortestSide = MediaQuery.of(context).size.shortestSide;
@@ -105,29 +130,28 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
               ),
               DropdownButton(
                 items: ddLevel(),
-//                [
-//                  DropdownMenuItem<String>(
-//                    value: "1",
-//                    child: Text(
-//                      "First",
-//                    ),
-//                  ),
-//                  DropdownMenuItem<String>(
-//                    value: "2",
-//                    child: Text(
-//                      "Second",
-//                    ),
-//                  ),
-//                ],
                 onChanged: (value) {
                   setState(() {
-                    _value = value;
+                    _selectedLevel = value;
                   });
-                  debugPrint(_value);
+                  debugPrint(_selectedLevel);
                 },
-                value: _value,
+//                value: __selectedLevel,
                 hint: Text(
                   "Уровень",
+                ),
+              ),
+              DropdownButton(
+                items: ddType(),
+                onChanged: (value) {
+                  setState(() {
+                    _selectedType = value;
+                  });
+//                  debugPrint(__selectedType);
+                },
+//                value: __selectedType,
+                hint: Text(
+                  "Вид",
                 ),
               )
             ],
