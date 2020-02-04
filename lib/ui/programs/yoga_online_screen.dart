@@ -55,15 +55,26 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
     });
   }
 
-  List<DropdownMenuItem> ddLevel(videoLessons) {
+  List<DropdownMenuItem> ddLevel() {
+    List<DropdownMenuItem> ddLevels = [];
     Map levels = {};
     videos.forEach((video){
       if (!levels.containsKey(video["level"])){
         levels[video["level"]] = video["level_name"];
       }
     });
-    debugPrint(levels.toString());
-    return null;
+    var sortedKeys = levels.keys.toList()..sort();
+    sortedKeys.forEach((key){
+      ddLevels.add(
+        DropdownMenuItem<String>(
+          value: key.toString(),
+          child: Text("" +
+            levels[key],
+          ),
+        ),
+      );
+    });
+    return ddLevels;
   }
 
   @override
@@ -93,28 +104,30 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
                 child: Center(child: Text("Тип")),
               ),
               DropdownButton(
-                items: [
-                  DropdownMenuItem<String>(
-                    value: "1",
-                    child: Text(
-                      "First",
-                    ),
-                  ),
-                  DropdownMenuItem<String>(
-                    value: "2",
-                    child: Text(
-                      "Second",
-                    ),
-                  ),
-                ],
+                items: ddLevel(),
+//                [
+//                  DropdownMenuItem<String>(
+//                    value: "1",
+//                    child: Text(
+//                      "First",
+//                    ),
+//                  ),
+//                  DropdownMenuItem<String>(
+//                    value: "2",
+//                    child: Text(
+//                      "Second",
+//                    ),
+//                  ),
+//                ],
                 onChanged: (value) {
                   setState(() {
                     _value = value;
                   });
+                  debugPrint(_value);
                 },
                 value: _value,
                 hint: Text(
-                  "Тип",
+                  "Уровень",
                 ),
               )
             ],
