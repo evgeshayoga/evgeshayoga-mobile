@@ -4,7 +4,7 @@ import 'package:evgeshayoga/utils/ProgressHUD.dart';
 import 'package:evgeshayoga/utils/date_formatter.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:flutter/material.dart';
-import 'package:evgeshayoga/ui/programs/yoga_online.dart';
+import 'package:evgeshayoga/ui/programs/yoga_online_screen.dart';
 
 class SubscriptionScreen extends StatefulWidget {
   final String userUid;

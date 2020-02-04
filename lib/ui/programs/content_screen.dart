@@ -1,7 +1,7 @@
 import 'package:evgeshayoga/models/user.dart';
 import 'package:evgeshayoga/ui/programs/components/drawer_content_screen.dart';
 import 'package:evgeshayoga/ui/programs/filter_screen.dart';
-import 'package:evgeshayoga/ui/programs/yoga_online.dart';
+import 'package:evgeshayoga/ui/programs/yoga_online_screen.dart';
 import 'package:evgeshayoga/ui/programs/programs_screen.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -187,7 +187,7 @@ class _ContentScreenState extends State<ContentScreen> {
             children: <Widget>[
               TabBarView(
                 children: <Widget>[
-                  YogaOnline(userUid: widget.userUid),
+                  YogaOnlineScreen(userUid: widget.userUid),
                   Programs(
                     userUid: widget.userUid,
                   ),

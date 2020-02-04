@@ -1,5 +1,6 @@
 import 'package:evgeshayoga/models/user.dart';
 import 'package:evgeshayoga/models/yoga_online_lesson.dart';
+import 'package:evgeshayoga/ui/programs/components/drawer_content_screen.dart';
 import 'package:evgeshayoga/ui/programs/lesson_screen.dart';
 import 'package:evgeshayoga/utils/ProgressHUD.dart';
 import 'package:evgeshayoga/utils/style.dart';
@@ -10,22 +11,23 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:firebase_database/firebase_database.dart';
 
-class YogaOnline extends StatefulWidget {
+class YogaOnlineScreen extends StatefulWidget {
   final String userUid;
 
-  YogaOnline({Key key, this.userUid}) : super(key: key);
+  YogaOnlineScreen({Key key, this.userUid}) : super(key: key);
 
   @override
-  _YogaOnlineState createState() => _YogaOnlineState();
+  _YogaOnlineScreenState createState() => _YogaOnlineScreenState();
 }
 
-class _YogaOnlineState extends State<YogaOnline> {
+class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
   static const int tabletBreakpoint = 600;
   final FirebaseDatabase database = FirebaseDatabase.instance;
   DatabaseReference dbVideosReference;
   User user;
   Map<String, dynamic> userSubscriptionStatus;
   bool hasAccess = false;
+  String _value;
 
   @override
   void initState() {
@@ -50,15 +52,134 @@ class _YogaOnlineState extends State<YogaOnline> {
         shortestSide < tabletBreakpoint) {
       isLandscape = false;
     }
+    return Scaffold(
+      drawer: drawerProgramScreen(user, context, widget.userUid, isLandscape),
+      endDrawer: Drawer(
+        child: SafeArea(
+          child: Column(
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(top: 50),
+              ),
+              Container(
+                height: 50,
+                child: Center(child: Text("Преподаватель")),
+              ),
+              Container(
+                height: 50,
+                child: Center(child: Text("Тип")),
+              ),
+              DropdownButton(
+                items: [
+                  DropdownMenuItem<String>(
+                    value: "1",
+                    child: Text(
+                      "First",
+                    ),
+                  ),
+                  DropdownMenuItem<String>(
+                    value: "2",
+                    child: Text(
+                      "Second",
+                    ),
+                  ),
+                ],
+                onChanged: (value) {
+                  setState(() {
+                    _value = value;
+                  });
+                },
+                value: _value,
+                hint: Text(
+                  "Тип",
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+      appBar: AppBar(
+        leading: Builder(
+          builder: (BuildContext context) {
+            return IconButton(
+              icon: const Icon(
+                Icons.menu,
+                color: Colors.blueGrey,
+              ),
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+              tooltip:
+              MaterialLocalizations.of(context).openAppDrawerTooltip,
+            );
+          },
+        ),
+        title: Image.asset(
+          'assets/images/logo_white.png',
+          alignment: Alignment.centerLeft,
+          fit: BoxFit.contain,
+          repeat: ImageRepeat.noRepeat,
+          height: 30,
+        ),
+        centerTitle: true,
+        backgroundColor: Style.pinkMain,
+//            actions: [
+//              Builder(
+//                  builder: (context) => IconButton(
+//                        icon: Icon(
+//                          AntDesign.filter,
+//                          size: 26.0,
+//                          color: Style.blueGrey,
+//                        ),
+//                        onPressed: () {
+//                          var router =
+//                          new MaterialPageRoute(builder: (BuildContext context) {
+//                            return FilterScreen();
+//                          });
+//                          Navigator.of(context).push(router);
+//                        },
+//                      ))
+//            ]
+//          <Widget>[
+//            Padding(
+//              padding: const EdgeInsets.all(8.0),
+//              child: GestureDetector(
+//                onTap: () {},
+//                child: Icon(
+//                  Icons.search,
+//                  size: 26.0,
+//                  color: Style.blueGrey,
+//                ),
+//              ),
+//            ),
+//            Padding(
+//              padding: const EdgeInsets.all(8.0),
+//              child: GestureDetector(
+//                onTap: () => Scaffold.of(context).openEndDrawer(),
+//                child: Icon(
+//                  AntDesign.filter,
+//                  size: 26.0,
+//                  color: Style.blueGrey,
+//                ),
+//              ),
+//            )
+//          ],
+      ),
+      body: yogaOnlineBody(isLandscape),
+    );
 
+
+  }
+
+  Widget yogaOnlineBody(isLandscape){
     if (userSubscriptionStatus == null) {
       return progressHUD();
     } else
       return hasAccess
           ? videoLessons(isLandscape)
           : Center(
-              child: Text('Вы не подписаны на Yoga Online'),
-            );
+        child: Text('Вы не подписаны на Yoga Online'),
+      );
   }
 
   Widget videoLessons(isLandscape) {

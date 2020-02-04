@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:evgeshayoga/models/user.dart';
 import 'package:evgeshayoga/ui/programs/content_screen.dart';
+import 'package:evgeshayoga/ui/programs/yoga_online_screen.dart';
 import 'package:evgeshayoga/utils/ProgressHUD.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -349,7 +350,7 @@ class _LoginState extends State<Login> {
         ))
             .user;
         var router = new MaterialPageRoute(builder: (BuildContext context) {
-          return ContentScreen(userUid: newUser.uid,);
+          return YogaOnlineScreen(userUid: newUser.uid,);
         });
         Navigator.of(context).push(router);
       } on PlatformException catch (e) {

@@ -1,6 +1,7 @@
 import 'package:evgeshayoga/models/user.dart';
 import 'package:evgeshayoga/ui/profile_screen.dart';
 import 'package:evgeshayoga/ui/programs/components/subscription_screen.dart';
+import 'package:evgeshayoga/ui/programs/programs_screen.dart';
 import 'package:evgeshayoga/ui/purchases_screen.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -63,6 +64,20 @@ Widget drawerProgramScreen(User user, context, userUid, isLandscape) {
                     var router =
                         new MaterialPageRoute(builder: (BuildContext context) {
                       return ProfileScreen(user);
+                    });
+                    Navigator.of(context).push(router);
+                  },
+                ),
+                ListTile(
+                  title: Text(
+                    "Программы",
+                    textAlign: TextAlign.center,
+                    style: Style.regularTextStyle,
+                  ),
+                  onTap: () {
+                    var router =
+                    new MaterialPageRoute(builder: (BuildContext context) {
+                      return Programs(userUid: userUid);
                     });
                     Navigator.of(context).push(router);
                   },
