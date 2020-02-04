@@ -28,6 +28,7 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
   Map<String, dynamic> userSubscriptionStatus;
   bool hasAccess = false;
   String _value;
+  List videos = [];
 
   @override
   void initState() {
@@ -35,12 +36,34 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
     dbVideosReference = database.reference().child("videos");
     user = User("", "", "", "");
 
+    dbVideosReference.once().then((snapshot) {
+      for (var value in snapshot.value){
+        if(value != null) {
+          videos.add(value);
+        }
+      }
+      debugPrint(videos.length.toString());
+      debugPrint(videos[0]["level"].toString());
+//      debugPrint("START" + snapshot.value.toString() + "END");
+    });
+
     getUserSubscriptionStatus(widget.userUid).then((subscription) {
       setState(() {
         userSubscriptionStatus = subscription;
         hasAccess = userSubscriptionStatus['isSubscriptionActive'];
       });
     });
+  }
+
+  List<DropdownMenuItem> ddLevel(videoLessons) {
+    Map levels = {};
+    videos.forEach((video){
+      if (!levels.containsKey(video["level"])){
+        levels[video["level"]] = video["level_name"];
+      }
+    });
+    debugPrint(levels.toString());
+    return null;
   }
 
   @override
@@ -123,23 +146,17 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
         ),
         centerTitle: true,
         backgroundColor: Style.pinkMain,
-//            actions: [
-//              Builder(
-//                  builder: (context) => IconButton(
-//                        icon: Icon(
-//                          AntDesign.filter,
-//                          size: 26.0,
-//                          color: Style.blueGrey,
-//                        ),
-//                        onPressed: () {
-//                          var router =
-//                          new MaterialPageRoute(builder: (BuildContext context) {
-//                            return FilterScreen();
-//                          });
-//                          Navigator.of(context).push(router);
-//                        },
-//                      ))
-//            ]
+            actions: [
+              Builder(
+                  builder: (context) => IconButton(
+                        icon: Icon(
+                          AntDesign.filter,
+                          size: 26.0,
+                          color: Style.blueGrey,
+                        ),
+                        onPressed: () => Scaffold.of(context).openEndDrawer(),
+                      ))
+            ]
 //          <Widget>[
 //            Padding(
 //              padding: const EdgeInsets.all(8.0),
@@ -167,8 +184,6 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
       ),
       body: yogaOnlineBody(isLandscape),
     );
-
-
   }
 
   Widget yogaOnlineBody(isLandscape){
@@ -185,12 +200,14 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
   Widget videoLessons(isLandscape) {
     return Column(
       children: <Widget>[
+        Text("videos"+videos.length.toString()),
         Flexible(
           child: FirebaseAnimatedList(
               query: dbVideosReference,
               itemBuilder: (_, DataSnapshot snapshot,
                   Animation<double> animation, int index) {
                 var yogaOnlineLesson = YogaOnlineLesson.fromSnapshot(snapshot);
+                videos.add(yogaOnlineLesson);
 
                 if (snapshot == null || userSubscriptionStatus == null) {
                   return progressHUD();
