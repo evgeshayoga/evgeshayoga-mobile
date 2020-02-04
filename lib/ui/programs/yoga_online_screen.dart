@@ -30,6 +30,7 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
   String _selectedLevel;
   String _selectedType;
   String _selectedTeacher;
+  String _selectedDuration;
   List videos = [];
 
   @override
@@ -115,9 +116,9 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
       });
       }
     );
-    debugPrint(teachers.toString());
+//    debugPrint(teachers.toString());
     var keys = teachers.keys.toList()..sort();
-    debugPrint("keys"+keys.toString());
+//    debugPrint("keys"+keys.toString());
 
     keys.forEach((key){
       ddTeachers.add(
@@ -131,6 +132,28 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
     });
     return ddTeachers;
   }
+//
+//  List<DropdownMenuItem> ddDuration() {
+//    List<DropdownMenuItem> ddDurations = [];
+//    List durations = [];
+//    videos.forEach((video){
+//      if (!durations.contains(video["duration"])){
+//        durations.add(video["duration"]);
+//      }
+//    });
+//    List sorted = durations..sort();
+//    sorted.forEach((element){
+//      ddDurations.add(
+//        DropdownMenuItem<String>(
+//          value: element.toString(),
+//          child: Text("" +
+//              element.toString(),
+//          ),
+//        ),
+//      );
+//    });
+//    return ddDurations;
+//  }
 
   @override
   Widget build(BuildContext context) {
@@ -152,11 +175,7 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
               ),
               Container(
                 height: 50,
-                child: Center(child: Text("Преподаватель")),
-              ),
-              Container(
-                height: 50,
-                child: Center(child: Text("Тип")),
+                child: Center(child: Text("Фильтры")),
               ),
               DropdownButton(
                 items: ddLevel(),
@@ -195,6 +214,55 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
 //                value: __selectedType,
                 hint: Text(
                   "Преподаватель",
+                ),
+              ),
+              DropdownButton(
+                items: [
+                  DropdownMenuItem<String>(
+                    value: '10',
+                    child: Text("10",
+                    ),
+                  ),
+                  DropdownMenuItem<String>(
+                    value: '20',
+                    child: Text("20",
+                    ),
+                  ),
+                  DropdownMenuItem<String>(
+                    value: '30',
+                    child: Text("30",
+                    ),
+                  ),
+                  DropdownMenuItem<String>(
+                    value: '40',
+                    child: Text("40",
+                    ),
+                  ),
+                  DropdownMenuItem<String>(
+                    value: '50',
+                    child: Text("50",
+                    ),
+                  ),
+                  DropdownMenuItem<String>(
+                    value: '60',
+                    child: Text("60",
+                    ),
+                  ),
+                  DropdownMenuItem<String>(
+                    value: '90',
+                    child: Text("90",
+                    ),
+                  ),
+                ],
+                onChanged: (value) {
+                  setState(() {
+                    _selectedDuration = value;
+                  });
+//                  debugPrint(__selectedType);
+                },
+//                value: __selectedType,
+                hint: Text(
+                  "Продолжительност",
                 ),
               )
             ],
@@ -280,7 +348,6 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
   Widget videoLessons(isLandscape) {
     return Column(
       children: <Widget>[
-        Text("videos"+videos.length.toString()),
         Flexible(
           child: FirebaseAnimatedList(
               query: dbVideosReference,
