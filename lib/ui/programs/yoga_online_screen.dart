@@ -29,6 +29,7 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
   bool hasAccess = false;
   String _selectedLevel;
   String _selectedType;
+  String _selectedTeacher;
   List videos = [];
 
   @override
@@ -43,8 +44,8 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
           videos.add(value);
         }
       }
-      debugPrint(videos.length.toString());
-      debugPrint(videos[0]["level"].toString());
+//      debugPrint(videos.length.toString());
+//      debugPrint(videos[0]["level"].toString());
 //      debugPrint("START" + snapshot.value.toString() + "END");
     });
 
@@ -86,9 +87,9 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
         types[video["type"]] = video["type_name"];
       }
     });
-    debugPrint(types.toString());
+//    debugPrint(types.toString());
     var keys = types.keys.toList();
-    debugPrint("keys"+keys.toString());
+//    debugPrint("keys"+keys.toString());
     keys.forEach((key){
       ddTypes.add(
         DropdownMenuItem<String>(
@@ -100,6 +101,35 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
       );
     });
     return ddTypes;
+  }
+
+  List<DropdownMenuItem> ddTeachers() {
+    List<DropdownMenuItem> ddTeachers = [];
+    Map teachers = {};
+    
+    videos.forEach((video){
+      video["teachers"].forEach((teacher){
+        if (!teachers.containsKey(teacher["id"])) {
+          teachers[teacher["id"]] = teacher["name"];
+        }
+      });
+      }
+    );
+    debugPrint(teachers.toString());
+    var keys = teachers.keys.toList()..sort();
+    debugPrint("keys"+keys.toString());
+
+    keys.forEach((key){
+      ddTeachers.add(
+        DropdownMenuItem<String>(
+          value: key.toString(),
+          child: Text("" +
+              teachers[key],
+          ),
+        ),
+      );
+    });
+    return ddTeachers;
   }
 
   @override
@@ -134,7 +164,7 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
                   setState(() {
                     _selectedLevel = value;
                   });
-                  debugPrint(_selectedLevel);
+//                  debugPrint(_selectedLevel);
                 },
 //                value: __selectedLevel,
                 hint: Text(
@@ -152,6 +182,19 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
 //                value: __selectedType,
                 hint: Text(
                   "Вид",
+                ),
+              ),
+              DropdownButton(
+                items: ddTeachers(),
+                onChanged: (value) {
+                  setState(() {
+                    _selectedTeacher = value;
+                  });
+//                  debugPrint(__selectedType);
+                },
+//                value: __selectedType,
+                hint: Text(
+                  "Преподаватель",
                 ),
               )
             ],
