@@ -1,5 +1,6 @@
 import 'package:evgeshayoga/models/user.dart';
 import 'package:evgeshayoga/ui/programs/components/drawer_content_screen.dart';
+import 'package:evgeshayoga/ui/programs/filter_screen.dart';
 import 'package:evgeshayoga/ui/programs/yoga_online.dart';
 import 'package:evgeshayoga/ui/programs/programs_screen.dart';
 import 'package:evgeshayoga/utils/style.dart';
@@ -23,6 +24,7 @@ class _ContentScreenState extends State<ContentScreen> {
   DatabaseReference dbProgramsReference;
   User user;
   Map<String, dynamic> userProgramsStatuses;
+  String _value;
 
   @override
   void initState() {
@@ -53,68 +55,130 @@ class _ContentScreenState extends State<ContentScreen> {
       length: 2,
       child: Scaffold(
         drawer: drawerProgramScreen(user, context, widget.userUid, isLandscape),
-        appBar: AppBar(
-          leading: Builder(
-            builder: (BuildContext context) {
-              return IconButton(
-                icon: const Icon(
-                  Icons.menu,
-                  color: Colors.blueGrey,
+        endDrawer: Drawer(
+          child: SafeArea(
+            child: Column(
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(top: 50),
                 ),
-                onPressed: () {
-                  Scaffold.of(context).openDrawer();
-                },
-                tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-              );
-            },
-          ),
-          title: Image.asset(
-            'assets/images/logo_white.png',
-            alignment: Alignment.centerLeft,
-            fit: BoxFit.contain,
-            repeat: ImageRepeat.noRepeat,
-            height: 30,
-          ),
-          bottom: TabBar(
-            indicatorColor: Style.pinkDark,
-            unselectedLabelColor: Colors.white,
-            labelColor: Style.blueGrey,
-            tabs: [
-              Tab(
-                text: "Йога-онлайн",
-              ),
-              Tab(
-                text: "Программы",
-              ),
-            ],
-          ),
-          centerTitle: true,
-          backgroundColor: Style.pinkMain,
-          actions: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: GestureDetector(
-                onTap: () {},
-                child: Icon(
-                  Icons.search,
-                  size: 26.0,
-                  color: Style.blueGrey,
+                Container(
+                  height: 50,
+                  child: Center(child: Text("Преподаватель")),
                 ),
-              ),
+                Container(
+                  height: 50,
+                  child: Center(child: Text("Тип")),
+                ),
+                DropdownButton(
+                  items: [
+                    DropdownMenuItem<String>(
+                      value: "1",
+                      child: Text(
+                        "First",
+                      ),
+                    ),
+                    DropdownMenuItem<String>(
+                      value: "2",
+                      child: Text(
+                        "Second",
+                      ),
+                    ),
+                  ],
+                  onChanged: (value) {
+                    setState(() {
+                      _value = value;
+                    });
+                  },
+                  value: _value,
+                  hint: Text(
+                    "Тип",
+                  ),
+                )
+              ],
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: GestureDetector(
-                onTap: () {},
-                child: Icon(
-                  AntDesign.filter,
-                  size: 26.0,
-                  color: Style.blueGrey,
-                ),
-              ),
-            )
-          ],
+          ),
         ),
+        appBar: AppBar(
+            leading: Builder(
+              builder: (BuildContext context) {
+                return IconButton(
+                  icon: const Icon(
+                    Icons.menu,
+                    color: Colors.blueGrey,
+                  ),
+                  onPressed: () {
+                    Scaffold.of(context).openDrawer();
+                  },
+                  tooltip:
+                      MaterialLocalizations.of(context).openAppDrawerTooltip,
+                );
+              },
+            ),
+            title: Image.asset(
+              'assets/images/logo_white.png',
+              alignment: Alignment.centerLeft,
+              fit: BoxFit.contain,
+              repeat: ImageRepeat.noRepeat,
+              height: 30,
+            ),
+            bottom: TabBar(
+              indicatorColor: Style.pinkDark,
+              unselectedLabelColor: Colors.white,
+              labelColor: Style.blueGrey,
+              tabs: [
+                Tab(
+                  text: "Йога-онлайн",
+                ),
+                Tab(
+                  text: "Программы",
+                ),
+              ],
+            ),
+            centerTitle: true,
+            backgroundColor: Style.pinkMain,
+//            actions: [
+//              Builder(
+//                  builder: (context) => IconButton(
+//                        icon: Icon(
+//                          AntDesign.filter,
+//                          size: 26.0,
+//                          color: Style.blueGrey,
+//                        ),
+//                        onPressed: () {
+//                          var router =
+//                          new MaterialPageRoute(builder: (BuildContext context) {
+//                            return FilterScreen();
+//                          });
+//                          Navigator.of(context).push(router);
+//                        },
+//                      ))
+//            ]
+//          <Widget>[
+//            Padding(
+//              padding: const EdgeInsets.all(8.0),
+//              child: GestureDetector(
+//                onTap: () {},
+//                child: Icon(
+//                  Icons.search,
+//                  size: 26.0,
+//                  color: Style.blueGrey,
+//                ),
+//              ),
+//            ),
+//            Padding(
+//              padding: const EdgeInsets.all(8.0),
+//              child: GestureDetector(
+//                onTap: () => Scaffold.of(context).openEndDrawer(),
+//                child: Icon(
+//                  AntDesign.filter,
+//                  size: 26.0,
+//                  color: Style.blueGrey,
+//                ),
+//              ),
+//            )
+//          ],
+            ),
         body: WillPopScope(
           onWillPop: () async {
             return Future.value(false);
@@ -123,9 +187,7 @@ class _ContentScreenState extends State<ContentScreen> {
             children: <Widget>[
               TabBarView(
                 children: <Widget>[
-                  YogaOnline(
-                      userUid: widget.userUid
-                  ),
+                  YogaOnline(userUid: widget.userUid),
                   Programs(
                     userUid: widget.userUid,
                   ),
@@ -148,3 +210,27 @@ class _ContentScreenState extends State<ContentScreen> {
     );
   }
 }
+
+Widget filterDrawer(context) {
+  return Drawer(
+    child: SafeArea(
+      child: Column(
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(top: 50),
+          ),
+          Container(
+            height: 50,
+            child: Center(child: Text("Преподаватель")),
+          ),
+          Container(
+            height: 50,
+            child: Center(child: Text("Тип")),
+          ),
+
+        ],
+      ),
+    ),
+  );
+}
+
