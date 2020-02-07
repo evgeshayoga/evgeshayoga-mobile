@@ -195,6 +195,7 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
                 hint: Text(
                   "Уровень",
                 ),
+                value: _selectedLevel,
               ),
               DropdownButton(
                 items: ddType(),
@@ -208,6 +209,7 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
                 hint: Text(
                   "Вид",
                 ),
+                value: _selectedType,
               ),
               DropdownButton(
                 items: ddTeachers(),
@@ -221,6 +223,7 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
                 hint: Text(
                   "Преподаватель",
                 ),
+                value: _selectedTeacher,
               ),
               DropdownButton(
                 items: [
@@ -270,6 +273,7 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
                 hint: Text(
                   "Продолжительност",
                 ),
+                value: _selectedDuration,
               ),
               RaisedButton(
                 onPressed: () {
