@@ -13,7 +13,7 @@ class YogaOnlineLesson {
   String levelName;
   int level;
   List teachers;
-  int type;
+  var type;
   String typeName;
 
   YogaOnlineLesson(
@@ -30,6 +30,21 @@ class YogaOnlineLesson {
       this.teachers,
       this.type,
       this.typeName});
+
+  YogaOnlineLesson.fromFB(value)
+      : id = value["id"],
+        content = value["content"],
+        isActive = value["isActive"],
+        thumbnailUrl = value["thumbnailUrl"],
+        title = value["title"],
+        subtitle = value["subtitle"],
+        videoBlocks = value["videoBlocks"],
+        duration = value["duration"],
+        levelName = value["level_name"],
+        level = value["level"],
+        teachers = value["teachers"],
+        type = value["type"],
+        typeName = value["type_name"];
 
   YogaOnlineLesson.fromSnapshot(DataSnapshot snapshot)
       : id = snapshot.value["id"],

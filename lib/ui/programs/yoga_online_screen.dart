@@ -32,6 +32,7 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
   String _selectedTeacher;
   String _selectedDuration;
   List videos = [];
+  List videosToDisplay = [];
 
   @override
   void initState() {
@@ -42,12 +43,17 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
     dbVideosReference.once().then((snapshot) {
       for (var value in snapshot.value){
         if(value != null) {
-          videos.add(value);
+          videos.add(YogaOnlineLesson.fromFB(value));
         }
       }
-//      debugPrint(videos.length.toString());
+      debugPrint(videos[1].title);
+//      debugPrint(videos.toString());
 //      debugPrint(videos[0]["level"].toString());
 //      debugPrint("START" + snapshot.value.toString() + "END");
+//    var result = videos.map((v){
+//      YogaOnlineLesson.fromFB(v);
+//    });
+//    debugPrint(result.toString());
     });
 
     getUserSubscriptionStatus(widget.userUid).then((subscription) {
@@ -62,8 +68,8 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
     List<DropdownMenuItem> ddLevels = [];
     Map levels = {};
     videos.forEach((video){
-      if (!levels.containsKey(video["level"])){
-        levels[video["level"]] = video["level_name"];
+      if (!levels.containsKey(video.level)){
+        levels[video.level] = video.levelName;
       }
     });
     var sortedKeys = levels.keys.toList()..sort();
@@ -84,8 +90,8 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
     List<DropdownMenuItem> ddTypes = [];
     Map types = {};
     videos.forEach((video){
-      if (!types.containsKey(video["type"])){
-        types[video["type"]] = video["type_name"];
+      if (!types.containsKey(video.type)){
+        types[video.type] = video.typeName;
       }
     });
 //    debugPrint(types.toString());
@@ -107,9 +113,9 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
   List<DropdownMenuItem> ddTeachers() {
     List<DropdownMenuItem> ddTeachers = [];
     Map teachers = {};
-    
+
     videos.forEach((video){
-      video["teachers"].forEach((teacher){
+      video.teachers.forEach((teacher){
         if (!teachers.containsKey(teacher["id"])) {
           teachers[teacher["id"]] = teacher["name"];
         }
@@ -264,7 +270,28 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
                 hint: Text(
                   "Продолжительност",
                 ),
-              )
+              ),
+              RaisedButton(
+                onPressed: () {
+                  _clearFilters();
+                },
+                color: Style.pinkMain,
+                child: new Text(
+                  "Применить",
+                  style: Style.regularTextStyle,
+                ),
+              ),
+              RaisedButton(
+                onPressed: () {
+                  _clearFilters();
+                },
+                color: Style.pinkMain,
+                child: new Text(
+                  "Очистить",
+                  style: Style.regularTextStyle,
+                ),
+              ),
+
             ],
           ),
         ),
@@ -303,32 +330,18 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
                           color: Style.blueGrey,
                         ),
                         onPressed: () => Scaffold.of(context).openEndDrawer(),
-                      ))
+                      )),
+              Builder(
+                builder: (context) => IconButton(
+                  icon: Icon(
+                  Icons.search,
+                  size: 26.0,
+                  color: Style.blueGrey,
+                ),
+                  onPressed: (){},
+                )
+              )
             ]
-//          <Widget>[
-//            Padding(
-//              padding: const EdgeInsets.all(8.0),
-//              child: GestureDetector(
-//                onTap: () {},
-//                child: Icon(
-//                  Icons.search,
-//                  size: 26.0,
-//                  color: Style.blueGrey,
-//                ),
-//              ),
-//            ),
-//            Padding(
-//              padding: const EdgeInsets.all(8.0),
-//              child: GestureDetector(
-//                onTap: () => Scaffold.of(context).openEndDrawer(),
-//                child: Icon(
-//                  AntDesign.filter,
-//                  size: 26.0,
-//                  color: Style.blueGrey,
-//                ),
-//              ),
-//            )
-//          ],
       ),
       body: yogaOnlineBody(isLandscape),
     );
@@ -363,6 +376,7 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
                 if (!yogaOnlineLesson.isActive) {
                   return Container();
                 }
+
                 return _yogaOnlineLessonCard(yogaOnlineLesson, isLandscape);
               }),
         )
@@ -423,6 +437,18 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
         ),
       ),
     );
+  }
+
+  void _applyFilters() {
+// teacher, duration, type, accent, level
+  }
+
+  void _clearFilters() {
+    _selectedDuration = null;
+    _selectedLevel = null;
+    _selectedTeacher = null;
+    _selectedType = null;
+    ;
   }
 }
 
