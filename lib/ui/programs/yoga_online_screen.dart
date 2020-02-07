@@ -41,8 +41,8 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
     user = User("", "", "", "");
 
     dbVideosReference.once().then((snapshot) {
-      for (var value in snapshot.value){
-        if(value != null) {
+      for (var value in snapshot.value) {
+        if (value != null) {
           videos.add(YogaOnlineLesson.fromFB(value));
         }
       }
@@ -67,18 +67,18 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
   List<DropdownMenuItem> ddLevel() {
     List<DropdownMenuItem> ddLevels = [];
     Map levels = {};
-    videos.forEach((video){
-      if (!levels.containsKey(video.level)){
+    videos.forEach((video) {
+      if (!levels.containsKey(video.level)) {
         levels[video.level] = video.levelName;
       }
     });
     var sortedKeys = levels.keys.toList()..sort();
-    sortedKeys.forEach((key){
+    sortedKeys.forEach((key) {
       ddLevels.add(
         DropdownMenuItem<String>(
           value: key.toString(),
-          child: Text("" +
-            levels[key],
+          child: Text(
+            "" + levels[key],
           ),
         ),
       );
@@ -89,20 +89,20 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
   List<DropdownMenuItem> ddType() {
     List<DropdownMenuItem> ddTypes = [];
     Map types = {};
-    videos.forEach((video){
-      if (!types.containsKey(video.type)){
+    videos.forEach((video) {
+      if (!types.containsKey(video.type)) {
         types[video.type] = video.typeName;
       }
     });
 //    debugPrint(types.toString());
     var keys = types.keys.toList();
 //    debugPrint("keys"+keys.toString());
-    keys.forEach((key){
+    keys.forEach((key) {
       ddTypes.add(
         DropdownMenuItem<String>(
           value: key.toString(),
-          child: Text("" +
-              types[key],
+          child: Text(
+            "" + types[key],
           ),
         ),
       );
@@ -114,30 +114,30 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
     List<DropdownMenuItem> ddTeachers = [];
     Map teachers = {};
 
-    videos.forEach((video){
-      video.teachers.forEach((teacher){
+    videos.forEach((video) {
+      video.teachers.forEach((teacher) {
         if (!teachers.containsKey(teacher["id"])) {
           teachers[teacher["id"]] = teacher["name"];
         }
       });
-      }
-    );
+    });
 //    debugPrint(teachers.toString());
     var keys = teachers.keys.toList()..sort();
 //    debugPrint("keys"+keys.toString());
 
-    keys.forEach((key){
+    keys.forEach((key) {
       ddTeachers.add(
         DropdownMenuItem<String>(
           value: key.toString(),
-          child: Text("" +
-              teachers[key],
+          child: Text(
+            "" + teachers[key],
           ),
         ),
       );
     });
     return ddTeachers;
   }
+
 //
 //  List<DropdownMenuItem> ddDuration() {
 //    List<DropdownMenuItem> ddDurations = [];
@@ -229,37 +229,44 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
                 items: [
                   DropdownMenuItem<String>(
                     value: '10',
-                    child: Text("10",
+                    child: Text(
+                      "10",
                     ),
                   ),
                   DropdownMenuItem<String>(
                     value: '20',
-                    child: Text("20",
+                    child: Text(
+                      "20",
                     ),
                   ),
                   DropdownMenuItem<String>(
                     value: '30',
-                    child: Text("30",
+                    child: Text(
+                      "30",
                     ),
                   ),
                   DropdownMenuItem<String>(
                     value: '40',
-                    child: Text("40",
+                    child: Text(
+                      "40",
                     ),
                   ),
                   DropdownMenuItem<String>(
                     value: '50',
-                    child: Text("50",
+                    child: Text(
+                      "50",
                     ),
                   ),
                   DropdownMenuItem<String>(
                     value: '60',
-                    child: Text("60",
+                    child: Text(
+                      "60",
                     ),
                   ),
                   DropdownMenuItem<String>(
                     value: '90',
-                    child: Text("90",
+                    child: Text(
+                      "90",
                     ),
                   ),
                 ],
@@ -295,74 +302,92 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
                   style: Style.regularTextStyle,
                 ),
               ),
-
             ],
           ),
         ),
       ),
       appBar: AppBar(
-        leading: Builder(
-          builder: (BuildContext context) {
-            return IconButton(
-              icon: const Icon(
-                Icons.menu,
-                color: Colors.blueGrey,
-              ),
-              onPressed: () {
-                Scaffold.of(context).openDrawer();
-              },
-              tooltip:
-              MaterialLocalizations.of(context).openAppDrawerTooltip,
-            );
-          },
-        ),
-        title: Image.asset(
-          'assets/images/logo_white.png',
-          alignment: Alignment.centerLeft,
-          fit: BoxFit.contain,
-          repeat: ImageRepeat.noRepeat,
-          height: 30,
-        ),
-        centerTitle: true,
-        backgroundColor: Style.pinkMain,
-            actions: [
-              Builder(
-                  builder: (context) => IconButton(
-                        icon: Icon(
-                          AntDesign.filter,
-                          size: 26.0,
-                          color: Style.blueGrey,
-                        ),
-                        onPressed: () => Scaffold.of(context).openEndDrawer(),
-                      )),
-              Builder(
-                builder: (context) => IconButton(
-                  icon: Icon(
+          leading: Builder(
+            builder: (BuildContext context) {
+              return IconButton(
+                icon: const Icon(
+                  Icons.menu,
+                  color: Colors.blueGrey,
+                ),
+                onPressed: () {
+                  Scaffold.of(context).openDrawer();
+                },
+                tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+              );
+            },
+          ),
+          title: Image.asset(
+            'assets/images/logo_white.png',
+            alignment: Alignment.centerLeft,
+            fit: BoxFit.contain,
+            repeat: ImageRepeat.noRepeat,
+            height: 30,
+          ),
+          centerTitle: true,
+          backgroundColor: Style.pinkMain,
+          actions: [
+            Builder(
+              builder: (context) => IconButton(
+                icon: Icon(
                   Icons.search,
                   size: 26.0,
                   color: Style.blueGrey,
                 ),
-                  onPressed: (){},
-                )
-              )
-            ]
-      ),
+                onPressed: () {},
+              ),
+            ),
+            Builder(
+              builder: (context) => IconButton(
+                icon: Icon(
+                  AntDesign.filter,
+                  size: 26.0,
+                  color: Style.blueGrey,
+                ),
+                onPressed: () => Scaffold.of(context).openEndDrawer(),
+              ),
+            ),
+          ]),
       body: yogaOnlineBody(isLandscape),
     );
   }
 
-  Widget yogaOnlineBody(isLandscape){
+  Widget yogaOnlineBody(isLandscape) {
     if (userSubscriptionStatus == null) {
       return progressHUD();
     } else
       return hasAccess
           ? videoLessons(isLandscape)
           : Center(
-        child: Text('Вы не подписаны на Yoga Online'),
-      );
+              child: Text('Вы не подписаны на Yoga Online'),
+            );
   }
 
   Widget videoLessons(isLandscape) {
+    if (videos.length == 0 || videos.length == null) {
+      return progressHUD();
+    } else {
+      List<Widget> videosColumn = [];
+      videos.forEach((video) {
+        if (!video.isActive) {
+          videosColumn.add(Container());
+        } else {
+          videosColumn.add(_yogaOnlineLessonCard(video, isLandscape));
+        }
+      });
+
+      return ListView(
+        children: <Widget>[
+          Column(
+            children: videosColumn,
+          ),
+        ],
+      );
+    }
     return Column(
       children: <Widget>[
         Flexible(
@@ -456,7 +481,7 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
   }
 }
 
-Widget additionalInfo(yogaOnlineLesson){
+Widget additionalInfo(yogaOnlineLesson) {
   return Column(
     children: <Widget>[
       Padding(
@@ -483,9 +508,7 @@ Widget additionalInfo(yogaOnlineLesson){
                   Icons.hourglass_empty,
                   size: 16,
                 ),
-                Text(": " +
-                    yogaOnlineLesson.duration.toString() +
-                    " мин"),
+                Text(": " + yogaOnlineLesson.duration.toString() + " мин"),
               ],
             ),
           ],
@@ -512,17 +535,22 @@ Widget levelIcon(level) {
   switch (level) {
     case 0:
       {
-        ic = Icon(MaterialCommunityIcons.signal_cellular_1, color: Style.blueGrey,);
+        ic = Icon(
+          MaterialCommunityIcons.signal_cellular_1,
+          color: Style.blueGrey,
+        );
       }
       break;
     case 1:
       {
-        ic = Icon(MaterialCommunityIcons.signal_cellular_2, color: Style.blueGrey);
+        ic = Icon(MaterialCommunityIcons.signal_cellular_2,
+            color: Style.blueGrey);
       }
       break;
     case 2:
       {
-        ic = Icon(MaterialCommunityIcons.signal_cellular_3, color: Style.blueGrey);
+        ic = Icon(MaterialCommunityIcons.signal_cellular_3,
+            color: Style.blueGrey);
       }
       break;
   }
