@@ -12,7 +12,7 @@ Widget progressHUD() {
       inAsyncCall: true,
       child: Center(
         child: Padding(
-          padding: const EdgeInsets.only(top: 30.0),
+          padding: const EdgeInsets.only(top: 100.0),
           child: Text(
             "Загружается...",
             textAlign: TextAlign.center,

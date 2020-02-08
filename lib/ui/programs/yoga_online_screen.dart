@@ -31,7 +31,7 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
   String _selectedType;
   String _selectedTeacher;
   String _selectedDuration;
-  List videos = [];
+  List<YogaOnlineLesson> videos = [];
   List videosToDisplay = [];
 
   @override
@@ -46,7 +46,7 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
           videos.add(YogaOnlineLesson.fromFB(value));
         }
       }
-      debugPrint(videos[1].title);
+//      debugPrint(videos[1].title);
 //      debugPrint(videos.toString());
 //      debugPrint(videos[0]["level"].toString());
 //      debugPrint("START" + snapshot.value.toString() + "END");
@@ -284,7 +284,7 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
               ),
               RaisedButton(
                 onPressed: () {
-                  _clearFilters();
+                  _applyFilters();
                 },
                 color: Style.pinkMain,
                 child: new Text(
@@ -469,15 +469,34 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
   }
 
   void _applyFilters() {
+    List<YogaOnlineLesson> filteredVideos = videos.map((v) => v).toList();
+
+    if (_selectedLevel != null) {
+      filteredVideos = filteredVideos
+          .where((video) => video.level == int.parse(_selectedLevel))
+          .toList();
+    }
+    if (_selectedType != null) {
+      filteredVideos = filteredVideos
+          .where((video) => video.type == int.parse(_selectedType))
+          .toList();
+    }
+    setState(() {
+      videosToDisplay = filteredVideos;
+    });
+
+    debugPrint(filteredVideos.length.toString());
+    Navigator.of(context).pop();
 // teacher, duration, type, accent, level
   }
 
   void _clearFilters() {
-    _selectedDuration = null;
-    _selectedLevel = null;
-    _selectedTeacher = null;
-    _selectedType = null;
-    ;
+    setState(() {
+      _selectedDuration = null;
+      _selectedLevel = null;
+      _selectedTeacher = null;
+      _selectedType = null;
+    });
   }
 }
 
