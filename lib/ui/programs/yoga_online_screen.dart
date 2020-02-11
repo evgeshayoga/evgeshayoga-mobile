@@ -30,7 +30,7 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
   String _selectedLevel;
   String _selectedType;
   String _selectedTeacher;
-  String _selectedCategorie;
+  String _selectedCategory;
   String _selectedDuration;
   List<YogaOnlineLesson> videos = [];
   List videosToDisplay = [];
@@ -258,7 +258,7 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
                 items: ddCategories(),
                 onChanged: (value) {
                   setState(() {
-                    _selectedCategorie = value;
+                    _selectedCategory = value;
                   });
 //                  debugPrint(__selectedType);
                 },
@@ -266,7 +266,7 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
                 hint: Text(
                   "Акцент",
                 ),
-                value: _selectedCategorie,
+                value: _selectedCategory,
               ),
               DropdownButton(
                 items: [
@@ -530,6 +530,11 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
           .where((video) => video.teachers.any((t) => t["id"] == int.parse(_selectedTeacher)))
           .toList();
     }
+    if (_selectedCategory != null) {
+      filteredVideos = filteredVideos
+          .where((video) => video.categories.any((cat) => cat["id"] == int.parse(_selectedCategory)))
+          .toList();
+    }
     setState(() {
       videosToDisplay = filteredVideos;
     });
@@ -545,7 +550,7 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
       _selectedLevel = null;
       _selectedTeacher = null;
       _selectedType = null;
-      _selectedCategorie = null;
+      _selectedCategory = null;
     });
   }
 }
