@@ -415,7 +415,7 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
       return progressHUD();
     } else {
       List<Widget> videosColumn = [];
-      videos.forEach((video) {
+      videosToDisplay.forEach((video) {
         if (!video.isActive) {
           videosColumn.add(Container());
         } else {
@@ -527,12 +527,21 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
     }
     if (_selectedTeacher != null) {
       filteredVideos = filteredVideos
-          .where((video) => video.teachers.any((t) => t["id"] == int.parse(_selectedTeacher)))
+          .where((video) =>
+              video.teachers.any((t) => t["id"] == int.parse(_selectedTeacher)))
           .toList();
     }
     if (_selectedCategory != null) {
       filteredVideos = filteredVideos
-          .where((video) => video.categories.any((cat) => cat["id"] == int.parse(_selectedCategory)))
+          .where((video) => video.categories
+              .any((cat) => cat["id"] == int.parse(_selectedCategory)))
+          .toList();
+    }
+    if (_selectedDuration != null) {
+      filteredVideos = filteredVideos
+          .where((video) =>
+              int.parse(_selectedDuration) - 5 <= video.duration &&
+              video.duration <= int.parse(_selectedDuration) + 4)
           .toList();
     }
     setState(() {
@@ -540,6 +549,8 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
     });
 
     debugPrint(filteredVideos.length.toString());
+    debugPrint(filteredVideos[0].id.toString());
+    _clearFilters();
     Navigator.of(context).pop();
 // teacher, duration, type, accent, level
   }
