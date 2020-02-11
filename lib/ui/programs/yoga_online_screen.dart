@@ -525,6 +525,11 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
           .where((video) => video.type == int.parse(_selectedType))
           .toList();
     }
+    if (_selectedTeacher != null) {
+      filteredVideos = filteredVideos
+          .where((video) => video.teachers.any((t) => t["id"] == int.parse(_selectedTeacher)))
+          .toList();
+    }
     setState(() {
       videosToDisplay = filteredVideos;
     });
@@ -540,6 +545,7 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
       _selectedLevel = null;
       _selectedTeacher = null;
       _selectedType = null;
+      _selectedCategorie = null;
     });
   }
 }
