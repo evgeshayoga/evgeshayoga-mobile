@@ -58,6 +58,7 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
 //      YogaOnlineLesson.fromFB(v);
 //    });
 //    debugPrint(result.toString());
+    videosToDisplay = videos;
     });
 
     getUserSubscriptionStatus(widget.userUid).then((subscription) {
@@ -94,8 +95,10 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
     List<DropdownMenuItem> ddTypes = [];
     Map types = {};
     videos.forEach((video) {
-      if (!types.containsKey(video.type)) {
-        types[video.type] = video.typeName;
+//      debugPrint(types.toString());
+//      debugPrint(video.id.toString() +" "+ video.type.toString());
+      if (!types.containsKey(video.type.toString())) {
+        types[video.type] = video.typeName.trim();
       }
     });
 //    debugPrint(types.toString());
@@ -558,7 +561,6 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
 
     debugPrint(filteredVideos.length.toString());
     debugPrint(filteredVideos[0].id.toString());
-    _clearFilters();
     Navigator.of(context).pop();
 // teacher, duration, type, accent, level
   }
@@ -570,6 +572,7 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
       _selectedTeacher = null;
       _selectedType = null;
       _selectedCategory = null;
+      videosToDisplay = videos;
     });
   }
 }
