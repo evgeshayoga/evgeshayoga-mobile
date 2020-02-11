@@ -1,6 +1,7 @@
 import 'package:evgeshayoga/models/user.dart';
 import 'package:evgeshayoga/models/yoga_online_lesson.dart';
 import 'package:evgeshayoga/ui/programs/components/drawer_content_screen.dart';
+import 'package:evgeshayoga/ui/programs/components/filters_drawer.dart';
 import 'package:evgeshayoga/ui/programs/lesson_screen.dart';
 import 'package:evgeshayoga/utils/ProgressHUD.dart';
 import 'package:evgeshayoga/utils/style.dart';
@@ -28,11 +29,7 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
   User user;
   Map<String, dynamic> userSubscriptionStatus;
   bool hasAccess = false;
-  String _selectedLevel;
-  String _selectedType;
-  String _selectedTeacher;
-  String _selectedCategory;
-  String _selectedDuration;
+  Filters _filters = Filters();
   List<YogaOnlineLesson> videos = [];
   List videosToDisplay = [];
 
@@ -76,133 +73,6 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
     });
   }
 
-  List<DropdownMenuItem> ddLevel() {
-    List<DropdownMenuItem> ddLevels = [];
-    Map levels = {};
-    videos.forEach((video) {
-      if (!levels.containsKey(video.level)) {
-        levels[video.level] = video.levelName;
-      }
-    });
-    var sortedKeys = levels.keys.toList()..sort();
-    sortedKeys.forEach((key) {
-      ddLevels.add(
-        DropdownMenuItem<String>(
-          value: key.toString(),
-          child: Text(
-            "" + levels[key],
-          ),
-        ),
-      );
-    });
-    return ddLevels;
-  }
-
-  List<DropdownMenuItem> ddType() {
-    List<DropdownMenuItem> ddTypes = [];
-    Map types = {};
-    videos.forEach((video) {
-//      debugPrint(types.toString());
-//      debugPrint(video.id.toString() +" "+ video.type.toString());
-      if (!types.containsKey(video.type.toString())) {
-        types[video.type] = video.typeName.trim();
-      }
-    });
-//    debugPrint(types.toString());
-    var keys = types.keys.toList();
-//    debugPrint("keys"+keys.toString());
-    keys.forEach((key) {
-      ddTypes.add(
-        DropdownMenuItem<String>(
-          value: key.toString(),
-          child: Text(
-            "" + types[key],
-          ),
-        ),
-      );
-    });
-    return ddTypes;
-  }
-
-  List<DropdownMenuItem> ddTeachers() {
-    List<DropdownMenuItem> ddTeachers = [];
-    Map teachers = {};
-
-    videos.forEach((video) {
-      video.teachers.forEach((teacher) {
-        if (!teachers.containsKey(teacher["id"])) {
-          teachers[teacher["id"]] = teacher["name"];
-        }
-      });
-    });
-//    debugPrint(teachers.toString());
-    var keys = teachers.keys.toList()..sort();
-//    debugPrint("keys"+keys.toString());
-
-    keys.forEach((key) {
-      ddTeachers.add(
-        DropdownMenuItem<String>(
-          value: key.toString(),
-          child: Text(
-            "" + teachers[key],
-          ),
-        ),
-      );
-    });
-    return ddTeachers;
-  }
-
-  List<DropdownMenuItem> ddCategories() {
-    List<DropdownMenuItem> ddCategories = [];
-    Map categories = {};
-
-    videos.forEach((video) {
-      video.categories.forEach((cat) {
-        if (!categories.containsKey(cat["id"])) {
-          categories[cat["id"]] = cat["title"];
-        }
-      });
-    });
-//    debugPrint(teachers.toString());
-    var keys = categories.keys.toList()..sort();
-//    debugPrint("keys"+keys.toString());
-
-    keys.forEach((key) {
-      ddCategories.add(
-        DropdownMenuItem<String>(
-          value: key.toString(),
-          child: Text(
-            "" + categories[key],
-          ),
-        ),
-      );
-    });
-    return ddCategories;
-  }
-
-//
-//  List<DropdownMenuItem> ddDuration() {
-//    List<DropdownMenuItem> ddDurations = [];
-//    List durations = [];
-//    videos.forEach((video){
-//      if (!durations.contains(video["duration"])){
-//        durations.add(video["duration"]);
-//      }
-//    });
-//    List sorted = durations..sort();
-//    sorted.forEach((element){
-//      ddDurations.add(
-//        DropdownMenuItem<String>(
-//          value: element.toString(),
-//          child: Text("" +
-//              element.toString(),
-//          ),
-//        ),
-//      );
-//    });
-//    return ddDurations;
-//  }
-
   @override
   Widget build(BuildContext context) {
     var shortestSide = MediaQuery.of(context).size.shortestSide;
@@ -214,161 +84,7 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
     }
     return Scaffold(
       drawer: drawerProgramScreen(user, context, widget.userUid, isLandscape),
-      endDrawer: Drawer(
-        child: SafeArea(
-          child: ListView(
-            children: <Widget>[
-              Column(
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(top: 40),
-                  ),
-                  Container(
-                    height: 50,
-                    child: Center(child: Text("Фильтры")),
-                  ),
-                  DropdownButton(
-                    items: ddLevel(),
-                    onChanged: (value) {
-                      setState(() {
-                        _selectedLevel = value;
-                      });
-//                  debugPrint(_selectedLevel);
-                    },
-//                value: __selectedLevel,
-                    hint: Text(
-                      "Уровень",
-                    ),
-                    value: _selectedLevel,
-                  ),
-                  DropdownButton(
-                    items: ddType(),
-                    onChanged: (value) {
-                      setState(() {
-                        _selectedType = value;
-                      });
-//                  debugPrint(__selectedType);
-                    },
-//                value: __selectedType,
-                    hint: Text(
-                      "Вид",
-                    ),
-                    value: _selectedType,
-                  ),
-                  DropdownButton(
-                    items: ddTeachers(),
-                    onChanged: (value) {
-                      setState(() {
-                        _selectedTeacher = value;
-                      });
-//                  debugPrint(__selectedType);
-                    },
-//                value: __selectedType,
-                    hint: Text(
-                      "Преподаватель",
-                    ),
-                    value: _selectedTeacher,
-                  ),
-                  DropdownButton(
-                    items: ddCategories(),
-                    onChanged: (value) {
-                      setState(() {
-                        _selectedCategory = value;
-                      });
-//                  debugPrint(__selectedType);
-                    },
-//                value: __selectedType,
-                    hint: Text(
-                      "Акцент",
-                    ),
-                    value: _selectedCategory,
-                  ),
-                  DropdownButton(
-                    items: [
-                      DropdownMenuItem<String>(
-                        value: '10',
-                        child: Text(
-                          "10",
-                        ),
-                      ),
-                      DropdownMenuItem<String>(
-                        value: '20',
-                        child: Text(
-                          "20",
-                        ),
-                      ),
-                      DropdownMenuItem<String>(
-                        value: '30',
-                        child: Text(
-                          "30",
-                        ),
-                      ),
-                      DropdownMenuItem<String>(
-                        value: '40',
-                        child: Text(
-                          "40",
-                        ),
-                      ),
-                      DropdownMenuItem<String>(
-                        value: '50',
-                        child: Text(
-                          "50",
-                        ),
-                      ),
-                      DropdownMenuItem<String>(
-                        value: '60',
-                        child: Text(
-                          "60",
-                        ),
-                      ),
-                      DropdownMenuItem<String>(
-                        value: '90',
-                        child: Text(
-                          "90",
-                        ),
-                      ),
-                    ],
-                    onChanged: (value) {
-                      setState(() {
-                        _selectedDuration = value;
-                      });
-//                  debugPrint(__selectedType);
-                    },
-//                value: __selectedType,
-                    hint: Text(
-                      "Продолжительност",
-                    ),
-                    value: _selectedDuration,
-                  ),
-                  RaisedButton(
-                    onPressed: () {
-                      _applyFilters();
-                    },
-                    color: Style.pinkMain,
-                    child: new Text(
-                      "Применить",
-                      style: Style.regularTextStyle,
-                    ),
-                  ),
-                  RaisedButton(
-                    onPressed: () {
-                      _clearFilters();
-                    },
-                    color: Style.pinkMain,
-                    child: new Text(
-                      "Очистить",
-                      style: Style.regularTextStyle,
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 40),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
+      endDrawer: FiltersDrawer(videos: videos, filters: _filters, onApplyFilters: _applyFilters, onClear: _clearFilters,),
       appBar: AppBar(
           leading: Builder(
             builder: (BuildContext context) {
@@ -537,55 +253,52 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
     );
   }
 
-  void _applyFilters() {
+  void _applyFilters(Filters filters) {
     List<YogaOnlineLesson> filteredVideos = videos.map((v) => v).toList();
 
-    if (_selectedLevel != null) {
+    if (filters.level != null) {
       filteredVideos = filteredVideos
-          .where((video) => video.level == int.parse(_selectedLevel))
+          .where((video) => video.level == int.parse(filters.level))
           .toList();
     }
-    if (_selectedType != null) {
+    if (filters.type != null) {
       filteredVideos = filteredVideos
-          .where((video) => video.type == int.parse(_selectedType))
+          .where((video) => video.type == int.parse(filters.type))
           .toList();
     }
-    if (_selectedTeacher != null) {
+    if (filters.teacher != null) {
       filteredVideos = filteredVideos
           .where((video) =>
-              video.teachers.any((t) => t["id"] == int.parse(_selectedTeacher)))
+              video.teachers.any((t) => t["id"] == int.parse(filters.teacher)))
           .toList();
     }
-    if (_selectedCategory != null) {
+    if (filters.category != null) {
       filteredVideos = filteredVideos
           .where((video) => video.categories
-              .any((cat) => cat["id"] == int.parse(_selectedCategory)))
+              .any((cat) => cat["id"] == int.parse(filters.category)))
           .toList();
     }
-    if (_selectedDuration != null) {
+    if (filters.duration != null) {
       filteredVideos = filteredVideos
           .where((video) =>
-              int.parse(_selectedDuration) - 5 <= video.duration &&
-              video.duration <= int.parse(_selectedDuration) + 4)
+              int.parse(filters.duration) - 5 <= video.duration &&
+              video.duration <= int.parse(filters.duration) + 4)
           .toList();
     }
     setState(() {
+      _filters = filters;
       videosToDisplay = filteredVideos;
     });
 
     debugPrint(filteredVideos.length.toString());
-    debugPrint(filteredVideos[0].id.toString());
+//    debugPrint(filteredVideos[0].id.toString());
     Navigator.of(context).pop();
 // teacher, duration, type, accent, level
   }
 
   void _clearFilters() {
     setState(() {
-      _selectedDuration = null;
-      _selectedLevel = null;
-      _selectedTeacher = null;
-      _selectedType = null;
-      _selectedCategory = null;
+      _filters = Filters();
       videosToDisplay = videos;
     });
   }
@@ -615,8 +328,9 @@ Widget additionalInfo(yogaOnlineLesson) {
             Row(
               children: <Widget>[
                 Icon(
-                  Icons.hourglass_empty,
+                  Icons.hourglass_full,
                   size: 16,
+                  color: Style.blueGrey,
                 ),
                 Text(": " + yogaOnlineLesson.duration.toString() + " мин"),
               ],

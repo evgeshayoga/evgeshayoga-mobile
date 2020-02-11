@@ -1,5 +1,7 @@
 import 'package:evgeshayoga/ui/programs/content_screen.dart' as prefix0;
 import 'package:evgeshayoga/ui/programs/programs_screen.dart';
+import 'package:evgeshayoga/ui/programs/yoga_online_screen.dart';
+import 'package:evgeshayoga/ui/programs/yoga_online_screen.dart';
 import 'package:evgeshayoga/utils/ProgressHUD.dart';
 import 'package:evgeshayoga/utils/date_formatter.dart';
 import 'package:evgeshayoga/utils/style.dart';
@@ -90,7 +92,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
           onPressed: (){
             var router =
             new MaterialPageRoute(builder: (BuildContext context) {
-              return prefix0.ContentScreen(userUid: widget.userUid);
+              return YogaOnlineScreen(userUid: widget.userUid);
             });
             Navigator.of(context).push(router);
           },

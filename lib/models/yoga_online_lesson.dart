@@ -14,7 +14,7 @@ class YogaOnlineLesson {
   int level;
   List teachers;
   List categories;
-  var type;
+  int type;
   String typeName;
 
   YogaOnlineLesson(
