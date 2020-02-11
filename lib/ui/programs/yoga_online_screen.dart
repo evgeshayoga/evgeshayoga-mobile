@@ -45,6 +45,9 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
       for (var value in snapshot.value) {
         if (value != null) {
           videos.add(YogaOnlineLesson.fromFB(value));
+          videos.sort((sa, sb) {
+            return sb.id - sa.id;
+          });
         }
       }
 //      debugPrint(videos[1].title);
@@ -413,6 +416,11 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
   Widget videoLessons(isLandscape) {
     if (videos.length == 0 || videos.length == null) {
       return progressHUD();
+    }
+    if (videosToDisplay.length == 0) {
+      return Center(
+        child: Text("НЕТ ЗАПИСЕЙ"),
+      );
     } else {
       List<Widget> videosColumn = [];
       videosToDisplay.forEach((video) {

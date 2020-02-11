@@ -29,6 +29,7 @@ class _ProgramsState extends State<Programs> {
   User user;
   Map<String, dynamic> userProgramsStatuses;
 
+
   @override
   void initState() {
     super.initState();
@@ -36,6 +37,9 @@ class _ProgramsState extends State<Programs> {
         database.reference().child("users").child(widget.userUid);
     dbProgramsReference = database.reference().child("marathons");
     user = User("", "", "", "");
+    dbProgramsReference.once().then((snapshot) {
+//      debugPrint(snapshot.value.toString());
+    });
 
     dbUsersReference.once().then((snapshot) {
       getUserProgramsStatuses(widget.userUid).then((statuses) {
