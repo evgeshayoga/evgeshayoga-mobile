@@ -331,16 +331,16 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
           centerTitle: true,
           backgroundColor: Style.pinkMain,
           actions: [
-            Builder(
-              builder: (context) => IconButton(
-                icon: Icon(
-                  Icons.search,
-                  size: 26.0,
-                  color: Style.blueGrey,
-                ),
-                onPressed: () {},
-              ),
-            ),
+//            Builder(
+//              builder: (context) => IconButton(
+//                icon: Icon(
+//                  Icons.search,
+//                  size: 26.0,
+//                  color: Style.blueGrey,
+//                ),
+//                onPressed: () {},
+//              ),
+//            ),
             Builder(
               builder: (context) => IconButton(
                 icon: Icon(
@@ -432,6 +432,7 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
 
     return Container(
       child: Card(
+        elevation: 0,
         child: GestureDetector(
           onTap: () {
             var router = new MaterialPageRoute(builder: (BuildContext context) {
@@ -534,6 +535,20 @@ Widget additionalInfo(yogaOnlineLesson) {
         ),
       ),
       Padding(
+        padding: const EdgeInsets.fromLTRB(16, 4.0, 16, 4.0),
+        child: Text("Акцент: " + categories(yogaOnlineLesson.categories),
+            textAlign: TextAlign.center),
+
+//        Row(
+//          children: <Widget>[
+//            Icon(
+//              Icons.accessibility_new,
+//              size: 16,
+//            ),
+//          ],
+//        ),
+      ),
+      Padding(
         padding: const EdgeInsets.all(8.0),
         child: Text(teachers(yogaOnlineLesson.teachers)),
       ),
@@ -543,10 +558,31 @@ Widget additionalInfo(yogaOnlineLesson) {
 
 String teachers(teachersList) {
   String teachersStr = '';
+  List namesList = [];
   teachersList.forEach((teacher) {
-    teachersStr += ' ' + (teacher["name"]);
+    namesList.add(teacher["name"]);
   });
-  return teachersStr;
+  return teachersStr = namesList.join(', ');
+}
+
+String categories(categoriesList) {
+  String categoriesStr = '';
+  List titleList = [];
+  categoriesList.forEach((category) {
+    titleList.add(category["title"]);
+//      categoriesStr += (category["title"]) + ", ";
+  });
+
+//  if (categoriesList.length > 1) {
+//    categoriesList.forEach((category) {
+//      titleList.add(category["title"]);
+////      categoriesStr += (category["title"]) + ", ";
+//    });
+//  } else {
+//    categoriesStr = categoriesList[0]["title"].toString();
+//  }
+
+  return categoriesStr = titleList.join(", ");
 }
 
 Widget levelIcon(level) {

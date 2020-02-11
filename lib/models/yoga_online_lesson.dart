@@ -13,6 +13,7 @@ class YogaOnlineLesson {
   String levelName;
   int level;
   List teachers;
+  List categories;
   var type;
   String typeName;
 
@@ -28,6 +29,7 @@ class YogaOnlineLesson {
       this.levelName,
       this.level,
       this.teachers,
+      this.categories,
       this.type,
       this.typeName});
 
@@ -43,6 +45,7 @@ class YogaOnlineLesson {
         levelName = value["level_name"],
         level = value["level"],
         teachers = value["teachers"],
+        categories = value["categories"],
         type = value["type"],
         typeName = value["type_name"];
 
@@ -58,6 +61,7 @@ class YogaOnlineLesson {
         levelName = snapshot.value["level_name"],
         level = snapshot.value["level"],
         teachers = snapshot.value["teachers"],
+        categories = snapshot.value["categories"],
         type = snapshot.value["type"],
         typeName = snapshot.value["type_name"];
 
