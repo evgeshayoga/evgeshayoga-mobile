@@ -16,7 +16,7 @@ Widget drawerProgramScreen(User user, context, userUid, isLandscape) {
       child: Column(
         children: <Widget>[
           Expanded(
-            flex: 3,
+            flex: isLandscape ? 1 : 3,
             child: Container(
               color: Style.pinkMain,
               child: Center(
@@ -53,78 +53,82 @@ Widget drawerProgramScreen(User user, context, userUid, isLandscape) {
           ),
           Expanded(
             flex: 3,
-            child: Column(
+            child: ListView(
               children: <Widget>[
-                ListTile(
-                  title: Text(
-                    "Профиль",
-                    textAlign: TextAlign.center,
-                    style: Style.regularTextStyle,
-                  ),
-                  onTap: () {
-                    var router =
+                Column(
+                  children: <Widget>[
+                    ListTile(
+                      title: Text(
+                        "Профиль",
+                        textAlign: TextAlign.center,
+                        style: Style.regularTextStyle,
+                      ),
+                      onTap: () {
+                        var router =
+                            new MaterialPageRoute(builder: (BuildContext context) {
+                          return ProfileScreen(user);
+                        });
+                        Navigator.of(context).push(router);
+                      },
+                    ),
+                    ListTile(
+                      title: Text(
+                        "Yoga Online",
+                        textAlign: TextAlign.center,
+                        style: Style.regularTextStyle,
+                      ),
+                      onTap: () {
+                        var router =
                         new MaterialPageRoute(builder: (BuildContext context) {
-                      return ProfileScreen(user);
-                    });
-                    Navigator.of(context).push(router);
-                  },
-                ),
-                ListTile(
-                  title: Text(
-                    "Yoga Online",
-                    textAlign: TextAlign.center,
-                    style: Style.regularTextStyle,
-                  ),
-                  onTap: () {
-                    var router =
-                    new MaterialPageRoute(builder: (BuildContext context) {
-                      return YogaOnlineScreen(userUid: userUid);
-                    });
-                    Navigator.of(context).push(router);
-                  },
-                ),
-                ListTile(
-                  title: Text(
-                    "Программы",
-                    textAlign: TextAlign.center,
-                    style: Style.regularTextStyle,
-                  ),
-                  onTap: () {
-                    var router =
-                    new MaterialPageRoute(builder: (BuildContext context) {
-                      return Programs(userUid: userUid);
-                    });
-                    Navigator.of(context).push(router);
-                  },
-                ),
-                ListTile(
-                  title: Text(
-                    "Мои покупки",
-                    textAlign: TextAlign.center,
-                    style: Style.regularTextStyle,
-                  ),
-                  onTap: () {
-                    var router =
+                          return YogaOnlineScreen(userUid: userUid);
+                        });
+                        Navigator.of(context).push(router);
+                      },
+                    ),
+                    ListTile(
+                      title: Text(
+                        "Программы",
+                        textAlign: TextAlign.center,
+                        style: Style.regularTextStyle,
+                      ),
+                      onTap: () {
+                        var router =
                         new MaterialPageRoute(builder: (BuildContext context) {
-                      return PurchasesScreen(userUid);
-                    });
-                    Navigator.of(context).push(router);
-                  },
+                          return Programs(userUid: userUid);
+                        });
+                        Navigator.of(context).push(router);
+                      },
+                    ),
+                    ListTile(
+                      title: Text(
+                        "Мои покупки",
+                        textAlign: TextAlign.center,
+                        style: Style.regularTextStyle,
+                      ),
+                      onTap: () {
+                        var router =
+                            new MaterialPageRoute(builder: (BuildContext context) {
+                          return PurchasesScreen(userUid);
+                        });
+                        Navigator.of(context).push(router);
+                      },
+                    ),
+                    ListTile(
+                      title: Text(
+                        "Подписка Yoga Online",
+                        textAlign: TextAlign.center,
+                        style: Style.regularTextStyle,
+                      ),
+                      onTap: () {
+                        var router =
+                        new MaterialPageRoute(builder: (BuildContext context) {
+                          return SubscriptionScreen(userUid);
+                        });
+                        Navigator.of(context).push(router);
+                      },
+                    )
+                  ],
                 ),
-                ListTile(
-                  title: Text(
-                    "Подписка Yoga Online",
-                    textAlign: TextAlign.center,
-                    style: Style.regularTextStyle,
-                  ),
-                  onTap: () {
-                    var router =
-                    new MaterialPageRoute(builder: (BuildContext context) {
-                      return SubscriptionScreen(userUid);
-                    });
-                    Navigator.of(context).push(router);
-                  },
-                )
               ],
             ),
           ),

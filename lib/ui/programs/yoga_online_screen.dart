@@ -24,6 +24,7 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
   static const int tabletBreakpoint = 600;
   final FirebaseDatabase database = FirebaseDatabase.instance;
   DatabaseReference dbVideosReference;
+  DatabaseReference dbUsersReference;
   User user;
   Map<String, dynamic> userSubscriptionStatus;
   bool hasAccess = false;
@@ -39,7 +40,13 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
   void initState() {
     super.initState();
     dbVideosReference = database.reference().child("videos");
+    dbUsersReference =
+        database.reference().child("users").child(widget.userUid);
     user = User("", "", "", "");
+
+    dbUsersReference.once().then((snapshot) {
+      user = User.fromSnapshot(snapshot);
+    });
 
     dbVideosReference.once().then((snapshot) {
       for (var value in snapshot.value) {
@@ -209,147 +216,154 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
       drawer: drawerProgramScreen(user, context, widget.userUid, isLandscape),
       endDrawer: Drawer(
         child: SafeArea(
-          child: Column(
+          child: ListView(
             children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(top: 50),
-              ),
-              Container(
-                height: 50,
-                child: Center(child: Text("Фильтры")),
-              ),
-              DropdownButton(
-                items: ddLevel(),
-                onChanged: (value) {
-                  setState(() {
-                    _selectedLevel = value;
-                  });
+              Column(
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(top: 40),
+                  ),
+                  Container(
+                    height: 50,
+                    child: Center(child: Text("Фильтры")),
+                  ),
+                  DropdownButton(
+                    items: ddLevel(),
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedLevel = value;
+                      });
 //                  debugPrint(_selectedLevel);
-                },
+                    },
 //                value: __selectedLevel,
-                hint: Text(
-                  "Уровень",
-                ),
-                value: _selectedLevel,
-              ),
-              DropdownButton(
-                items: ddType(),
-                onChanged: (value) {
-                  setState(() {
-                    _selectedType = value;
-                  });
+                    hint: Text(
+                      "Уровень",
+                    ),
+                    value: _selectedLevel,
+                  ),
+                  DropdownButton(
+                    items: ddType(),
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedType = value;
+                      });
 //                  debugPrint(__selectedType);
-                },
+                    },
 //                value: __selectedType,
-                hint: Text(
-                  "Вид",
-                ),
-                value: _selectedType,
-              ),
-              DropdownButton(
-                items: ddTeachers(),
-                onChanged: (value) {
-                  setState(() {
-                    _selectedTeacher = value;
-                  });
+                    hint: Text(
+                      "Вид",
+                    ),
+                    value: _selectedType,
+                  ),
+                  DropdownButton(
+                    items: ddTeachers(),
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedTeacher = value;
+                      });
 //                  debugPrint(__selectedType);
-                },
+                    },
 //                value: __selectedType,
-                hint: Text(
-                  "Преподаватель",
-                ),
-                value: _selectedTeacher,
-              ),
-              DropdownButton(
-                items: ddCategories(),
-                onChanged: (value) {
-                  setState(() {
-                    _selectedCategory = value;
-                  });
+                    hint: Text(
+                      "Преподаватель",
+                    ),
+                    value: _selectedTeacher,
+                  ),
+                  DropdownButton(
+                    items: ddCategories(),
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedCategory = value;
+                      });
 //                  debugPrint(__selectedType);
-                },
+                    },
 //                value: __selectedType,
-                hint: Text(
-                  "Акцент",
-                ),
-                value: _selectedCategory,
-              ),
-              DropdownButton(
-                items: [
-                  DropdownMenuItem<String>(
-                    value: '10',
-                    child: Text(
-                      "10",
+                    hint: Text(
+                      "Акцент",
+                    ),
+                    value: _selectedCategory,
+                  ),
+                  DropdownButton(
+                    items: [
+                      DropdownMenuItem<String>(
+                        value: '10',
+                        child: Text(
+                          "10",
+                        ),
+                      ),
+                      DropdownMenuItem<String>(
+                        value: '20',
+                        child: Text(
+                          "20",
+                        ),
+                      ),
+                      DropdownMenuItem<String>(
+                        value: '30',
+                        child: Text(
+                          "30",
+                        ),
+                      ),
+                      DropdownMenuItem<String>(
+                        value: '40',
+                        child: Text(
+                          "40",
+                        ),
+                      ),
+                      DropdownMenuItem<String>(
+                        value: '50',
+                        child: Text(
+                          "50",
+                        ),
+                      ),
+                      DropdownMenuItem<String>(
+                        value: '60',
+                        child: Text(
+                          "60",
+                        ),
+                      ),
+                      DropdownMenuItem<String>(
+                        value: '90',
+                        child: Text(
+                          "90",
+                        ),
+                      ),
+                    ],
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedDuration = value;
+                      });
+//                  debugPrint(__selectedType);
+                    },
+//                value: __selectedType,
+                    hint: Text(
+                      "Продолжительност",
+                    ),
+                    value: _selectedDuration,
+                  ),
+                  RaisedButton(
+                    onPressed: () {
+                      _applyFilters();
+                    },
+                    color: Style.pinkMain,
+                    child: new Text(
+                      "Применить",
+                      style: Style.regularTextStyle,
                     ),
                   ),
-                  DropdownMenuItem<String>(
-                    value: '20',
-                    child: Text(
-                      "20",
+                  RaisedButton(
+                    onPressed: () {
+                      _clearFilters();
+                    },
+                    color: Style.pinkMain,
+                    child: new Text(
+                      "Очистить",
+                      style: Style.regularTextStyle,
                     ),
                   ),
-                  DropdownMenuItem<String>(
-                    value: '30',
-                    child: Text(
-                      "30",
-                    ),
-                  ),
-                  DropdownMenuItem<String>(
-                    value: '40',
-                    child: Text(
-                      "40",
-                    ),
-                  ),
-                  DropdownMenuItem<String>(
-                    value: '50',
-                    child: Text(
-                      "50",
-                    ),
-                  ),
-                  DropdownMenuItem<String>(
-                    value: '60',
-                    child: Text(
-                      "60",
-                    ),
-                  ),
-                  DropdownMenuItem<String>(
-                    value: '90',
-                    child: Text(
-                      "90",
-                    ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 40),
                   ),
                 ],
-                onChanged: (value) {
-                  setState(() {
-                    _selectedDuration = value;
-                  });
-//                  debugPrint(__selectedType);
-                },
-//                value: __selectedType,
-                hint: Text(
-                  "Продолжительност",
-                ),
-                value: _selectedDuration,
-              ),
-              RaisedButton(
-                onPressed: () {
-                  _applyFilters();
-                },
-                color: Style.pinkMain,
-                child: new Text(
-                  "Применить",
-                  style: Style.regularTextStyle,
-                ),
-              ),
-              RaisedButton(
-                onPressed: () {
-                  _clearFilters();
-                },
-                color: Style.pinkMain,
-                child: new Text(
-                  "Очистить",
-                  style: Style.regularTextStyle,
-                ),
               ),
             ],
           ),
