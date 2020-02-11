@@ -30,6 +30,7 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
   String _selectedLevel;
   String _selectedType;
   String _selectedTeacher;
+  String _selectedCategorie;
   String _selectedDuration;
   List<YogaOnlineLesson> videos = [];
   List videosToDisplay = [];
@@ -138,6 +139,34 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
     return ddTeachers;
   }
 
+  List<DropdownMenuItem> ddCategories() {
+    List<DropdownMenuItem> ddCategories = [];
+    Map categories = {};
+
+    videos.forEach((video) {
+      video.categories.forEach((cat) {
+        if (!categories.containsKey(cat["id"])) {
+          categories[cat["id"]] = cat["title"];
+        }
+      });
+    });
+//    debugPrint(teachers.toString());
+    var keys = categories.keys.toList()..sort();
+//    debugPrint("keys"+keys.toString());
+
+    keys.forEach((key) {
+      ddCategories.add(
+        DropdownMenuItem<String>(
+          value: key.toString(),
+          child: Text(
+            "" + categories[key],
+          ),
+        ),
+      );
+    });
+    return ddCategories;
+  }
+
 //
 //  List<DropdownMenuItem> ddDuration() {
 //    List<DropdownMenuItem> ddDurations = [];
@@ -224,6 +253,20 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
                   "Преподаватель",
                 ),
                 value: _selectedTeacher,
+              ),
+              DropdownButton(
+                items: ddCategories(),
+                onChanged: (value) {
+                  setState(() {
+                    _selectedCategorie = value;
+                  });
+//                  debugPrint(__selectedType);
+                },
+//                value: __selectedType,
+                hint: Text(
+                  "Акцент",
+                ),
+                value: _selectedCategorie,
               ),
               DropdownButton(
                 items: [
