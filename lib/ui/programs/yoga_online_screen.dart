@@ -66,7 +66,9 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
 //      YogaOnlineLesson.fromFB(v);
 //    });
 //    debugPrint(result.toString());
+      setState(() {
     videosToDisplay = videos;
+      });
 //    debugPrint(videosToDisplay.length.toString());
     });
 
