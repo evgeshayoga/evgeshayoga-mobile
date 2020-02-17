@@ -28,17 +28,21 @@ class _ProgramsState extends State<Programs> {
   DatabaseReference dbProgramsReference;
   User user;
   Map<String, dynamic> userProgramsStatuses;
-
+  bool _isInAsyncCall = false;
 
   @override
   void initState() {
     super.initState();
+    setState(() {
+      _isInAsyncCall = true;
+    });
     dbUsersReference =
         database.reference().child("users").child(widget.userUid);
     dbProgramsReference = database.reference().child("marathons");
     user = User("", "", "", "");
     dbProgramsReference.once().then((snapshot) {
 //      debugPrint(snapshot.value.toString());
+    _isInAsyncCall = false;
     });
 
     dbUsersReference.once().then((snapshot) {
@@ -98,7 +102,7 @@ class _ProgramsState extends State<Programs> {
                 if (snapshot == null || userProgramsStatuses == null) {
                   return Container(
                     height: 300,
-                      child: progressHUD());
+                      child: progressHUD(_isInAsyncCall));
                 }
                 var program = Program.fromSnapshot(snapshot);
                 String date = userProgramsStatuses[program.id.toString()]

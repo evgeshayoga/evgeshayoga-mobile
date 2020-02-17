@@ -21,10 +21,14 @@ class _ProgramBuilderState extends State<ProgramBuilder> {
   final FirebaseDatabase database = FirebaseDatabase.instance;
   Program program;
   List<VideoModel> videos = [];
+  bool _isInAsyncCall = false;
 
   @override
   void initState() {
     super.initState();
+    setState(() {
+      _isInAsyncCall = true;
+    });
     database
         .reference()
         .child("marathons")
@@ -34,6 +38,7 @@ class _ProgramBuilderState extends State<ProgramBuilder> {
       setState(() {
         program = Program.fromSnapshot(snapshot);
         videos = program.getVideos();
+        _isInAsyncCall = false;
       });
     });
   }
@@ -42,7 +47,7 @@ class _ProgramBuilderState extends State<ProgramBuilder> {
     if (program == null) {
       return Container(
         height: 300,
-        child: progressHUD()
+        child: progressHUD(_isInAsyncCall)
       );
     }
     List<Widget> programWeeks = [];

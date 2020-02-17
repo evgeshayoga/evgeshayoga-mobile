@@ -20,10 +20,14 @@ class _LessonBuilderState extends State<LessonBuilder> {
   final FirebaseDatabase database = FirebaseDatabase.instance;
   YogaOnlineLesson yogaOnlineLesson;
   List<VideoModel> videos = [];
+  bool _isInAsyncCall = false;
 
   @override
   void initState() {
     super.initState();
+    setState(() {
+      _isInAsyncCall = true;
+    });
     database
         .reference()
         .child("videos")
@@ -34,6 +38,7 @@ class _LessonBuilderState extends State<LessonBuilder> {
         yogaOnlineLesson = YogaOnlineLesson.fromSnapshot(snapshot);
         videos = yogaOnlineLesson.getVideos();
         debugPrint("VIDEOS "+videos.length.toString());
+        _isInAsyncCall = false;
       });
     });
   }
@@ -42,7 +47,7 @@ class _LessonBuilderState extends State<LessonBuilder> {
     if (yogaOnlineLesson == null) {
       return Container(
         height: 300,
-        child: progressHUD()
+        child: progressHUD(_isInAsyncCall)
       );
     }
 

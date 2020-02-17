@@ -17,14 +17,19 @@ class PurchasesScreen extends StatefulWidget {
 
 class _PurchasesScreenState extends State<PurchasesScreen> {
   Map<String, dynamic> userProgramsStatuses = {};
+  bool _isInAsyncCall = false;
 
   @override
   void initState() {
     super.initState();
+    setState(() {
+      _isInAsyncCall = true;
+    });
 
     getUserProgramsStatuses(widget.userUid).then((statuses) {
       setState(() {
         userProgramsStatuses = statuses;
+        _isInAsyncCall = false;
       });
     });
   }
@@ -103,7 +108,7 @@ class _PurchasesScreenState extends State<PurchasesScreen> {
       ),
       body: Center(
         child: userProgramsStatuses == null
-            ? progressHUD()
+            ? progressHUD(_isInAsyncCall)
             : ListView(
                 children: <Widget>[
                   Padding(

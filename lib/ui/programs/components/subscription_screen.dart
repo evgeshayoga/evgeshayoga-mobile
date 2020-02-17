@@ -20,16 +20,21 @@ class SubscriptionScreen extends StatefulWidget {
 class _SubscriptionScreenState extends State<SubscriptionScreen> {
   Map<String, dynamic> userSubscriptionStatus = {};
   bool isSubscribed = false;
+  bool _isInAsyncCall = false;
 
   @override
   void initState() {
     super.initState();
+    setState(() {
+      _isInAsyncCall = true;
+    });
 //    purchases = buildPurchases(widget.user.getPurchases().programs);
 
     getUserSubscriptionStatus(widget.userUid).then((status) {
       setState(() {
         userSubscriptionStatus = status;
         isSubscribed = userSubscriptionStatus['isSubscriptionActive'];
+        _isInAsyncCall = false;
       });
     });
   }
@@ -37,7 +42,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   @override
   Widget build(BuildContext context) {
     if (userSubscriptionStatus == null) {
-      return progressHUD();
+      return progressHUD(_isInAsyncCall);
     }
     return Scaffold(
       appBar: AppBar(
@@ -55,21 +60,21 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
           style: Style.titleTextStyle,
         ),
         centerTitle: true,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.update),
-            onPressed: () {
-              getUserProgramsStatuses(widget.userUid).then((status) {
-                setState(() {
-                  userSubscriptionStatus = status;
-                });
-              });
-            },
-          )
-        ],
+//        actions: <Widget>[
+//          IconButton(
+//            icon: Icon(Icons.update),
+//            onPressed: () {
+//              getUserProgramsStatuses(widget.userUid).then((status) {
+//                setState(() {
+//                  userSubscriptionStatus = status;
+//                });
+//              });
+//            },
+//          )
+//        ],
       ),
       body: Center(
-        child: Container(
+        child: _isInAsyncCall ? progressHUD(_isInAsyncCall) : Container(
           child: isSubscribed
               ? subscriptionDetails(userSubscriptionStatus)
               : Text("Вы не подписаны на Yoga Online"),

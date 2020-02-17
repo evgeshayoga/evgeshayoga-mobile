@@ -32,10 +32,14 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
   Filters _filters = Filters();
   List<YogaOnlineLesson> videos = [];
   List videosToDisplay = [];
+  bool _isInAsyncCall = false;
 
   @override
   void initState() {
     super.initState();
+    setState(() {
+      _isInAsyncCall = true;
+    });
     dbVideosReference = database.reference().child("videos");
     dbUsersReference =
         database.reference().child("users").child(widget.userUid);
@@ -55,7 +59,7 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
         }
       }
 //      debugPrint(videos[1].title);
-//      debugPrint(videos.toString());
+      debugPrint(videos.length.toString());
 //      debugPrint(videos[0]["level"].toString());
 //      debugPrint("START" + snapshot.value.toString() + "END");
 //    var result = videos.map((v){
@@ -63,13 +67,17 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
 //    });
 //    debugPrint(result.toString());
     videosToDisplay = videos;
+    debugPrint(videosToDisplay.length.toString());
     });
 
     getUserSubscriptionStatus(widget.userUid).then((subscription) {
       setState(() {
         userSubscriptionStatus = subscription;
         hasAccess = userSubscriptionStatus['isSubscriptionActive'];
+        _isInAsyncCall = false;
       });
+    }, onError: (e) {
+      throw e;
     });
   }
 
@@ -84,7 +92,12 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
     }
     return Scaffold(
       drawer: drawerProgramScreen(user, context, widget.userUid, isLandscape),
-      endDrawer: FiltersDrawer(videos: videos, filters: _filters, onApplyFilters: _applyFilters, onClear: _clearFilters,),
+      endDrawer: FiltersDrawer(
+        videos: videos,
+        filters: _filters,
+        onApplyFilters: _applyFilters,
+        onClear: _clearFilters,
+      ),
       appBar: AppBar(
           leading: Builder(
             builder: (BuildContext context) {
@@ -136,8 +149,11 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
   }
 
   Widget yogaOnlineBody(isLandscape) {
-    if (userSubscriptionStatus == null) {
-      return progressHUD();
+//    if (userSubscriptionStatus == null) {
+//      return Text("empty status");
+//    }
+    if ( _isInAsyncCall) {
+      return progressHUD(_isInAsyncCall,);
     } else
       return hasAccess
           ? videoLessons(isLandscape)
@@ -147,9 +163,11 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
   }
 
   Widget videoLessons(isLandscape) {
-    if (videos.length == 0 || videos.length == null) {
-      return progressHUD();
-    }
+//    if (videos.length == 0 || videos.length == null) {
+//      return Container(
+//        child: Text("No videos"),
+//      );
+//    }
     if (videosToDisplay.length == 0) {
       return Center(
         child: Text("НЕТ ЗАПИСЕЙ"),
@@ -183,7 +201,7 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
                 videos.add(yogaOnlineLesson);
 
                 if (snapshot == null || userSubscriptionStatus == null) {
-                  return progressHUD();
+//                  return progressHUD();
                 }
 
                 if (!yogaOnlineLesson.isActive) {
