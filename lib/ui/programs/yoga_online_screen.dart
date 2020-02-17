@@ -59,7 +59,7 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
         }
       }
 //      debugPrint(videos[1].title);
-      debugPrint(videos.length.toString());
+//      debugPrint(videos.length.toString());
 //      debugPrint(videos[0]["level"].toString());
 //      debugPrint("START" + snapshot.value.toString() + "END");
 //    var result = videos.map((v){
@@ -67,7 +67,7 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
 //    });
 //    debugPrint(result.toString());
     videosToDisplay = videos;
-    debugPrint(videosToDisplay.length.toString());
+//    debugPrint(videosToDisplay.length.toString());
     });
 
     getUserSubscriptionStatus(widget.userUid).then((subscription) {
@@ -308,7 +308,7 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
       videosToDisplay = filteredVideos;
     });
 
-    debugPrint(filteredVideos.length.toString());
+//    debugPrint(filteredVideos.length.toString());
 //    debugPrint(filteredVideos[0].id.toString());
     Navigator.of(context).pop();
 // teacher, duration, type, accent, level
