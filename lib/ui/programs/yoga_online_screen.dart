@@ -26,60 +26,45 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
   final FirebaseDatabase database = FirebaseDatabase.instance;
   DatabaseReference dbVideosReference;
   DatabaseReference dbUsersReference;
-  User user;
+  User user = User("", "", "", "");
   Map<String, dynamic> userSubscriptionStatus;
   bool hasAccess = false;
   Filters _filters = Filters();
   List<YogaOnlineLesson> videos = [];
   List videosToDisplay = [];
-  bool _isInAsyncCall = false;
+  bool _isInAsyncCall = true;
 
   @override
   void initState() {
     super.initState();
-    setState(() {
-      _isInAsyncCall = true;
-    });
+    initialize();
+  }
+
+  Future initialize() async {
     dbVideosReference = database.reference().child("videos");
     dbUsersReference =
         database.reference().child("users").child(widget.userUid);
-    user = User("", "", "", "");
 
-    dbUsersReference.once().then((snapshot) {
-      user = User.fromSnapshot(snapshot);
-    });
-
-    dbVideosReference.once().then((snapshot) {
-      for (var value in snapshot.value) {
-        if (value != null) {
-          videos.add(YogaOnlineLesson.fromFB(value));
-          videos.sort((sa, sb) {
-            return sb.id - sa.id;
-          });
-        }
+    var userSnapshot = await dbUsersReference.once();
+    var videosSnapshot = await dbVideosReference.once();
+    List<YogaOnlineLesson> videosFromFB = [];
+    for (var value in videosSnapshot.value) {
+      if (value != null) {
+        videosFromFB.add(YogaOnlineLesson.fromFB(value));
+        videosFromFB.sort((sa, sb) {
+          return sb.id - sa.id;
+        });
       }
-//      debugPrint(videos[1].title);
-//      debugPrint(videos.length.toString());
-//      debugPrint(videos[0]["level"].toString());
-//      debugPrint("START" + snapshot.value.toString() + "END");
-//    var result = videos.map((v){
-//      YogaOnlineLesson.fromFB(v);
-//    });
-//    debugPrint(result.toString());
-      setState(() {
-    videosToDisplay = videos;
-      });
-//    debugPrint(videosToDisplay.length.toString());
-    });
+    }
 
-    getUserSubscriptionStatus(widget.userUid).then((subscription) {
-      setState(() {
-        userSubscriptionStatus = subscription;
-        hasAccess = userSubscriptionStatus['isSubscriptionActive'];
-        _isInAsyncCall = false;
-      });
-    }, onError: (e) {
-      throw e;
+    var subscription = await getUserSubscriptionStatus(widget.userUid);
+    setState(() {
+      userSubscriptionStatus = subscription;
+      hasAccess = userSubscriptionStatus['isSubscriptionActive'];
+      _isInAsyncCall = false;
+      videosToDisplay = videosFromFB;
+      user = User.fromSnapshot(userSnapshot);
+      videos = videosFromFB;
     });
   }
 
@@ -154,8 +139,10 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
 //    if (userSubscriptionStatus == null) {
 //      return Text("empty status");
 //    }
-    if ( _isInAsyncCall) {
-      return progressHUD(_isInAsyncCall,);
+    if (_isInAsyncCall) {
+      return progressHUD(
+        _isInAsyncCall,
+      );
     } else
       return hasAccess
           ? videoLessons(isLandscape)
