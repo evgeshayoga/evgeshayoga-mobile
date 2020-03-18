@@ -25,14 +25,7 @@ class LessonScreen extends StatelessWidget {
         ),
         backgroundColor: Style.pinkMain,
       ),
-      body: Container(
-        padding: const EdgeInsets.fromLTRB(8, 25, 8, 25),
-        child: ListView(
-          children: <Widget>[
-            LessonBuilder(lessonId),
-          ],
-        ),
-      ),
+      body: LessonBuilder(lessonId)
     );
   }
 }

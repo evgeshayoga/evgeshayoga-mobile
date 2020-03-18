@@ -35,13 +35,34 @@ class _LessonBuilderState extends State<LessonBuilder> {
         .once()
         .then((snapshot) {
       setState(() {
-        yogaOnlineLesson = YogaOnlineLesson.fromSnapshot(snapshot);
+        yogaOnlineLesson = YogaOnlineLesson.fromFB(snapshot.value);
         videos = yogaOnlineLesson.getVideos();
         debugPrint("VIDEOS "+videos.length.toString());
         _isInAsyncCall = false;
       });
     });
   }
+
+  Widget upperContext() {
+    return Container(
+      child: Column(
+        children: <Widget>[
+          Column(
+            children: <Widget>[
+              DefaultTextStyle(
+                child: HtmlWidget(
+                  yogaOnlineLesson.content,
+                  webView: true,
+                ),
+                style: Style.regularTextStyle,
+                textAlign: TextAlign.justify,
+              )
+            ],
+          ),
+        ],
+      ),
+    );
+}
 
   Widget build(BuildContext context) {
     if (yogaOnlineLesson == null) {
@@ -52,22 +73,6 @@ class _LessonBuilderState extends State<LessonBuilder> {
     }
 
 
-    return Column(
-      children: <Widget>[
-        Column(
-          children: <Widget>[
-            DefaultTextStyle(
-              child: HtmlWidget(
-                yogaOnlineLesson.content,
-                webView: true,
-              ),
-              style: Style.regularTextStyle,
-              textAlign: TextAlign.justify,
-            )
-          ],
-        ),
-        VideoBlocks(videos),
-      ],
-    );
+    return VideoBlocks(videos, upperContext: upperContext());
   }
 }

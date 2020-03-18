@@ -49,22 +49,6 @@ class YogaOnlineLesson {
         type = value["type"],
         typeName = value["type_name"];
 
-  YogaOnlineLesson.fromSnapshot(DataSnapshot snapshot)
-      : id = snapshot.value["id"],
-        content = snapshot.value["content"],
-        isActive = snapshot.value["isActive"],
-        thumbnailUrl = snapshot.value["thumbnailUrl"],
-        title = snapshot.value["title"],
-        subtitle = snapshot.value["subtitle"],
-        videoBlocks = snapshot.value["videoBlocks"],
-        duration = snapshot.value["duration"],
-        levelName = snapshot.value["level_name"],
-        level = snapshot.value["level"],
-        teachers = snapshot.value["teachers"],
-        categories = snapshot.value["categories"],
-        type = snapshot.value["type"],
-        typeName = snapshot.value["type_name"];
-
 //  List<Week> getWeeks() {
 //    if (weeks == null || weeks.length == 0) {
 //      return [];

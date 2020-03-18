@@ -6,12 +6,13 @@ import 'chewie_video.dart';
 
 class VideoBlocks extends StatelessWidget {
   List<VideoModel> videos;
+  Widget upperContext;
 
-  VideoBlocks(this.videos);
+  VideoBlocks(this.videos, {this.upperContext});
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> videoBlocks = [];
+    List<Widget> videoBlocks = upperContext != null ? [upperContext] : [];
     videos.forEach((video) {
       videoBlocks.add(
         Card(
@@ -43,6 +44,13 @@ class VideoBlocks extends StatelessWidget {
         ),
       );
     });
+    if (upperContext != null) {
+      return ListView.builder(
+        itemCount: videoBlocks.length,
+        itemBuilder: (context, i) => videoBlocks[i],
+        shrinkWrap: true,
+      );
+    }
     return Column(children: videoBlocks);
   }
 }

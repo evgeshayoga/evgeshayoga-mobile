@@ -31,7 +31,7 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
   bool hasAccess = false;
   Filters _filters = Filters();
   List<YogaOnlineLesson> videos = [];
-  List videosToDisplay = [];
+  List<YogaOnlineLesson> videosToDisplay = [];
   bool _isInAsyncCall = true;
 
   @override
@@ -171,37 +171,11 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
         }
       });
 
-      return ListView(
-        children: <Widget>[
-          Column(
-            children: videosColumn,
-          ),
-        ],
+      return ListView.builder(
+        itemCount: videosColumn.length,
+        itemBuilder: (context, i) => videosColumn[i],
       );
     }
-    return Column(
-      children: <Widget>[
-        Flexible(
-          child: FirebaseAnimatedList(
-              query: dbVideosReference,
-              itemBuilder: (_, DataSnapshot snapshot,
-                  Animation<double> animation, int index) {
-                var yogaOnlineLesson = YogaOnlineLesson.fromSnapshot(snapshot);
-                videos.add(yogaOnlineLesson);
-
-                if (snapshot == null || userSubscriptionStatus == null) {
-//                  return progressHUD();
-                }
-
-                if (!yogaOnlineLesson.isActive) {
-                  return Container();
-                }
-
-                return _yogaOnlineLessonCard(yogaOnlineLesson, isLandscape);
-              }),
-        )
-      ],
-    );
   }
 
   Widget _yogaOnlineLessonCard(yogaOnlineLesson, isLandscape) {
