@@ -1,4 +1,3 @@
-import 'package:evgeshayoga/ui/programs/yoga_online_screen.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:flutter/material.dart';
 
@@ -8,7 +7,8 @@ class FiltersDrawer extends StatefulWidget {
   final Function onApplyFilters;
   final Function onClear;
 
-  FiltersDrawer({Key key, this.videos, this.onApplyFilters, this.filters, this.onClear})
+  FiltersDrawer(
+      {Key key, this.videos, this.onApplyFilters, this.filters, this.onClear})
       : super(key: key);
 
   @override
@@ -125,125 +125,177 @@ class _FiltersDrawerState extends State<FiltersDrawer> {
                   height: 50,
                   child: Center(child: Text("Фильтры")),
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: <Widget>[
-                    DropdownButton(
-                      items: ddLevel(),
-                      onChanged: (value) {
-                        setState(() {
-                          _selectedLevel = value;
-                        });
+                Padding(
+                  padding: const EdgeInsets.only(right: 20.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          DropdownButton(
+                            items: ddLevel(),
+                            onChanged: (value) {
+                              setState(() {
+                                _selectedLevel = value;
+                              });
 //                  debugPrint(_selectedLevel);
-                      },
+                            },
 //                value: __selectedLevel,
-                      hint: Text(
-                        "Уровень",
+                            hint: Text(
+                              "Уровень",
+                            ),
+                            value: _selectedLevel,
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.clear),
+                            color: Style.blueGrey,
+                            onPressed: () => _clearOneFilter('level'),
+                          )
+                        ],
                       ),
-                      value: _selectedLevel,
-                    ),
-                    DropdownButton(
-                      items: ddType(),
-                      onChanged: (value) {
-                        setState(() {
-                          _selectedType = value;
-                        });
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          DropdownButton(
+                            items: ddType(),
+                            onChanged: (value) {
+                              setState(() {
+                                _selectedType = value;
+                              });
 //                  debugPrint(__selectedType);
-                      },
+                            },
 //                value: __selectedType,
-                      hint: Text(
-                        "Вид",
+                            hint: Text(
+                              "Вид",
+                            ),
+                            value: _selectedType,
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.clear),
+                            color: Style.blueGrey,
+                            onPressed: () => _clearOneFilter('type'),
+                          )
+                        ],
                       ),
-                      value: _selectedType,
-                    ),
-                    DropdownButton(
-                      items: ddTeachers(),
-                      onChanged: (value) {
-                        setState(() {
-                          _selectedTeacher = value;
-                        });
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          DropdownButton(
+                            items: ddTeachers(),
+                            onChanged: (value) {
+                              setState(() {
+                                _selectedTeacher = value;
+                              });
 //                  debugPrint(__selectedType);
-                      },
+                            },
 //                value: __selectedType,
-                      hint: Text(
-                        "Преподаватель",
+                            hint: Text(
+                              "Преподаватель",
+                            ),
+                            value: _selectedTeacher,
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.clear),
+                            color: Style.blueGrey,
+                            onPressed: () => _clearOneFilter('teacher'),
+                          )
+                        ],
                       ),
-                      value: _selectedTeacher,
-                    ),
-                    DropdownButton(
-                      items: ddCategories(),
-                      onChanged: (value) {
-                        setState(() {
-                          _selectedCategory = value;
-                        });
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          DropdownButton(
+                            items: ddCategories(),
+                            onChanged: (value) {
+                              setState(() {
+                                _selectedCategory = value;
+                              });
 //                  debugPrint(__selectedType);
-                      },
+                            },
 //                value: __selectedType,
-                      hint: Text(
-                        "Акцент",
+                            hint: Text(
+                              "Акцент",
+                            ),
+                            value: _selectedCategory,
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.clear),
+                            color: Style.blueGrey,
+                            onPressed: () => _clearOneFilter('category'),
+                          )
+                        ],
                       ),
-                      value: _selectedCategory,
-                    ),
-                    DropdownButton(
-                      items: [
-                        DropdownMenuItem<String>(
-                          value: '10',
-                          child: Text(
-                            "10",
-                          ),
-                        ),
-                        DropdownMenuItem<String>(
-                          value: '20',
-                          child: Text(
-                            "20",
-                          ),
-                        ),
-                        DropdownMenuItem<String>(
-                          value: '30',
-                          child: Text(
-                            "30",
-                          ),
-                        ),
-                        DropdownMenuItem<String>(
-                          value: '40',
-                          child: Text(
-                            "40",
-                          ),
-                        ),
-                        DropdownMenuItem<String>(
-                          value: '50',
-                          child: Text(
-                            "50",
-                          ),
-                        ),
-                        DropdownMenuItem<String>(
-                          value: '60',
-                          child: Text(
-                            "60",
-                          ),
-                        ),
-                        DropdownMenuItem<String>(
-                          value: '90',
-                          child: Text(
-                            "90",
-                          ),
-                        ),
-                      ],
-                      onChanged: (value) {
-                        setState(() {
-                          _selectedDuration = value;
-                        });
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          DropdownButton(
+                            items: [
+                              DropdownMenuItem<String>(
+                                value: '10',
+                                child: Text(
+                                  "10 мин",
+                                ),
+                              ),
+                              DropdownMenuItem<String>(
+                                value: '20',
+                                child: Text(
+                                  "20 мин",
+                                ),
+                              ),
+                              DropdownMenuItem<String>(
+                                value: '30',
+                                child: Text(
+                                  "30 мин",
+                                ),
+                              ),
+                              DropdownMenuItem<String>(
+                                value: '40',
+                                child: Text(
+                                  "40 мин",
+                                ),
+                              ),
+                              DropdownMenuItem<String>(
+                                value: '50',
+                                child: Text(
+                                  "50 мин",
+                                ),
+                              ),
+                              DropdownMenuItem<String>(
+                                value: '60',
+                                child: Text(
+                                  "60 мин",
+                                ),
+                              ),
+                              DropdownMenuItem<String>(
+                                value: '90',
+                                child: Text(
+                                  "90 мин",
+                                ),
+                              ),
+                            ],
+                            onChanged: (value) {
+                              setState(() {
+                                _selectedDuration = value;
+                              });
 //                  debugPrint(__selectedType);
-                      },
+                            },
 //                value: __selectedType,
-                      hint: Text(
-                        "Продолжительность",
+                            hint: Text(
+                              "Продолжительность",
+                            ),
+                            value: _selectedDuration,
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.clear),
+                            color: Style.blueGrey,
+                            onPressed: () => _clearOneFilter('duration'),
+                          )
+                        ],
                       ),
-                      value: _selectedDuration,
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-
                 Padding(
                   padding: EdgeInsets.only(top: 20),
                 ),
@@ -297,6 +349,38 @@ class _FiltersDrawerState extends State<FiltersDrawer> {
       _selectedTeacher = null;
       _selectedType = null;
       _selectedCategory = null;
+    });
+  }
+
+  void _clearOneFilter(filter) {
+    setState(() {
+      switch (filter) {
+        case "level":
+          {
+            _selectedLevel = null;
+          }
+          break;
+        case "duration":
+          {
+            _selectedDuration = null;
+          }
+          break;
+        case "teacher":
+          {
+            _selectedTeacher = null;
+          }
+          break;
+        case "type":
+          {
+            _selectedType = null;
+          }
+          break;
+        case "category":
+          {
+            _selectedCategory = null;
+          }
+          break;
+      }
     });
   }
 }
