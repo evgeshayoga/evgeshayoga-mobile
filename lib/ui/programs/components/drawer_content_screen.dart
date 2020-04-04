@@ -9,7 +9,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 Widget drawerProgramScreen(User user, context, userUid, isLandscape, version, buildNumber) {
-Widget drawerProgramScreen(User user, context, userUid, isLandscape, version, buildNumber) {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   return Drawer(

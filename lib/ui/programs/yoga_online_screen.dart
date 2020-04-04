@@ -35,8 +35,8 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
   List<YogaOnlineLesson> videos = [];
   List<YogaOnlineLesson> videosToDisplay = [];
   bool _isInAsyncCall = true;
-  String version;
-  String buildNumber;
+  String version = '';
+  String buildNumber = '';
 
   @override
   void initState() {
@@ -72,8 +72,10 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
     });
 
     PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
-      version = packageInfo.version;
-      buildNumber = packageInfo.buildNumber;
+      setState(() {
+        version = packageInfo.version;
+        buildNumber = packageInfo.buildNumber;
+      });
     });
 
 
