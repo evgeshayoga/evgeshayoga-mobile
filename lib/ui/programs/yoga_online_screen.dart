@@ -11,6 +11,8 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:package_info/package_info.dart';
+
 
 class YogaOnlineScreen extends StatefulWidget {
   final String userUid;
@@ -33,6 +35,8 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
   List<YogaOnlineLesson> videos = [];
   List<YogaOnlineLesson> videosToDisplay = [];
   bool _isInAsyncCall = true;
+  String version;
+  String buildNumber;
 
   @override
   void initState() {
@@ -66,6 +70,13 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
       user = User.fromSnapshot(userSnapshot);
       videos = videosFromFB;
     });
+
+    PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
+      version = packageInfo.version;
+      buildNumber = packageInfo.buildNumber;
+    });
+
+
   }
 
   @override
@@ -78,7 +89,7 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
       isLandscape = false;
     }
     return Scaffold(
-      drawer: drawerProgramScreen(user, context, widget.userUid, isLandscape),
+      drawer: drawerProgramScreen(user, context, widget.userUid, isLandscape, version, buildNumber),
       endDrawer: FiltersDrawer(
         videos: videos,
         filters: _filters,

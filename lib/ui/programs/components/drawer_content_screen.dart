@@ -8,7 +8,8 @@ import 'package:evgeshayoga/utils/style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-Widget drawerProgramScreen(User user, context, userUid, isLandscape) {
+Widget drawerProgramScreen(User user, context, userUid, isLandscape, version, buildNumber) {
+Widget drawerProgramScreen(User user, context, userUid, isLandscape, version, buildNumber) {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   return Drawer(
@@ -64,8 +65,8 @@ Widget drawerProgramScreen(User user, context, userUid, isLandscape) {
                         style: Style.regularTextStyle,
                       ),
                       onTap: () {
-                        var router =
-                            new MaterialPageRoute(builder: (BuildContext context) {
+                        var router = new MaterialPageRoute(
+                            builder: (BuildContext context) {
                           return ProfileScreen(user);
                         });
                         Navigator.of(context).push(router);
@@ -78,8 +79,8 @@ Widget drawerProgramScreen(User user, context, userUid, isLandscape) {
                         style: Style.regularTextStyle,
                       ),
                       onTap: () {
-                        var router =
-                        new MaterialPageRoute(builder: (BuildContext context) {
+                        var router = new MaterialPageRoute(
+                            builder: (BuildContext context) {
                           return YogaOnlineScreen(userUid: userUid);
                         });
                         Navigator.of(context).push(router);
@@ -92,8 +93,8 @@ Widget drawerProgramScreen(User user, context, userUid, isLandscape) {
                         style: Style.regularTextStyle,
                       ),
                       onTap: () {
-                        var router =
-                        new MaterialPageRoute(builder: (BuildContext context) {
+                        var router = new MaterialPageRoute(
+                            builder: (BuildContext context) {
                           return Programs(userUid: userUid);
                         });
                         Navigator.of(context).push(router);
@@ -106,8 +107,8 @@ Widget drawerProgramScreen(User user, context, userUid, isLandscape) {
                         style: Style.regularTextStyle,
                       ),
                       onTap: () {
-                        var router =
-                            new MaterialPageRoute(builder: (BuildContext context) {
+                        var router = new MaterialPageRoute(
+                            builder: (BuildContext context) {
                           return PurchasesScreen(userUid);
                         });
                         Navigator.of(context).push(router);
@@ -120,8 +121,8 @@ Widget drawerProgramScreen(User user, context, userUid, isLandscape) {
                         style: Style.regularTextStyle,
                       ),
                       onTap: () {
-                        var router =
-                        new MaterialPageRoute(builder: (BuildContext context) {
+                        var router = new MaterialPageRoute(
+                            builder: (BuildContext context) {
                           return SubscriptionScreen(userUid);
                         });
                         Navigator.of(context).push(router);
@@ -146,6 +147,15 @@ Widget drawerProgramScreen(User user, context, userUid, isLandscape) {
                   "Выйти",
                   style: Style.regularTextStyle,
                 ),
+              ),
+            ),
+          ),
+          Container(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                version + "+" +buildNumber,
+                style: TextStyle(fontSize: 9, color: Style.lightBlue),
               ),
             ),
           )

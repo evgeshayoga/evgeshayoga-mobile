@@ -54,7 +54,7 @@ class _ContentScreenState extends State<ContentScreen> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        drawer: drawerProgramScreen(user, context, widget.userUid, isLandscape),
+        drawer: drawerProgramScreen(user, context, widget.userUid, isLandscape, '', ''),
         endDrawer: Drawer(
           child: SafeArea(
             child: Column(

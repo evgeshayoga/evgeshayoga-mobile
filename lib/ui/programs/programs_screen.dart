@@ -67,7 +67,7 @@ class _ProgramsState extends State<Programs> {
 
     var programs = user.getPurchases().programs;
     return Scaffold(
-      drawer: drawerProgramScreen(user, context, widget.userUid, isLandscape),
+      drawer: drawerProgramScreen(user, context, widget.userUid, isLandscape, '', ''),
       appBar: AppBar(
         leading: Builder(
           builder: (BuildContext context) {
