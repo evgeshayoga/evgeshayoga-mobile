@@ -21,16 +21,6 @@ class User {
   UserPurchases getPurchases() {
     return purchases != null ? purchases : new UserPurchases({});
   }
-
-  toJson() {
-    return {
-      "id": userId,
-      "name": userName,
-      "email": userEmail,
-      "phone": phoneNumber,
-      "purchases": purchases
-    };
-  }
 }
 
 class UserPurchases {
@@ -48,7 +38,4 @@ class UserPurchases {
       });
     }
   }
-
-
-
 }

@@ -1,4 +1,4 @@
-import 'package:evgeshayoga/models/video_model.dart';
+import 'package:evgeshayoga/models/video.dart';
 
 class Week {
   String content;
