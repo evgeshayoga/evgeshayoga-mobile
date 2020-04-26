@@ -1,4 +1,4 @@
-import 'package:evgeshayoga/ui/programs/components/yoga_online_lesson_card.dart';
+import 'package:evgeshayoga/ui/video_content/components/yoga_online_lesson_card.dart';
 import 'package:flutter/material.dart';
 
 Widget videoLessons(isLandscape, videosToDisplay, BuildContext context) {

@@ -1,7 +1,7 @@
 import 'package:evgeshayoga/models/program.dart';
 import 'package:evgeshayoga/models/video.dart';
-import 'package:evgeshayoga/ui/programs/components/video_blocks_column.dart';
-import 'package:evgeshayoga/ui/programs/week_screen.dart';
+import 'package:evgeshayoga/ui/video_content/components/video_blocks_column.dart';
+import 'package:evgeshayoga/ui/video_content/week_screen.dart';
 import 'package:evgeshayoga/utils/ProgressHUD.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:firebase_database/firebase_database.dart';

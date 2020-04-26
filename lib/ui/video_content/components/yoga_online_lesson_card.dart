@@ -1,4 +1,4 @@
-import 'package:evgeshayoga/ui/programs/lesson_screen.dart';
+import 'package:evgeshayoga/ui/video_content/lesson_screen.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';

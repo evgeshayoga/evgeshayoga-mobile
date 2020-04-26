@@ -1,5 +1,5 @@
-import 'package:evgeshayoga/ui/programs/content_screen.dart';
-import 'package:evgeshayoga/ui/programs/yoga_online_screen.dart';
+import 'package:evgeshayoga/ui/video_content/content_screen.dart';
+import 'package:evgeshayoga/ui/video_content/yoga_online_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 

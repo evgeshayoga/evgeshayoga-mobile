@@ -1,8 +1,8 @@
 import 'package:evgeshayoga/models/user.dart';
 import 'package:evgeshayoga/ui/profile_screen.dart';
-import 'package:evgeshayoga/ui/programs/components/subscription_screen.dart';
-import 'package:evgeshayoga/ui/programs/programs_screen.dart';
-import 'package:evgeshayoga/ui/programs/yoga_online_screen.dart';
+import 'package:evgeshayoga/ui/video_content/components/subscription_screen.dart';
+import 'package:evgeshayoga/ui/video_content/programs_screen.dart';
+import 'package:evgeshayoga/ui/video_content/yoga_online_screen.dart';
 import 'package:evgeshayoga/ui/purchases_screen.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:firebase_auth/firebase_auth.dart';

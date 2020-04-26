@@ -1,9 +1,9 @@
 import 'package:evgeshayoga/models/user.dart';
 import 'package:evgeshayoga/models/yoga_online_lesson.dart';
-import 'package:evgeshayoga/ui/favorites_screen.dart';
-import 'package:evgeshayoga/ui/programs/components/drawer_content_screen.dart';
-import 'package:evgeshayoga/ui/programs/components/filters_drawer.dart';
-import 'package:evgeshayoga/ui/programs/components/yoga_online_column.dart';
+import 'package:evgeshayoga/ui/video_content/favorites_screen.dart';
+import 'package:evgeshayoga/ui/video_content/components/drawer_content_screen.dart';
+import 'package:evgeshayoga/ui/video_content/components/filters_drawer.dart';
+import 'package:evgeshayoga/ui/video_content/components/yoga_online_column.dart';
 import 'package:evgeshayoga/utils/ProgressHUD.dart';
 import 'package:evgeshayoga/utils/check_is_landscape.dart';
 import 'package:evgeshayoga/utils/style.dart';
