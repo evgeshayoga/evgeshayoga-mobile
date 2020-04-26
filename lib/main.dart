@@ -1,7 +1,7 @@
 import 'package:evgeshayoga/ui/login_screen.dart';
 import 'package:evgeshayoga/ui/programs/programs_screen.dart';
 import 'package:evgeshayoga/utils/animator.dart';
-import 'package:evgeshayoga/utils/getStartScreen.dart';
+import 'package:evgeshayoga/utils/get_start_screen.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:flutter/material.dart';
 

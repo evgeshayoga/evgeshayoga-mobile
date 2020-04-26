@@ -1,11 +1,12 @@
 import 'package:evgeshayoga/models/user.dart';
 import 'package:evgeshayoga/models/yoga_online_lesson.dart';
+import 'package:evgeshayoga/ui/favorites_screen.dart';
 import 'package:evgeshayoga/ui/programs/components/drawer_content_screen.dart';
 import 'package:evgeshayoga/ui/programs/components/filters_drawer.dart';
-import 'package:evgeshayoga/ui/programs/lesson_screen.dart';
+import 'package:evgeshayoga/ui/programs/components/yoga_online_column.dart';
 import 'package:evgeshayoga/utils/ProgressHUD.dart';
+import 'package:evgeshayoga/utils/check_is_landscape.dart';
 import 'package:evgeshayoga/utils/style.dart';
-import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:http/http.dart' as http;
@@ -77,19 +78,11 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
         buildNumber = packageInfo.buildNumber;
       });
     });
-
-
   }
 
   @override
   Widget build(BuildContext context) {
-    var shortestSide = MediaQuery.of(context).size.shortestSide;
-    var orientation = MediaQuery.of(context).orientation;
-    var isLandscape = true;
-    if (orientation == Orientation.portrait &&
-        shortestSide < tabletBreakpoint) {
-      isLandscape = false;
-    }
+    bool isLandscape = checkIsLandscape(context);
     return Scaffold(
       drawer: drawerProgramScreen(user, context, widget.userUid, isLandscape, version, buildNumber),
       endDrawer: FiltersDrawer(
@@ -123,16 +116,23 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
           centerTitle: true,
           backgroundColor: Style.pinkMain,
           actions: [
-//            Builder(
-//              builder: (context) => IconButton(
-//                icon: Icon(
-//                  Icons.search,
-//                  size: 26.0,
-//                  color: Style.blueGrey,
-//                ),
-//                onPressed: () {},
-//              ),
-//            ),
+            Builder(
+              builder: (context) => IconButton(
+                icon: Icon(
+                  Icons.favorite_border,
+                  size: 26.0,
+                  color: Style.blueGrey,
+                ),
+                onPressed: () {
+
+                  debugPrint(userSubscriptionStatus["favourite"].length.toString());
+                  var router = new MaterialPageRoute(builder: (BuildContext context) {
+                    return FavoritesScreen(userSubscriptionStatus["favourite"], videos, context);
+                  });
+                  Navigator.of(context).push(router);
+                },
+              ),
+            ),
             Builder(
               builder: (context) => IconButton(
                 icon: Icon(
@@ -149,102 +149,16 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
   }
 
   Widget yogaOnlineBody(isLandscape) {
-//    if (userSubscriptionStatus == null) {
-//      return Text("empty status");
-//    }
     if (_isInAsyncCall) {
       return progressHUD(
         _isInAsyncCall,
       );
     } else
       return hasAccess
-          ? videoLessons(isLandscape)
+          ? videoLessons(isLandscape, videosToDisplay, context)
           : Center(
               child: Text('Вы не подписаны на Yoga Online'),
             );
-  }
-
-  Widget videoLessons(isLandscape) {
-//    if (videos.length == 0 || videos.length == null) {
-//      return Container(
-//        child: Text("No videos"),
-//      );
-//    }
-    if (videosToDisplay.length == 0) {
-      return Center(
-        child: Text("НЕТ ЗАПИСЕЙ"),
-      );
-    } else {
-      List<Widget> videosColumn = [];
-      videosToDisplay.forEach((video) {
-        if (!video.isActive) {
-          videosColumn.add(Container());
-        } else {
-          videosColumn.add(_yogaOnlineLessonCard(video, isLandscape));
-        }
-      });
-
-      return ListView.builder(
-        itemCount: videosColumn.length,
-        itemBuilder: (context, i) => videosColumn[i],
-      );
-    }
-  }
-
-  Widget _yogaOnlineLessonCard(yogaOnlineLesson, isLandscape) {
-    ConstrainedBox programThumbnail = ConstrainedBox(
-      constraints: BoxConstraints(minHeight: 100, maxHeight: 300),
-      child: Container(
-        alignment: Alignment.center,
-        child: Image.network(
-          "https://evgeshayoga.com" + yogaOnlineLesson.thumbnailUrl,
-        ),
-      ),
-    );
-
-    Text title = Text(
-      yogaOnlineLesson.title,
-      textAlign: TextAlign.center,
-      style: Style.headerTextStyle,
-    );
-
-    return Container(
-      child: Card(
-        elevation: 0,
-        child: GestureDetector(
-          onTap: () {
-            var router = new MaterialPageRoute(builder: (BuildContext context) {
-              return LessonScreen(yogaOnlineLesson.title, yogaOnlineLesson.id);
-            });
-            Navigator.of(context).push(router);
-          },
-          child: isLandscape
-              ? Row(
-                  children: <Widget>[
-                    Expanded(
-                      flex: 2,
-                      child: Column(
-                        children: <Widget>[
-                          title,
-                          additionalInfo(yogaOnlineLesson),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      flex: 3,
-                      child: programThumbnail,
-                    )
-                  ],
-                )
-              : Column(
-                  children: <Widget>[
-                    ListTile(title: title, subtitle: programThumbnail),
-                    additionalInfo(yogaOnlineLesson),
-                  ],
-                ),
-        ),
-      ),
-    );
   }
 
   void _applyFilters(Filters filters) {
@@ -283,11 +197,7 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
       _filters = filters;
       videosToDisplay = filteredVideos;
     });
-
-//    debugPrint(filteredVideos.length.toString());
-//    debugPrint(filteredVideos[0].id.toString());
     Navigator.of(context).pop();
-// teacher, duration, type, accent, level
   }
 
   void _clearFilters() {
@@ -296,118 +206,6 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
       videosToDisplay = videos;
     });
   }
-}
-
-Widget additionalInfo(yogaOnlineLesson) {
-  return Column(
-    children: <Widget>[
-      Padding(
-        padding: const EdgeInsets.fromLTRB(16, 8.0, 16, 8.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                Text(
-                  yogaOnlineLesson.levelName + "  ",
-                  style: Style.regularTextStyle,
-                ),
-                levelIcon(yogaOnlineLesson.level),
-              ],
-            ),
-//                    Text(" " +
-//                      yogaOnlineLesson.id.toString(),
-//                      style: Style.regularTextStyle,
-//                    ),
-            Row(
-              children: <Widget>[
-                Icon(
-                  Icons.hourglass_full,
-                  size: 16,
-                  color: Style.blueGrey,
-                ),
-                Text(": " + yogaOnlineLesson.duration.toString() + " мин"),
-              ],
-            ),
-          ],
-        ),
-      ),
-      Padding(
-        padding: const EdgeInsets.fromLTRB(16, 4.0, 16, 4.0),
-        child: Text("Акцент: " + categories(yogaOnlineLesson.categories),
-            textAlign: TextAlign.center),
-
-//        Row(
-//          children: <Widget>[
-//            Icon(
-//              Icons.accessibility_new,
-//              size: 16,
-//            ),
-//          ],
-//        ),
-      ),
-      Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Text(teachers(yogaOnlineLesson.teachers)),
-      ),
-    ],
-  );
-}
-
-String teachers(teachersList) {
-  String teachersStr = '';
-  List namesList = [];
-  teachersList.forEach((teacher) {
-    namesList.add(teacher["name"]);
-  });
-  return teachersStr = namesList.join(', ');
-}
-
-String categories(categoriesList) {
-  String categoriesStr = '';
-  List titleList = [];
-  categoriesList.forEach((category) {
-    titleList.add(category["title"]);
-//      categoriesStr += (category["title"]) + ", ";
-  });
-
-//  if (categoriesList.length > 1) {
-//    categoriesList.forEach((category) {
-//      titleList.add(category["title"]);
-////      categoriesStr += (category["title"]) + ", ";
-//    });
-//  } else {
-//    categoriesStr = categoriesList[0]["title"].toString();
-//  }
-
-  return categoriesStr = titleList.join(", ");
-}
-
-Widget levelIcon(level) {
-  Icon ic;
-  switch (level) {
-    case 0:
-      {
-        ic = Icon(
-          MaterialCommunityIcons.signal_cellular_1,
-          color: Style.blueGrey,
-        );
-      }
-      break;
-    case 1:
-      {
-        ic = Icon(MaterialCommunityIcons.signal_cellular_2,
-            color: Style.blueGrey);
-      }
-      break;
-    case 2:
-      {
-        ic = Icon(MaterialCommunityIcons.signal_cellular_3,
-            color: Style.blueGrey);
-      }
-      break;
-  }
-  return ic;
 }
 
 Future<Map<String, dynamic>> getUserSubscriptionStatus(String uid) async {
