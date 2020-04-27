@@ -11,7 +11,6 @@ Widget yogaOnlineLessonCard(
     child: Container(
       alignment: Alignment.center,
       child: FadeInImage.memoryNetwork(placeholder: kTransparentImage, image: "https://evgeshayoga.com" + yogaOnlineLesson.thumbnailUrl),
-      ),
     ),
   );
 
