@@ -12,6 +12,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:transparent_image/transparent_image.dart';
 
 class Programs extends StatefulWidget {
   final String userUid;
@@ -244,7 +245,8 @@ class _ProgramsState extends State<Programs> {
         children: <Widget>[
           Container(
               alignment: Alignment.center,
-              child: Image.network("https://evgeshayoga.com" + thumbnailUrl)),
+              child: FadeInImage.memoryNetwork(placeholder: kTransparentImage, image: "https://evgeshayoga.com" + thumbnailUrl),
+          ),
           Container(
             alignment: Alignment.center,
             child: Opacity(
@@ -292,9 +294,7 @@ class _ProgramsState extends State<Programs> {
       constraints: BoxConstraints(minHeight: 100, maxHeight: 300),
       child: Container(
         alignment: Alignment.center,
-        child: Image.network(
-          "https://evgeshayoga.com" + program["thumbnailUrl"],
-        ),
+        child: FadeInImage.memoryNetwork(placeholder: kTransparentImage, image: "https://evgeshayoga.com" + program["thumbnailUrl"]),
       ),
     );
 

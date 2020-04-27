@@ -193,6 +193,11 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
               video.duration <= int.parse(filters.duration) + 4)
           .toList();
     }
+    if (filters.format != null) {
+      filteredVideos = filteredVideos
+          .where((video) => video.format == int.parse(filters.format))
+          .toList();
+    }
     setState(() {
       _filters = filters;
       videosToDisplay = filteredVideos;

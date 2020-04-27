@@ -2,6 +2,7 @@ import 'package:evgeshayoga/ui/video_content/lesson_screen.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 Widget yogaOnlineLessonCard(
     yogaOnlineLesson, isLandscape, BuildContext context) {
@@ -9,8 +10,7 @@ Widget yogaOnlineLessonCard(
     constraints: BoxConstraints(minHeight: 100, maxHeight: 300),
     child: Container(
       alignment: Alignment.center,
-      child: Image.network(
-        "https://evgeshayoga.com" + yogaOnlineLesson.thumbnailUrl,
+      child: FadeInImage.memoryNetwork(placeholder: kTransparentImage, image: "https://evgeshayoga.com" + yogaOnlineLesson.thumbnailUrl),
       ),
     ),
   );
