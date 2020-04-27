@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'package:evgeshayoga/models/program.dart';
 import 'package:evgeshayoga/models/user.dart';
-import 'package:evgeshayoga/ui/programs/components/drawer_content_screen.dart';
-import 'package:evgeshayoga/ui/programs/program_screen.dart';
+import 'package:evgeshayoga/ui/video_content/components/drawer_content_screen.dart';
+import 'package:evgeshayoga/ui/video_content/program_screen.dart';
 import 'package:evgeshayoga/utils/ProgressHUD.dart';
 import 'package:evgeshayoga/utils/check_is_available.dart';
+import 'package:evgeshayoga/utils/check_is_landscape.dart';
 import 'package:evgeshayoga/utils/date_formatter.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -30,6 +31,7 @@ class _ProgramsState extends State<Programs> {
   User user;
   Map<String, dynamic> userProgramsStatuses;
   bool _isInAsyncCall = false;
+  bool noActivePrograms = false;
 
   @override
   void initState() {
@@ -41,9 +43,27 @@ class _ProgramsState extends State<Programs> {
         database.reference().child("users").child(widget.userUid);
     dbProgramsReference = database.reference().child("marathons");
     user = User("", "", "", "");
+
     dbProgramsReference.once().then((snapshot) {
-//      debugPrint(snapshot.value.toString());
-    _isInAsyncCall = false;
+      _isInAsyncCall = false;
+      List activePrograms = [];
+      snapshot.value.forEach((program) {
+//        activePrograms.add(program);
+//        debugPrint(activePrograms.toString());
+//        debugPrint(program.toString());
+        if (program != null) {
+          if (program["isActive"] == true) {
+            activePrograms.add(program);
+//            debugPrint(activePrograms.toString());
+          }
+        }
+      });
+      setState(() {
+        activePrograms.length > 0
+            ? noActivePrograms = false
+            : noActivePrograms = true;
+      });
+//      debugPrint(activePrograms.length.toString());
     });
 
     dbUsersReference.once().then((snapshot) {
@@ -58,17 +78,12 @@ class _ProgramsState extends State<Programs> {
 
   @override
   Widget build(BuildContext context) {
-    var shortestSide = MediaQuery.of(context).size.shortestSide;
-    var orientation = MediaQuery.of(context).orientation;
-    var isLandscape = true;
-    if (orientation == Orientation.portrait &&
-        shortestSide < tabletBreakpoint) {
-      isLandscape = false;
-    }
+    bool isLandscape = checkIsLandscape(context);
 
     var programs = user.getPurchases().programs;
     return Scaffold(
-      drawer: drawerProgramScreen(user, context, widget.userUid, isLandscape, '', ''),
+      drawer: drawerProgramScreen(
+          user, context, widget.userUid, isLandscape, '', ''),
       appBar: AppBar(
         leading: Builder(
           builder: (BuildContext context) {
@@ -80,8 +95,7 @@ class _ProgramsState extends State<Programs> {
               onPressed: () {
                 Scaffold.of(context).openDrawer();
               },
-              tooltip:
-              MaterialLocalizations.of(context).openAppDrawerTooltip,
+              tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
             );
           },
         ),
@@ -89,52 +103,59 @@ class _ProgramsState extends State<Programs> {
         centerTitle: true,
         backgroundColor: Style.pinkMain,
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: <Widget>[
-          Flexible(
-            child: FirebaseAnimatedList(
-              query: dbProgramsReference,
-              sort: (sa, sb) {
-                return sb.value["id"] - sa.value["id"];
-              },
-              itemBuilder: (_, DataSnapshot snapshot, Animation<double> animation,
-                  int index) {
-                if (snapshot == null || userProgramsStatuses == null) {
-                  return Container(
-                    height: 300,
-                      child: progressHUD(_isInAsyncCall));
-                }
-                var program = Program.fromSnapshot(snapshot);
-                String date = userProgramsStatuses[program.id.toString()]
-                ["availableTill"]
-                    .toString();
-                if (widget.userUid == ' '
-                    || widget.userUid == " "
-                ) {
-                  if (isAvailable(date)) {
-                    return _availableProgram(date, snapshot.value, isLandscape);
-                  } else return Container();
-                }
-                else {
-                 if (!program.isActive) {
-                return _inactiveProgram();
-                }
+      body: noActivePrograms
+          ? Center(
+              child: Text(
+                'Нет активных программ',
+                style: Style.regularTextStyle,
+              ),
+            )
+          : Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                Flexible(
+                  child: FirebaseAnimatedList(
+                    query: dbProgramsReference,
+                    sort: (sa, sb) {
+                      return sb.value["id"] - sa.value["id"];
+                    },
+                    itemBuilder: (_, DataSnapshot snapshot,
+                        Animation<double> animation, int index) {
+                      if (snapshot == null || userProgramsStatuses == null) {
+                        return Container(
+                            height: 300, child: progressHUD(_isInAsyncCall));
+                      }
+                      var program = Program.fromSnapshot(snapshot);
+                      String date = userProgramsStatuses[program.id.toString()]
+                              ["availableTill"]
+                          .toString();
+                      if (widget.userUid == ' ' || widget.userUid == " ") {
+                        if (isAvailable(date)) {
+                          return _availableProgram(
+                              date, snapshot.value, isLandscape);
+                        } else
+                          return Container();
+                      } else {
+                        if (!program.isActive) {
+                          return _inactiveProgram();
+                        }
 
-                if (isViewable(userProgramsStatuses, program.id)) {
-                String date = userProgramsStatuses[program.id.toString()]
-                ["availableTill"]
-                    .toString();
-                return _availableProgram(date, snapshot.value, isLandscape);
-                }
-                return _notAvailableProgram(
-                programs, snapshot.value, context, isLandscape);
-                }
-              },
+                        if (isViewable(userProgramsStatuses, program.id)) {
+                          String date =
+                              userProgramsStatuses[program.id.toString()]
+                                      ["availableTill"]
+                                  .toString();
+                          return _availableProgram(
+                              date, snapshot.value, isLandscape);
+                        }
+                        return _notAvailableProgram(
+                            programs, snapshot.value, context, isLandscape);
+                      }
+                    },
+                  ),
+                )
+              ],
             ),
-          )
-        ],
-      ),
     );
   }
 
@@ -284,7 +305,6 @@ class _ProgramsState extends State<Programs> {
     );
 
     return Container(
-//      height: MediaQuery.of(context).size.height -80,
       child: Card(
         child: GestureDetector(
           onTap: () {

@@ -1,4 +1,4 @@
-import 'package:evgeshayoga/ui/programs/components/program_builder.dart';
+import 'package:evgeshayoga/ui/video_content/components/program_builder.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:flutter/material.dart';
 

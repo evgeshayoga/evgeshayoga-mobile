@@ -1,12 +1,12 @@
-import 'package:evgeshayoga/ui/programs/content_screen.dart' as prefix0;
-import 'package:evgeshayoga/ui/programs/programs_screen.dart';
-import 'package:evgeshayoga/ui/programs/yoga_online_screen.dart';
-import 'package:evgeshayoga/ui/programs/yoga_online_screen.dart';
+import 'package:evgeshayoga/ui/video_content/content_screen.dart' as prefix0;
+import 'package:evgeshayoga/ui/video_content/programs_screen.dart';
+import 'package:evgeshayoga/ui/video_content/yoga_online_screen.dart';
+import 'package:evgeshayoga/ui/video_content/yoga_online_screen.dart';
 import 'package:evgeshayoga/utils/ProgressHUD.dart';
 import 'package:evgeshayoga/utils/date_formatter.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:flutter/material.dart';
-import 'package:evgeshayoga/ui/programs/yoga_online_screen.dart';
+import 'package:evgeshayoga/ui/video_content/yoga_online_screen.dart';
 
 class SubscriptionScreen extends StatefulWidget {
   final String userUid;

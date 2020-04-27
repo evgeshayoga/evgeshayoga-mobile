@@ -1,5 +1,5 @@
 import 'package:evgeshayoga/models/week.dart';
-import 'package:evgeshayoga/ui/programs/components/video_blocks_column.dart';
+import 'package:evgeshayoga/ui/video_content/components/video_blocks_column.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';

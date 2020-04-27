@@ -1,5 +1,5 @@
-import 'package:evgeshayoga/ui/programs/program_screen.dart';
-import 'package:evgeshayoga/ui/programs/programs_screen.dart';
+import 'package:evgeshayoga/ui/video_content/program_screen.dart';
+import 'package:evgeshayoga/ui/video_content/programs_screen.dart';
 import 'package:evgeshayoga/utils/ProgressHUD.dart';
 import 'package:evgeshayoga/utils/check_is_available.dart';
 import 'package:evgeshayoga/utils/date_formatter.dart';
