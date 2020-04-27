@@ -7,6 +7,7 @@ import 'package:evgeshayoga/utils/style.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class ProgramBuilder extends StatefulWidget {
   int id;
@@ -60,7 +61,7 @@ class _ProgramBuilderState extends State<ProgramBuilder> {
             textAlign: TextAlign.center,
           ),
           subtitle:
-              Image.network("https://evgeshayoga.com" + week.thumbnailUrl),
+          FadeInImage.memoryNetwork(placeholder: kTransparentImage, image: "https://evgeshayoga.com" + week.thumbnailUrl),
           onTap: () {
             var router = new MaterialPageRoute(builder: (BuildContext context) {
               return WeekScreen(week);

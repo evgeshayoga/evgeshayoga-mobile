@@ -5,7 +5,7 @@ import 'package:evgeshayoga/ui/programs/components/filters_drawer.dart';
 import 'package:evgeshayoga/ui/programs/lesson_screen.dart';
 import 'package:evgeshayoga/utils/ProgressHUD.dart';
 import 'package:evgeshayoga/utils/style.dart';
-import 'package:firebase_database/ui/firebase_animated_list.dart';
+import 'package:transparent_image/transparent_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:http/http.dart' as http;
@@ -196,9 +196,10 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
       constraints: BoxConstraints(minHeight: 100, maxHeight: 300),
       child: Container(
         alignment: Alignment.center,
-        child: Image.network(
-          "https://evgeshayoga.com" + yogaOnlineLesson.thumbnailUrl,
-        ),
+        child: FadeInImage.memoryNetwork(
+          placeholder: kTransparentImage,
+          image: "https://evgeshayoga.com" + yogaOnlineLesson.thumbnailUrl,
+        )
       ),
     );
 
@@ -277,6 +278,11 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
           .where((video) =>
               int.parse(filters.duration) - 5 <= video.duration &&
               video.duration <= int.parse(filters.duration) + 4)
+          .toList();
+    }
+    if (filters.type != null) {
+      filteredVideos = filteredVideos
+          .where((video) => video.format == int.parse(filters.format))
           .toList();
     }
     setState(() {

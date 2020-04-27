@@ -16,22 +16,10 @@ class YogaOnlineLesson {
   List categories;
   int type;
   String typeName;
+  int format;
+  String formatName;
 
-  YogaOnlineLesson(
-      {this.content,
-      this.id,
-      this.isActive,
-      this.thumbnailUrl,
-      this.title,
-      this.subtitle,
-      this.videoBlocks,
-      this.duration,
-      this.levelName,
-      this.level,
-      this.teachers,
-      this.categories,
-      this.type,
-      this.typeName});
+  YogaOnlineLesson();
 
   YogaOnlineLesson.fromFB(value)
       : id = value["id"],
@@ -47,15 +35,10 @@ class YogaOnlineLesson {
         teachers = value["teachers"],
         categories = value["categories"],
         type = value["type"],
-        typeName = value["type_name"];
+        typeName = value["type_name"],
+        format = value["format"] ?? 0,
+        formatName = value["format_name"] ?? "";
 
-//  List<Week> getWeeks() {
-//    if (weeks == null || weeks.length == 0) {
-//      return [];
-//    }
-//    return weeks.map((v) => Week.fromObject(v)).toList();
-//  }
-//
   List<VideoModel> getVideos() {
     if (videoBlocks == null || videoBlocks.length == 0) {
       return [];

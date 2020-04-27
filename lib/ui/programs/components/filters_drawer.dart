@@ -1,8 +1,9 @@
+import 'package:evgeshayoga/models/yoga_online_lesson.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:flutter/material.dart';
 
 class FiltersDrawer extends StatefulWidget {
-  final videos;
+  final List<YogaOnlineLesson> videos;
   final Filters filters;
   final Function onApplyFilters;
   final Function onClear;
@@ -21,6 +22,7 @@ class _FiltersDrawerState extends State<FiltersDrawer> {
   String _selectedTeacher;
   String _selectedCategory;
   String _selectedDuration;
+  String _selectedFormat;
 
   @override
   void initState() {
@@ -30,6 +32,7 @@ class _FiltersDrawerState extends State<FiltersDrawer> {
     _selectedLevel = widget.filters.level;
     _selectedTeacher = widget.filters.teacher;
     _selectedDuration = widget.filters.duration;
+    _selectedFormat = widget.filters.format;
   }
 
   List<DropdownMenuItem> ddLevel() {
@@ -64,6 +67,22 @@ class _FiltersDrawerState extends State<FiltersDrawer> {
               child: Text(
                 "" + types[key],
               ),
+            ))
+        .toList();
+  }
+
+  List<DropdownMenuItem> ddFormat() {
+    Map formats = {};
+    widget.videos.forEach((video) {
+      if (!formats.containsKey(video.format.toString())) {
+        formats[video.format] = video.formatName.trim();
+      }
+    });
+    var keys = formats.keys.toList();
+    return keys
+        .map((key) => DropdownMenuItem<String>(
+              value: key.toString(),
+              child: Text("" + formats[key]),
             ))
         .toList();
   }
@@ -211,9 +230,7 @@ class _FiltersDrawerState extends State<FiltersDrawer> {
                               setState(() {
                                 _selectedCategory = value;
                               });
-//                  debugPrint(__selectedType);
                             },
-//                value: __selectedType,
                             hint: Text(
                               "Акцент",
                             ),
@@ -223,6 +240,28 @@ class _FiltersDrawerState extends State<FiltersDrawer> {
                             icon: Icon(Icons.clear),
                             color: Style.blueGrey,
                             onPressed: () => _clearOneFilter('category'),
+                          )
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          DropdownButton(
+                            items: ddFormat(),
+                            onChanged: (value) {
+                              setState(() {
+                                _selectedFormat = value;
+                              });
+                            },
+                            hint: Text(
+                              "Формат",
+                            ),
+                            value: _selectedCategory,
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.clear),
+                            color: Style.blueGrey,
+                            onPressed: () => _clearOneFilter('format'),
                           )
                         ],
                       ),
@@ -278,9 +317,7 @@ class _FiltersDrawerState extends State<FiltersDrawer> {
                               setState(() {
                                 _selectedDuration = value;
                               });
-//                  debugPrint(__selectedType);
                             },
-//                value: __selectedType,
                             hint: Text(
                               "Продолжительность",
                             ),
@@ -349,6 +386,7 @@ class _FiltersDrawerState extends State<FiltersDrawer> {
       _selectedTeacher = null;
       _selectedType = null;
       _selectedCategory = null;
+      _selectedFormat = null;
     });
   }
 
@@ -380,6 +418,11 @@ class _FiltersDrawerState extends State<FiltersDrawer> {
             _selectedCategory = null;
           }
           break;
+        case "filter":
+          {
+            _selectedFormat = null;
+          }
+          break;
       }
     });
   }
@@ -391,6 +434,7 @@ class Filters {
   String duration;
   String teacher;
   String category;
+  String format;
 
-  Filters({this.level, this.type, this.duration, this.teacher, this.category});
+  Filters({this.level, this.type, this.duration, this.teacher, this.category, this.format});
 }

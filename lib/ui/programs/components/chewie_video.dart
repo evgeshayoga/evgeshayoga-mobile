@@ -2,6 +2,7 @@ import 'package:chewie/chewie.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:transparent_image/transparent_image.dart';
 import 'package:video_player/video_player.dart';
 
 class ChewieVideo extends StatefulWidget {
@@ -80,7 +81,9 @@ class _ChewieVideoState extends State<ChewieVideo> {
             ),
             Container(
                 alignment: Alignment.center,
-                child: widget.videoThumbnail.isNotEmpty ? Image.network(widget.videoThumbnail) : null,
+                child: widget.videoThumbnail.isNotEmpty
+                    ? FadeInImage.memoryNetwork(placeholder: kTransparentImage, image: widget.videoThumbnail)
+                    : null,
             ),
             Container(
               alignment: Alignment.center,
