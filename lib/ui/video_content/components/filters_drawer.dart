@@ -35,60 +35,38 @@ class _FiltersDrawerState extends State<FiltersDrawer> {
     _selectedFormat = widget.filters.format;
   }
 
-  List<DropdownMenuItem> ddLevel() {
-    Map levels = {};
+  Map<int, String> ddLevel() {
+    Map<int, String> levels = {};
     widget.videos.forEach((video) {
       if (!levels.containsKey(video.level)) {
         levels[video.level] = video.levelName;
       }
     });
-    var sortedKeys = levels.keys.toList()..sort();
-    return sortedKeys
-        .map((key) => DropdownMenuItem<String>(
-              value: key.toString(),
-              child: Text(
-                "" + levels[key],
-              ),
-            ))
-        .toList();
+    return levels;
   }
 
-  List<DropdownMenuItem> ddType() {
-    Map types = {};
+  Map<int, String> ddType() {
+    Map<int, String> types = {};
     widget.videos.forEach((video) {
       if (!types.containsKey(video.type.toString())) {
         types[video.type] = video.typeName.trim();
       }
     });
-    var keys = types.keys.toList();
-    return keys
-        .map((key) => DropdownMenuItem<String>(
-              value: key.toString(),
-              child: Text(
-                "" + types[key],
-              ),
-            ))
-        .toList();
+    return types;
   }
 
-  List<DropdownMenuItem> ddFormat() {
-    Map formats = {};
+  Map<int, String> ddFormat() {
+    Map<int, String> formats = {};
     widget.videos.forEach((video) {
       if (!formats.containsKey(video.format.toString())) {
         formats[video.format] = video.formatName.trim();
       }
     });
-    var keys = formats.keys.toList();
-    return keys
-        .map((key) => DropdownMenuItem<String>(
-              value: key.toString(),
-              child: Text("" + formats[key]),
-            ))
-        .toList();
+    return formats;
   }
 
-  List<DropdownMenuItem> ddTeachers() {
-    Map teachers = {};
+  Map<int, String> ddTeachers() {
+    Map<int, String> teachers = {};
 
     widget.videos.forEach((video) {
       video.teachers.forEach((teacher) {
@@ -97,19 +75,11 @@ class _FiltersDrawerState extends State<FiltersDrawer> {
         }
       });
     });
-    var keys = teachers.keys.toList()..sort();
-    return keys
-        .map((key) => DropdownMenuItem<String>(
-              value: key.toString(),
-              child: Text(
-                "" + teachers[key],
-              ),
-            ))
-        .toList();
+    return teachers;
   }
 
-  List<DropdownMenuItem> ddCategories() {
-    Map categories = {};
+  Map<int, String> ddCategories() {
+    Map<int, String> categories = {};
 
     widget.videos.forEach((video) {
       video.categories.forEach((cat) {
@@ -118,15 +88,7 @@ class _FiltersDrawerState extends State<FiltersDrawer> {
         }
       });
     });
-    var keys = categories.keys.toList()..sort();
-    return keys
-        .map((key) => DropdownMenuItem<String>(
-              value: key.toString(),
-              child: Text(
-                "" + categories[key],
-              ),
-            ))
-        .toList();
+    return categories;
   }
 
   @override
@@ -149,121 +111,60 @@ class _FiltersDrawerState extends State<FiltersDrawer> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: <Widget>[
-                          DropdownButton(
-                            items: ddLevel(),
-                            onChanged: (value) {
-                              setState(() {
-                                _selectedLevel = value;
-                              });
-//                  debugPrint(_selectedLevel);
-                            },
-//                value: __selectedLevel,
-                            hint: Text(
-                              "Уровень",
-                            ),
-                            value: _selectedLevel,
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.clear),
-                            color: Style.blueGrey,
-                            onPressed: () => _clearOneFilter('level'),
-                          )
-                        ],
+                      FilterRow(
+                          name: "Уровень",
+                          value: _selectedLevel,
+                          values: ddLevel(),
+                          onChanged: (value) {
+                            setState(() {
+                              _selectedLevel = value;
+                            });
+                          },
+                          onClear: () => _clearOneFilter('level')
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: <Widget>[
-                          DropdownButton(
-                            items: ddType(),
-                            onChanged: (value) {
-                              setState(() {
-                                _selectedType = value;
-                              });
-//                  debugPrint(__selectedType);
-                            },
-//                value: __selectedType,
-                            hint: Text(
-                              "Вид",
-                            ),
-                            value: _selectedType,
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.clear),
-                            color: Style.blueGrey,
-                            onPressed: () => _clearOneFilter('type'),
-                          )
-                        ],
+                      FilterRow(
+                        name: "Вид",
+                        value: _selectedType,
+                        values: ddType(),
+                        onChanged: (value) {
+                          setState(() {
+                            _selectedType = value;
+                          });
+                        },
+                        onClear: () => _clearOneFilter('type')
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: <Widget>[
-                          DropdownButton(
-                            items: ddTeachers(),
-                            onChanged: (value) {
-                              setState(() {
-                                _selectedTeacher = value;
-                              });
-//                  debugPrint(__selectedType);
-                            },
-//                value: __selectedType,
-                            hint: Text(
-                              "Преподаватель",
-                            ),
-                            value: _selectedTeacher,
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.clear),
-                            color: Style.blueGrey,
-                            onPressed: () => _clearOneFilter('teacher'),
-                          )
-                        ],
+                      FilterRow(
+                        name: "Преподаватель",
+                        value: _selectedTeacher,
+                        values: ddTeachers(),
+                        onChanged: (value) {
+                          setState(() {
+                            _selectedTeacher = value;
+                          });
+                        },
+                        onClear: () => _clearOneFilter('teacher')
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: <Widget>[
-                          DropdownButton(
-                            items: ddCategories(),
-                            onChanged: (value) {
-                              setState(() {
-                                _selectedCategory = value;
-                              });
-                            },
-                            hint: Text(
-                              "Акцент",
-                            ),
-                            value: _selectedCategory,
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.clear),
-                            color: Style.blueGrey,
-                            onPressed: () => _clearOneFilter('category'),
-                          )
-                        ],
+                      FilterRow(
+                          name: "Акцент",
+                          value: _selectedCategory,
+                          values: ddCategories(),
+                          onChanged: (value) {
+                            setState(() {
+                              _selectedCategory = value;
+                            });
+                          },
+                          onClear: () => _clearOneFilter('category')
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: <Widget>[
-                          DropdownButton(
-                            items: ddFormat(),
-                            onChanged: (value) {
-                              setState(() {
-                                _selectedFormat = value;
-                              });
-                            },
-                            hint: Text(
-                              "Формат",
-                            ),
-                            value: _selectedCategory,
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.clear),
-                            color: Style.blueGrey,
-                            onPressed: () => _clearOneFilter('format'),
-                          )
-                        ],
+                      FilterRow(
+                        name: "Формат",
+                        value: _selectedFormat,
+                        values: ddFormat(),
+                        onChanged: (value) {
+                          setState(() {
+                            _selectedFormat = value;
+                          });
+                        },
+                        onClear: () => _clearOneFilter('format')
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
@@ -345,7 +246,9 @@ class _FiltersDrawerState extends State<FiltersDrawer> {
                           type: _selectedType,
                           duration: _selectedDuration,
                           teacher: _selectedTeacher,
-                          category: _selectedCategory));
+                          category: _selectedCategory,
+                          format: _selectedFormat,
+                      ));
                     },
                     color: Style.pinkMain,
                     child: new Text(
@@ -427,6 +330,48 @@ class _FiltersDrawerState extends State<FiltersDrawer> {
     });
   }
 }
+
+class FilterRow extends StatelessWidget {
+   String name;
+   String value;
+   Map <int, String> values;
+   VoidCallback onClear;
+   ValueChanged<String> onChanged;
+
+  FilterRow({this.value, this.name, this.onClear, this.onChanged, this.values});
+
+  List<DropdownMenuItem> ddItems() {
+    var keys = values.keys.toList()..sort();
+    return keys.map((key) => DropdownMenuItem<String>(
+      value: key.toString(),
+      child: Text(
+        "" + values[key],
+      ),
+    ))
+        .toList();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: <Widget>[
+        DropdownButton<String>(
+          items: ddItems(),
+          onChanged: onChanged,
+          hint: Text(name),
+          value: value,
+        ),
+        IconButton(
+          icon: Icon(Icons.clear),
+          color: Style.blueGrey,
+          onPressed: onClear,
+        )
+      ],
+    );
+  }
+}
+
 
 class Filters {
   String level;
