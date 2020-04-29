@@ -99,7 +99,7 @@ class _ProgramsState extends State<Programs> {
             );
           },
         ),
-        title: Text("Программы"),
+        title: Text("Программы", style: Style.titleTextStyle,),
         centerTitle: true,
         backgroundColor: Style.pinkMain,
       ),
