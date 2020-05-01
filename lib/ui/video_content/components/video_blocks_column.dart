@@ -26,7 +26,7 @@ class VideoBlocks extends StatelessWidget {
               ),
               subtitle: Column(
                 children: <Widget>[
-                  ChewieVideo(video.hls, video.thumbnail),
+                  video.hls != null ? ChewieVideo(video.hls, video.thumbnail) : null,
                   video.content == null
                       ? null
                       : Text(
