@@ -321,7 +321,7 @@ class _FiltersDrawerState extends State<FiltersDrawer> {
             _selectedCategory = null;
           }
           break;
-        case "filter":
+        case "format":
           {
             _selectedFormat = null;
           }
