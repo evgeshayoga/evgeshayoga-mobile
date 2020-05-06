@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chewie/chewie.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:flutter/cupertino.dart';
@@ -82,7 +83,7 @@ class _ChewieVideoState extends State<ChewieVideo> {
             Container(
                 alignment: Alignment.center,
                 child: widget.videoThumbnail.isNotEmpty
-                    ? FadeInImage.memoryNetwork(placeholder: kTransparentImage, image: widget.videoThumbnail)
+                    ? FadeInImage(placeholder: MemoryImage(kTransparentImage), image: CachedNetworkImageProvider(widget.videoThumbnail))
                     : null,
             ),
             Container(

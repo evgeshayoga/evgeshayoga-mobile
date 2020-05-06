@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:evgeshayoga/ui/video_content/lesson_screen.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +11,7 @@ Widget yogaOnlineLessonCard(
     constraints: BoxConstraints(minHeight: 100, maxHeight: 300),
     child: Container(
       alignment: Alignment.center,
-      child: FadeInImage.memoryNetwork(placeholder: kTransparentImage, image: "https://evgeshayoga.com" + yogaOnlineLesson.thumbnailUrl),
+      child: FadeInImage(placeholder: MemoryImage(kTransparentImage), image: CachedNetworkImageProvider("https://evgeshayoga.com" + yogaOnlineLesson.thumbnailUrl)),
     ),
   );
 

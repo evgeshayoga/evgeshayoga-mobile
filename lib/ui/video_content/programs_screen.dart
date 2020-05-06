@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:evgeshayoga/models/program.dart';
 import 'package:evgeshayoga/models/user.dart';
 import 'package:evgeshayoga/ui/video_content/components/drawer_content_screen.dart';
@@ -245,7 +246,7 @@ class _ProgramsState extends State<Programs> {
         children: <Widget>[
           Container(
               alignment: Alignment.center,
-              child: FadeInImage.memoryNetwork(placeholder: kTransparentImage, image: "https://evgeshayoga.com" + thumbnailUrl),
+              child: FadeInImage(placeholder: MemoryImage(kTransparentImage), image: CachedNetworkImageProvider("https://evgeshayoga.com" + thumbnailUrl))
           ),
           Container(
             alignment: Alignment.center,
@@ -294,7 +295,7 @@ class _ProgramsState extends State<Programs> {
       constraints: BoxConstraints(minHeight: 100, maxHeight: 300),
       child: Container(
         alignment: Alignment.center,
-        child: FadeInImage.memoryNetwork(placeholder: kTransparentImage, image: "https://evgeshayoga.com" + program["thumbnailUrl"]),
+        child: FadeInImage(placeholder: MemoryImage(kTransparentImage), image: CachedNetworkImageProvider("https://evgeshayoga.com" + program["thumbnailUrl"])),
       ),
     );
 

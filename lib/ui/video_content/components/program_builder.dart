@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:evgeshayoga/models/program.dart';
 import 'package:evgeshayoga/models/video.dart';
 import 'package:evgeshayoga/ui/video_content/components/video_blocks_column.dart';
@@ -61,7 +62,7 @@ class _ProgramBuilderState extends State<ProgramBuilder> {
             textAlign: TextAlign.center,
           ),
           subtitle:
-          FadeInImage.memoryNetwork(placeholder: kTransparentImage, image: "https://evgeshayoga.com" + week.thumbnailUrl),
+          FadeInImage(placeholder: MemoryImage(kTransparentImage), image: CachedNetworkImageProvider("https://evgeshayoga.com" + week.thumbnailUrl)),
           onTap: () {
             var router = new MaterialPageRoute(builder: (BuildContext context) {
               return WeekScreen(week);
