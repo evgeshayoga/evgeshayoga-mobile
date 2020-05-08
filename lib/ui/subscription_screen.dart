@@ -1,12 +1,9 @@
-import 'package:evgeshayoga/ui/video_content/content_screen.dart' as prefix0;
-import 'package:evgeshayoga/ui/video_content/programs_screen.dart';
-import 'package:evgeshayoga/ui/video_content/yoga_online_screen.dart';
 import 'package:evgeshayoga/ui/video_content/yoga_online_screen.dart';
 import 'package:evgeshayoga/utils/ProgressHUD.dart';
 import 'package:evgeshayoga/utils/date_formatter.dart';
+import 'package:evgeshayoga/utils/getUserSubscriptionStatus.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:flutter/material.dart';
-import 'package:evgeshayoga/ui/video_content/yoga_online_screen.dart';
 
 class SubscriptionScreen extends StatefulWidget {
   final String userUid;
@@ -28,7 +25,6 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
     setState(() {
       _isInAsyncCall = true;
     });
-//    purchases = buildPurchases(widget.user.getPurchases().programs);
 
     getUserSubscriptionStatus(widget.userUid).then((status) {
       setState(() {
@@ -60,18 +56,6 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
           style: Style.titleTextStyle,
         ),
         centerTitle: true,
-//        actions: <Widget>[
-//          IconButton(
-//            icon: Icon(Icons.update),
-//            onPressed: () {
-//              getUserProgramsStatuses(widget.userUid).then((status) {
-//                setState(() {
-//                  userSubscriptionStatus = status;
-//                });
-//              });
-//            },
-//          )
-//        ],
       ),
       body: Center(
         child: _isInAsyncCall ? progressHUD(_isInAsyncCall) : Container(

@@ -6,6 +6,7 @@ import 'package:evgeshayoga/ui/video_content/components/filters_drawer.dart';
 import 'package:evgeshayoga/ui/video_content/components/yoga_online_column.dart';
 import 'package:evgeshayoga/utils/ProgressHUD.dart';
 import 'package:evgeshayoga/utils/check_is_landscape.dart';
+import 'package:evgeshayoga/utils/getUserSubscriptionStatus.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -128,7 +129,7 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
                 onPressed: () {
 
                   var router = new MaterialPageRoute(builder: (BuildContext context) {
-                    return FavoritesScreen(widget.userUid, favoriteVideosIds, videos, context);
+                    return FavoritesScreen(widget.userUid, videos, context);
                   });
                   Navigator.of(context).push(router);
                 },
@@ -212,17 +213,4 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
       videosToDisplay = videos;
     });
   }
-}
-
-Future<Map<String, dynamic>> getUserSubscriptionStatus(String uid) async {
-  var response = await http.get(
-    "https://evgeshayoga.com/api/users/" + uid + "/videos",
-  );
-  Map<String, dynamic> data = json.decode(response.body);
-  print(data);
-  String error = data["error"];
-  if (error != null) {
-    throw new Exception(error);
-  }
-  return data;
 }
