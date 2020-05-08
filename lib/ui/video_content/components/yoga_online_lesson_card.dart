@@ -36,6 +36,7 @@ class _YogaOnlineLessonCardState extends State<YogaOnlineLessonCard> {
         onAddtoFavorites(uid, videoId);
       },
       color: Colors.white,
+      splashColor: Style.pinkMain,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
@@ -141,7 +142,7 @@ class _YogaOnlineLessonCardState extends State<YogaOnlineLessonCard> {
                 ),
               ),
               Expanded(
-                flex: 3,
+                flex: 2,
                 child: programThumbnail,
               )
             ],
