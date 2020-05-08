@@ -33,10 +33,6 @@ class VideoBlocks extends StatelessWidget {
                           video.content,
                           style: Style.regularTextStyle,
                         ),
-//              Padding(padding: const EdgeInsets.only(bottom: 8.0))
-//              Divider(
-//                color: Style.blueGrey,
-//              )
                 ],
               ),
             ),

@@ -31,6 +31,7 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
   DatabaseReference dbUsersReference;
   User user = User("", "", "", "");
   Map<String, dynamic> userSubscriptionStatus;
+  List favoriteVideosIds = [];
   bool hasAccess = false;
   Filters _filters = Filters();
   List<YogaOnlineLesson> videos = [];
@@ -70,6 +71,7 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
       videosToDisplay = videosFromFB;
       user = User.fromSnapshot(userSnapshot);
       videos = videosFromFB;
+      favoriteVideosIds = userSubscriptionStatus['favourite'];
     });
 
     PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
@@ -125,9 +127,8 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
                 ),
                 onPressed: () {
 
-                  debugPrint(userSubscriptionStatus["favourite"].length.toString());
                   var router = new MaterialPageRoute(builder: (BuildContext context) {
-                    return FavoritesScreen(userSubscriptionStatus["favourite"], videos, context);
+                    return FavoritesScreen(favoriteVideosIds, videos, context);
                   });
                   Navigator.of(context).push(router);
                 },

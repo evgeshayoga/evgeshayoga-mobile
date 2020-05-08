@@ -37,7 +37,6 @@ class _LessonBuilderState extends State<LessonBuilder> {
       setState(() {
         yogaOnlineLesson = YogaOnlineLesson.fromFB(snapshot.value);
         videos = yogaOnlineLesson.getVideos();
-        debugPrint("VIDEOS "+videos.length.toString());
         _isInAsyncCall = false;
       });
     });

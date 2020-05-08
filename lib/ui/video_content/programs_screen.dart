@@ -13,6 +13,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:package_info/package_info.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class Programs extends StatefulWidget {
@@ -33,12 +34,17 @@ class _ProgramsState extends State<Programs> {
   Map<String, dynamic> userProgramsStatuses;
   bool _isInAsyncCall = false;
   bool noActivePrograms = false;
+  String version = '';
+  String buildNumber = '';
 
   @override
   void initState() {
     super.initState();
-    setState(() {
-      _isInAsyncCall = true;
+    getUserProgramsStatuses(widget.userUid).then((statuses) {
+      setState(() {
+        userProgramsStatuses = statuses;
+        _isInAsyncCall = true;
+      });
     });
     dbUsersReference =
         database.reference().child("users").child(widget.userUid);
@@ -49,13 +55,9 @@ class _ProgramsState extends State<Programs> {
       _isInAsyncCall = false;
       List activePrograms = [];
       snapshot.value.forEach((program) {
-//        activePrograms.add(program);
-//        debugPrint(activePrograms.toString());
-//        debugPrint(program.toString());
         if (program != null) {
           if (program["isActive"] == true) {
             activePrograms.add(program);
-//            debugPrint(activePrograms.toString());
           }
         }
       });
@@ -64,15 +66,11 @@ class _ProgramsState extends State<Programs> {
             ? noActivePrograms = false
             : noActivePrograms = true;
       });
-//      debugPrint(activePrograms.length.toString());
     });
-
-    dbUsersReference.once().then((snapshot) {
-      getUserProgramsStatuses(widget.userUid).then((statuses) {
-        setState(() {
-          user = User.fromSnapshot(snapshot);
-          userProgramsStatuses = statuses;
-        });
+    PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
+      setState(() {
+        version = packageInfo.version;
+        buildNumber = packageInfo.buildNumber;
       });
     });
   }
@@ -84,7 +82,7 @@ class _ProgramsState extends State<Programs> {
     var programs = user.getPurchases().programs;
     return Scaffold(
       drawer: drawerProgramScreen(
-          user, context, widget.userUid, isLandscape, '', ''),
+          user, context, widget.userUid, isLandscape, version, buildNumber),
       appBar: AppBar(
         leading: Builder(
           builder: (BuildContext context) {
@@ -130,28 +128,14 @@ class _ProgramsState extends State<Programs> {
                       String date = userProgramsStatuses[program.id.toString()]
                               ["availableTill"]
                           .toString();
-                      if (widget.userUid == ' ' || widget.userUid == " ") {
-                        if (isAvailable(date)) {
-                          return _availableProgram(
-                              date, snapshot.value, isLandscape);
-                        } else
-                          return Container();
-                      } else {
-                        if (!program.isActive) {
-                          return _inactiveProgram();
-                        }
-
-                        if (isViewable(userProgramsStatuses, program.id)) {
-                          String date =
-                              userProgramsStatuses[program.id.toString()]
-                                      ["availableTill"]
-                                  .toString();
-                          return _availableProgram(
-                              date, snapshot.value, isLandscape);
-                        }
-                        return _notAvailableProgram(
-                            programs, snapshot.value, context, isLandscape);
+                      if (!program.isActive) {
+                        return _inactiveProgram();
                       }
+                      if (isViewable(userProgramsStatuses, program.id)) {
+                        return _availableProgram(
+                            date, snapshot.value, isLandscape);
+                      } return _notAvailableProgram(
+                          programs, snapshot.value, context, isLandscape);
                     },
                   ),
                 )
@@ -161,31 +145,7 @@ class _ProgramsState extends State<Programs> {
   }
 
   Widget _inactiveProgram() {
-    return null;
-  }
-
-  void _showInactProgDialog(BuildContext context, String programTitle) {
-    var alert = new AlertDialog(
-      title: Text(
-        programTitle,
-        textAlign: TextAlign.center,
-        style: Style.headerTextStyle,
-      ),
-      content: Text(
-        "Программа не активна",
-        textAlign: TextAlign.center,
-        style: Style.regularTextStyle,
-      ),
-      actions: <Widget>[
-        FlatButton(
-          child: Text("Close"),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        )
-      ],
-    );
-    showDialog(context: context, builder: (context) => alert);
+    return Container();
   }
 
   Widget _notAvailableProgram(

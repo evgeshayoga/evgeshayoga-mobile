@@ -77,6 +77,7 @@ Widget additionalInfo(yogaOnlineLesson) {
                 levelIcon(yogaOnlineLesson.level),
               ],
             ),
+            formatIcon(yogaOnlineLesson.format),
             Row(
               children: <Widget>[
                 Icon(
@@ -142,6 +143,27 @@ Widget levelIcon(level) {
       {
         ic = Icon(MaterialCommunityIcons.signal_cellular_3,
             color: Style.blueGrey);
+      }
+      break;
+  }
+  return ic;
+}
+
+Widget formatIcon(format) {
+  Icon ic;
+  switch (format) {
+    case 0:
+      {
+        ic = Icon(Icons.crop_original,
+          color: Style.blueGrey,
+        );
+      }
+      break;
+    case 1:
+      {
+        ic = Icon(Icons.filter,
+          color: Style.blueGrey,
+        );
       }
       break;
   }
