@@ -6,6 +6,7 @@ class Style {
   static final pinkLight = const Color.fromRGBO(249, 231, 231, 1);
   static final blueGrey = const Color.fromRGBO(94, 101, 111, 1);
   static final lightBlue = const Color.fromRGBO(175, 184, 196, 1);
+  static final blue = const Color.fromRGBO(142, 165, 194, 1);
 
 
   static final regularTextStyle = TextStyle(
@@ -14,7 +15,13 @@ class Style {
     fontWeight: FontWeight.normal,
     fontSize: 18,
     color: blueGrey,
-
+  );
+  static final regularBlueTextStyle = TextStyle(
+    fontFamily: "Nunito",
+    letterSpacing: -0.3,
+    fontWeight: FontWeight.normal,
+    fontSize: 18,
+    color: blue,
   );
   static final titleTextStyle = TextStyle(
     fontFamily: "BebasNeue",

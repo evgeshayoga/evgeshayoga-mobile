@@ -128,7 +128,7 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
                 onPressed: () {
 
                   var router = new MaterialPageRoute(builder: (BuildContext context) {
-                    return FavoritesScreen(favoriteVideosIds, videos, context);
+                    return FavoritesScreen(widget.userUid, favoriteVideosIds, videos, context);
                   });
                   Navigator.of(context).push(router);
                 },
@@ -156,7 +156,7 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
       );
     } else
       return hasAccess
-          ? videoLessons(isLandscape, videosToDisplay, context)
+          ? videoLessons(widget.userUid, isLandscape, videosToDisplay, context, favoriteVideosIds)
           : Center(
               child: Text('Вы не подписаны на Yoga Online'),
             );
@@ -219,6 +219,7 @@ Future<Map<String, dynamic>> getUserSubscriptionStatus(String uid) async {
     "https://evgeshayoga.com/api/users/" + uid + "/videos",
   );
   Map<String, dynamic> data = json.decode(response.body);
+  print(data);
   String error = data["error"];
   if (error != null) {
     throw new Exception(error);

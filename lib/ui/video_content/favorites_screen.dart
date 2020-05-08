@@ -5,10 +5,11 @@ import 'package:evgeshayoga/utils/style.dart';
 import 'package:flutter/material.dart';
 
 class FavoritesScreen extends StatefulWidget {
+  final String uid;
   final List favoriteVideosIds;
   final List<YogaOnlineLesson> videos;
 
-  FavoritesScreen(this.favoriteVideosIds, this.videos, context, {Key key})
+  FavoritesScreen(this.uid, this.favoriteVideosIds, this.videos, context, {Key key})
       : super(key: key);
 
   @override
@@ -49,7 +50,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
       ),
       body: Center(
         child: hasFavorites
-            ? videoLessons(isLandscape, videosToDisplay, context)
+            ? videoLessons(widget.uid, isLandscape, videosToDisplay, context, widget.favoriteVideosIds)
             : Text(
                 "У нас нет избранных видео",
                 style: Style.regularTextStyle,
