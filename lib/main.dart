@@ -11,10 +11,12 @@ void main() {
       theme: ThemeData(
           primaryColor: Style.pinkMain,
           textTheme: TextTheme(
-              headline: Style.titleTextStyle,
-              title: Style.headerTextStyle,
-              body1: Style.regularTextStyle,
-              body2: Style.regularTextStyle)),
+              headline5: Style.titleTextStyle,
+              headline6: Style.headerTextStyle,
+              bodyText2: Style.regularTextStyle,
+              bodyText1: Style.regularTextStyle,
+          ),
+      ),
       debugShowCheckedModeBanner: false,
       title: "Йога с Женей",
       initialRoute: '/',
