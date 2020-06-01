@@ -78,7 +78,7 @@ flutter {
 }
 
 dependencies {
-    implementation 'com.google.firebase:firebase-core:17.4.1'
+    implementation 'com.google.firebase:firebase-core:17.4.2'
     implementation 'com.google.firebase:firebase-perf:19.0.7'
     implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
     implementation 'com.google.firebase:firebase-crashlytics:17.0.0'
