@@ -52,25 +52,32 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
     dbUsersReference =
         database.reference().child("users").child(widget.userUid);
 
-    var userSnapshot = await dbUsersReference.once();
-    var videosSnapshot = await dbVideosReference.once();
     List<YogaOnlineLesson> videosFromFB = [];
-    for (var value in videosSnapshot.value) {
-      if (value != null) {
-        videosFromFB.add(YogaOnlineLesson.fromFB(value));
-        videosFromFB.sort((sa, sb) {
-          return sb.id - sa.id;
-        });
+    User decodedUser;
+    try {
+      var userSnapshot = await dbUsersReference.once();
+      var videosSnapshot = await dbVideosReference.once();
+      decodedUser = User.fromSnapshot(userSnapshot);
+      for (var value in videosSnapshot.value) {
+        if (value != null) {
+          videosFromFB.add(YogaOnlineLesson.fromFB(value));
+        }
       }
+    } on DatabaseError catch (e) {
+      Navigator.pushReplacementNamed(context, "/home");
+      return;
     }
 
+    videosFromFB.sort((sa, sb) {
+      return sb.id - sa.id;
+    });
     var subscription = await getUserSubscriptionStatus(widget.userUid);
     setState(() {
       userSubscriptionStatus = subscription;
       hasAccess = userSubscriptionStatus['isSubscriptionActive'];
       _isInAsyncCall = false;
       videosToDisplay = videosFromFB;
-      user = User.fromSnapshot(userSnapshot);
+      user = decodedUser;
       videos = videosFromFB;
       favoriteVideosIds = userSubscriptionStatus['favourite'];
     });
