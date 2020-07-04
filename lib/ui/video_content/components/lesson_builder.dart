@@ -75,6 +75,6 @@ class _LessonBuilderState extends State<LessonBuilder> {
     }
 
 
-    return VideoBlocks(videos, upperContext: upperContext());
+    return VideoBlocks(videos, upperContent: upperContext());
   }
 }

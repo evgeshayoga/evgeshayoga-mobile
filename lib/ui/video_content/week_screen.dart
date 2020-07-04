@@ -1,3 +1,4 @@
+import 'package:evgeshayoga/models/video.dart';
 import 'package:evgeshayoga/models/week.dart';
 import 'package:evgeshayoga/ui/video_content/components/video_blocks_column.dart';
 import 'package:evgeshayoga/utils/style.dart';
@@ -11,6 +12,19 @@ class WeekScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<VideoModel> videos = week.getVideos();
+    Widget upperContent = Padding(
+      padding: EdgeInsets.all(8),
+      child: DefaultTextStyle(
+        child: HtmlWidget(
+          week.content,
+          webView: true,
+        ),
+        style: Style.regularTextStyle,
+        textAlign: TextAlign.justify,
+      ),
+    );
+
     return Scaffold(
       appBar: AppBar(
         leading: Builder(
@@ -27,20 +41,7 @@ class WeekScreen extends StatelessWidget {
           style: Style.titleTextStyle,
         ),
       ),
-      body: ListView(
-        padding: EdgeInsets.all(8),
-        children: <Widget>[
-          DefaultTextStyle(
-            child: HtmlWidget(
-              week.content,
-              webView: true,
-            ),
-            style: Style.regularTextStyle,
-            textAlign: TextAlign.justify,
-          ),
-          VideoBlocks(week.getVideos()),
-        ],
-      ),
+      body: VideoBlocks(videos, upperContent: upperContent),
     );
   }
 }
