@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:evgeshayoga/models/user.dart';
-import 'package:evgeshayoga/ui/video_content/content_screen.dart';
 import 'package:evgeshayoga/ui/video_content/yoga_online_screen.dart';
 import 'package:evgeshayoga/utils/ProgressHUD.dart';
 import 'package:evgeshayoga/utils/style.dart';

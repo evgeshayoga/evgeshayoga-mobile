@@ -62,9 +62,7 @@ class _ProgramsState extends State<Programs> {
         }
       });
       setState(() {
-        activePrograms.length > 0
-            ? noActivePrograms = false
-            : noActivePrograms = true;
+        noActivePrograms = activePrograms.isEmpty;
       });
     });
     PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
@@ -81,8 +79,7 @@ class _ProgramsState extends State<Programs> {
 
     var programs = user.getPurchases().programs;
     return Scaffold(
-      drawer: drawerProgramScreen(
-          user, context, widget.userUid, isLandscape, version, buildNumber),
+      drawer: drawerProgramScreen(context, isLandscape, version, buildNumber),
       appBar: AppBar(
         leading: Builder(
           builder: (BuildContext context) {

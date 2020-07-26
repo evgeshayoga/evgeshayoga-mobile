@@ -30,7 +30,6 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
   final FirebaseDatabase database = FirebaseDatabase.instance;
   DatabaseReference dbVideosReference;
   DatabaseReference dbUsersReference;
-  User user = User("", "", "", "");
   Map<String, dynamic> userSubscriptionStatus;
   List favoriteVideosIds = [];
   bool hasAccess = false;
@@ -77,7 +76,6 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
       hasAccess = userSubscriptionStatus['isSubscriptionActive'];
       _isInAsyncCall = false;
       videosToDisplay = videosFromFB;
-      user = decodedUser;
       videos = videosFromFB;
       favoriteVideosIds = userSubscriptionStatus['favourite'];
     });
@@ -94,7 +92,7 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
   Widget build(BuildContext context) {
     bool isLandscape = checkIsLandscape(context);
     return Scaffold(
-      drawer: drawerProgramScreen(user, context, widget.userUid, isLandscape, version, buildNumber),
+      drawer: drawerProgramScreen(context, isLandscape, version, buildNumber),
       endDrawer: FiltersDrawer(
         videos: videos,
         filters: _filters,
