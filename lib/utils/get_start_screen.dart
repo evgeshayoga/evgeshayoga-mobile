@@ -1,4 +1,5 @@
 import 'package:evgeshayoga/models/user.dart';
+import 'package:evgeshayoga/provider/info_provider_model.dart';
 import 'package:evgeshayoga/provider/user_provider_model.dart';
 import 'package:evgeshayoga/ui/video_content/yoga_online_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -24,15 +25,16 @@ class _StartScreenState extends State<StartScreen> {
         Navigator.pushReplacementNamed(context, "/home");
       } else {
         Future.delayed(Duration(milliseconds: 100)).then((_) {
-          ensureUserInfo(currentUser.uid);
+          Provider.of<InfoProviderModel>(context, listen: false).initialize();
+          return ensureUserInfo(currentUser.uid);
+        }).then((_) {
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (BuildContext context) {
+                return YogaOnlineScreen(userUid: currentUser.uid);
+              }));
         });
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (BuildContext context) {
-          return YogaOnlineScreen(userUid: currentUser.uid);
-        }));
       }
     });
-    super.initState();
   }
 
   Future ensureUserInfo(String uid) async {

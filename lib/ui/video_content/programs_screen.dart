@@ -13,7 +13,6 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:package_info/package_info.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class Programs extends StatefulWidget {
@@ -34,8 +33,6 @@ class _ProgramsState extends State<Programs> {
   Map<String, dynamic> userProgramsStatuses;
   bool _isInAsyncCall = false;
   bool noActivePrograms = false;
-  String version = '';
-  String buildNumber = '';
 
   @override
   void initState() {
@@ -65,12 +62,6 @@ class _ProgramsState extends State<Programs> {
         noActivePrograms = activePrograms.isEmpty;
       });
     });
-    PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
-      setState(() {
-        version = packageInfo.version;
-        buildNumber = packageInfo.buildNumber;
-      });
-    });
   }
 
   @override
@@ -79,7 +70,7 @@ class _ProgramsState extends State<Programs> {
 
     var programs = user.getPurchases().programs;
     return Scaffold(
-      drawer: drawerProgramScreen(context, isLandscape, version, buildNumber),
+      drawer: drawerProgramScreen(isLandscape),
       appBar: AppBar(
         leading: Builder(
           builder: (BuildContext context) {

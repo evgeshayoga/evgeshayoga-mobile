@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 
 class UserProviderModel extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  User _user = new User("", "", "", "");
+  User _user;
   String _userUid;
 
   User get user => _user;
@@ -18,7 +18,8 @@ class UserProviderModel extends ChangeNotifier {
   }
 
   void logout() {
-    _user = new User("", "", "", "");
+    _user = null;
+    _userUid = null;
     _auth.signOut();
     // This call tells the widgets that are listening to this model to rebuild.
     notifyListeners();
