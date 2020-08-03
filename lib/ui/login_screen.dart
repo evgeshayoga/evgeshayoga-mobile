@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:evgeshayoga/models/user.dart';
+import 'package:evgeshayoga/provider/user_provider_model.dart';
 import 'package:evgeshayoga/ui/video_content/yoga_online_screen.dart';
 import 'package:evgeshayoga/utils/ProgressHUD.dart';
 import 'package:evgeshayoga/utils/style.dart';
@@ -8,6 +9,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show PlatformException;
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Login extends StatefulWidget {
@@ -162,119 +164,117 @@ class _LoginState extends State<Login> {
   Widget _buildPortraitLayout() {
     return Container(
       color: Colors.white,
-        child: ListView(
-          children: <Widget>[
-            Container(
-              height: _isTablet ? 400 : 240,
-              child: Image.asset(
-                'assets/images/evgeshayoga_landscape.jpg',
-                fit: BoxFit.cover,
-                alignment: FractionalOffset.bottomRight,
-              ),
+      child: ListView(
+        children: <Widget>[
+          Container(
+            height: _isTablet ? 400 : 240,
+            child: Image.asset(
+              'assets/images/evgeshayoga_landscape.jpg',
+              fit: BoxFit.cover,
+              alignment: FractionalOffset.bottomRight,
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 20.0),
-            ),
-            Container(
-              height: 170,
-              alignment: Alignment(0.0, 0.0),
-              color: Colors.white,
-              child: Container(
-                width: 300,
-                child: Form(
-                  key: _loginFormKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      TextFormField(
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 20.0),
+          ),
+          Container(
+            height: 170,
+            alignment: Alignment(0.0, 0.0),
+            color: Colors.white,
+            child: Container(
+              width: 300,
+              child: Form(
+                key: _loginFormKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    TextFormField(
 //                          controller: _emailController,
-                        decoration: const InputDecoration(
-                          icon: Icon(Icons.email),
-                          hintText: 'Введите свой email',
-                          labelText: 'Email',
-                        ),
-                        onSaved: (value) => user.userEmail = value.trim(),
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return 'Введите email';
-                          }
-                          return null;
-                        },
+                      decoration: const InputDecoration(
+                        icon: Icon(Icons.email),
+                        hintText: 'Введите свой email',
+                        labelText: 'Email',
                       ),
-                      TextFormField(
-//                          controller: _passwordController,
-                        obscureText: true,
-                        decoration: const InputDecoration(
-                          icon: Icon(Icons.lock),
-                          hintText: 'Введите свой пароль',
-                          labelText: 'Пароль',
-                        ),
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return 'Введите пароль';
-                          }
-                          return null;
-                        },
-                        onSaved: (value) => user.password = value.trim(),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            Container(
-              alignment: Alignment(0.0, 0.0),
-              child: Column(
-                children: <Widget>[
-                  Container(
-              width: 250,
-                    child: RaisedButton(
-                      onPressed: userLogIn,
-                      color: Style.pinkMain,
-                      child: Text(
-                        "Войти",
-                        style: Style.regularTextStyle,
-                      ),
-                    ),
-                  ),
-                  Text(
-                    "или",
-                    textAlign: TextAlign.center,
-                    style: Style.regularTextStyle,
-                  ),
-                  Container(
-
-                    width: 250,
-                    child: RaisedButton(
-                      onPressed: () async {
-                        var url = 'https://evgeshayoga.com/register';
-                        if (await canLaunch(url)) {
-                          await launch(url);
+                      onSaved: (value) => user.userEmail = value.trim(),
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Введите email';
                         }
+                        return null;
                       },
-                      color: Style.pinkMain,
-                      child: Text(
-                        "Зарегистрироваться",
-                        style: Style.regularTextStyle,
-                      ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(padding: new EdgeInsets.all(10.5)),
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.all(18.0),
-                child: Text(
-                  _loginAlert,
-                  style: TextStyle(color: Colors.red),
+                    TextFormField(
+//                          controller: _passwordController,
+                      obscureText: true,
+                      decoration: const InputDecoration(
+                        icon: Icon(Icons.lock),
+                        hintText: 'Введите свой пароль',
+                        labelText: 'Пароль',
+                      ),
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Введите пароль';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) => user.password = value.trim(),
+                    ),
+                  ],
                 ),
               ),
-            )
-          ],
-        ),
-
+            ),
+          ),
+          Container(
+            alignment: Alignment(0.0, 0.0),
+            child: Column(
+              children: <Widget>[
+                Container(
+                  width: 250,
+                  child: RaisedButton(
+                    onPressed: userLogIn,
+                    color: Style.pinkMain,
+                    child: Text(
+                      "Войти",
+                      style: Style.regularTextStyle,
+                    ),
+                  ),
+                ),
+                Text(
+                  "или",
+                  textAlign: TextAlign.center,
+                  style: Style.regularTextStyle,
+                ),
+                Container(
+                  width: 250,
+                  child: RaisedButton(
+                    onPressed: () async {
+                      var url = 'https://evgeshayoga.com/register';
+                      if (await canLaunch(url)) {
+                        await launch(url);
+                      }
+                    },
+                    color: Style.pinkMain,
+                    child: Text(
+                      "Зарегистрироваться",
+                      style: Style.regularTextStyle,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Padding(padding: new EdgeInsets.all(10.5)),
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.all(18.0),
+              child: Text(
+                _loginAlert,
+                style: TextStyle(color: Colors.red),
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 
@@ -295,8 +295,7 @@ class _LoginState extends State<Login> {
       });
     }
 
-    if (orientation == Orientation.portrait
-        ) {
+    if (orientation == Orientation.portrait) {
       loginPageContent = _buildPortraitLayout();
     } else {
       loginPageContent = _buildLandscapeLayout();
@@ -343,11 +342,13 @@ class _LoginState extends State<Login> {
         if (error != null) {
           throw new Exception(error);
         }
-        FirebaseUser newUser = (await _auth.signInWithEmailAndPassword(
+        AuthResult result = await _auth.signInWithEmailAndPassword(
           email: user.userEmail,
           password: user.password,
-        ))
-            .user;
+        );
+        FirebaseUser newUser = result.user;
+        await Provider.of<UserProviderModel>(context, listen: false)
+            .login(newUser.uid);
         var router = new MaterialPageRoute(builder: (BuildContext context) {
           return YogaOnlineScreen(userUid: newUser.uid,);
         });

@@ -14,6 +14,7 @@ import 'package:provider/provider.dart';
 Widget drawerProgramScreen(bool isLandscape) {
   return Consumer<UserProviderModel>(
     builder: (context, userProvider, child) {
+      User userData = userProvider.user ?? new User("", "", "", "");
       return Consumer<InfoProviderModel>(
         builder: (context, infoProvider, child) {
           String version = infoProvider.version;
@@ -45,7 +46,7 @@ Widget drawerProgramScreen(bool isLandscape) {
                                   ? const EdgeInsets.only(top: 0.0)
                                   : const EdgeInsets.only(top: 10.0),
                               child: Text(
-                                userProvider.user.userName,
+                                userData.userName,
                                 style: Style.headerTextStyle,
                                 textAlign: TextAlign.center,
                               ),
@@ -73,7 +74,7 @@ Widget drawerProgramScreen(bool isLandscape) {
                               onTap: () {
                                 var router = new MaterialPageRoute(
                                     builder: (BuildContext context) {
-                                      return ProfileScreen(userProvider.user);
+                                      return ProfileScreen(userData);
                                     });
                                 Navigator.of(context).push(router);
                               },

@@ -3,14 +3,32 @@ import 'package:evgeshayoga/provider/user_provider_model.dart';
 import 'package:test/test.dart';
 
 void main() {
-  test('adding item increases total cost', () {
-    final cart = UserProviderModel();
+  test('login user', () {
     final user = new User("name", "email-123", "password", "phoneNumber");
-    expect(cart.user.userEmail, equals(""));
+    final cart = UserProviderModel(new TestAuthAdapter(user: user));
+    expect(cart.user, equals(null));
     cart.addListener(() {
       expect(cart.user.userEmail, equals("email-123"));
       expect(cart.userUid, equals("fbuid"));
     });
-    cart.setUser("fbuid", user);
+    cart.login("fbuid");
   });
+}
+
+class TestAuthAdapter implements AuthAdapter {
+  final User user;
+  final Error loginError;
+  TestAuthAdapter({this.user, this.loginError});
+  @override
+  Future<User> login(String uid) {
+    return Future.delayed(Duration.zero, () {
+      return user;
+    });
+  }
+
+  @override
+  void logout() {
+
+  }
+
 }
