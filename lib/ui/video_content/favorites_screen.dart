@@ -1,6 +1,7 @@
 import 'package:evgeshayoga/models/yoga_online_lesson.dart';
 import 'package:evgeshayoga/provider/user_provider_model.dart';
 import 'package:evgeshayoga/ui/video_content/components/yoga_online_column.dart';
+import 'package:evgeshayoga/utils/ProgressHUD.dart';
 import 'package:evgeshayoga/utils/check_is_landscape.dart';
 import 'package:evgeshayoga/utils/getUserSubscriptionStatus.dart';
 import 'package:evgeshayoga/utils/style.dart';
@@ -66,7 +67,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
         centerTitle: true,
         backgroundColor: Style.pinkMain,
       ),
-      body: Center(
+      body: _isInAsyncCall ? progressHUD(_isInAsyncCall) : Center(
         child: hasFavorites
             ? videoLessons(isLandscape, videosToDisplay, context, favoriteVideosIds)
             : Text(
