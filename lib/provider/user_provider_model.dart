@@ -1,5 +1,5 @@
 import 'package:evgeshayoga/models/user.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' as fbauth;
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/foundation.dart';
 
@@ -39,7 +39,7 @@ abstract class AuthAdapter {
 
 class FirebaseAuthAdapter implements AuthAdapter {
   final FirebaseDatabase database = FirebaseDatabase.instance;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final fbauth.FirebaseAuth _auth = fbauth.FirebaseAuth.instance;
 
   @override
   Future<User> login(String uid) async {
