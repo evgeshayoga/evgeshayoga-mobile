@@ -2,6 +2,7 @@ import 'package:evgeshayoga/provider/info_provider_model.dart';
 import 'package:evgeshayoga/provider/user_provider_model.dart';
 import 'package:evgeshayoga/ui/video_content/yoga_online_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fbauth;
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,14 +14,22 @@ class StartScreen extends StatefulWidget {
 }
 
 class _StartScreenState extends State<StartScreen> {
+  bool _initialized = false;
+  bool _error = false;
 
-  @override
-  initState() {
-    super.initState();
-    var currentUser = fbauth.FirebaseAuth.instance.currentUser;
-    if (currentUser == null) {
-      Navigator.pushReplacementNamed(context, "/home");
-    } else {
+  // Define an async function to initialize FlutterFire
+  void initializeFlutterFire() async {
+    try {
+      // Wait for Firebase to initialize and set `_initialized` state to true
+      await Firebase.initializeApp();
+      setState(() {
+        _initialized = true;
+      });
+      var currentUser = fbauth.FirebaseAuth.instance.currentUser;
+      if (currentUser == null) {
+        Navigator.pushReplacementNamed(context, "/home");
+        return;
+      }
       Future.delayed(Duration(milliseconds: 100)).then((_) {
         Provider.of<InfoProviderModel>(context, listen: false).initialize();
         return Provider.of<UserProviderModel>(context, listen: false)
@@ -28,17 +37,40 @@ class _StartScreenState extends State<StartScreen> {
       }).then((_) {
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (BuildContext context) {
-              return YogaOnlineScreen(userUid: currentUser.uid);
-            }));
+          return YogaOnlineScreen(userUid: currentUser.uid);
+        }));
       }).catchError((Object error) {
         Navigator.pushReplacementNamed(context, "/home");
         Provider.of<UserProviderModel>(context, listen: false).logout();
+      });
+    } catch (e) {
+      // Set `_error` state to true if Firebase initialization fails
+      setState(() {
+        _error = true;
       });
     }
   }
 
   @override
+  initState() {
+    initializeFlutterFire();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    if (_error) {
+      return Container(
+        child: Text("Error"),
+      );
+    }
+    if (!_initialized) {
+      Container(
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
     return Container();
   }
 }
