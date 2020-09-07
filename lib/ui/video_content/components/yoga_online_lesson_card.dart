@@ -1,20 +1,20 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:evgeshayoga/provider/user_provider_model.dart';
 import 'package:evgeshayoga/ui/video_content/lesson_screen.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:provider/provider.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart' show PlatformException;
 
 class YogaOnlineLessonCard extends StatefulWidget {
+  final dynamic yogaOnlineLesson;
+  final bool isLandscape;
+  final List favoriteVideosIds;
 
-  String uid;
-  dynamic yogaOnlineLesson;
-  bool isLandscape;
-  List favoriteVideosIds;
-
-  YogaOnlineLessonCard({this.uid, this.yogaOnlineLesson, this.isLandscape, this.favoriteVideosIds});
+  YogaOnlineLessonCard({this.yogaOnlineLesson, this.isLandscape, this.favoriteVideosIds});
 
   @override
   _YogaOnlineLessonCardState createState() => _YogaOnlineLessonCardState();
@@ -23,11 +23,13 @@ class YogaOnlineLessonCard extends StatefulWidget {
 class _YogaOnlineLessonCardState extends State<YogaOnlineLessonCard> {
 
   bool isLiked = false;
+  String userUid;
 
   @override
   void initState() {
     super.initState();
     isLiked = widget.favoriteVideosIds.contains(widget.yogaOnlineLesson.id);
+    userUid = Provider.of<UserProviderModel>(context, listen: false).userUid;
   }
 
   Widget addToFavoritesButton(uid, videoId) {
@@ -137,7 +139,7 @@ class _YogaOnlineLessonCardState extends State<YogaOnlineLessonCard> {
                   children: <Widget>[
                     title,
                     additionalInfo(widget.yogaOnlineLesson),
-                    addToFavoritesButton(widget.uid, widget.yogaOnlineLesson.id),
+                    addToFavoritesButton(userUid, widget.yogaOnlineLesson.id),
                   ],
                 ),
               ),
@@ -151,7 +153,7 @@ class _YogaOnlineLessonCardState extends State<YogaOnlineLessonCard> {
             children: <Widget>[
               ListTile(title: title, subtitle: programThumbnail),
               additionalInfo(widget.yogaOnlineLesson),
-              addToFavoritesButton(widget.uid, widget.yogaOnlineLesson.id),
+              addToFavoritesButton(userUid, widget.yogaOnlineLesson.id),
             ],
           ),
         ),

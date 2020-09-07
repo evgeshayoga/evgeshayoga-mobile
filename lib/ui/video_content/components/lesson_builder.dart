@@ -46,17 +46,20 @@ class _LessonBuilderState extends State<LessonBuilder> {
     return Container(
       child: Column(
         children: <Widget>[
-          Column(
-            children: <Widget>[
-              DefaultTextStyle(
-                child: HtmlWidget(
-                  yogaOnlineLesson.content,
-                  webView: true,
-                ),
-                style: Style.regularTextStyle,
-                textAlign: TextAlign.justify,
-              )
-            ],
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+            child: Column(
+              children: <Widget>[
+                DefaultTextStyle(
+                  child: HtmlWidget(
+                    yogaOnlineLesson.content,
+                    webView: true,
+                  ),
+                  style: Style.regularTextStyle,
+                  textAlign: TextAlign.justify,
+                )
+              ],
+            ),
           ),
         ],
       ),
@@ -72,6 +75,6 @@ class _LessonBuilderState extends State<LessonBuilder> {
     }
 
 
-    return VideoBlocks(videos, upperContext: upperContext());
+    return VideoBlocks(videos, upperContent: upperContext());
   }
 }

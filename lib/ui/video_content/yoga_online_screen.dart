@@ -1,4 +1,3 @@
-import 'package:evgeshayoga/models/user.dart';
 import 'package:evgeshayoga/models/yoga_online_lesson.dart';
 import 'package:evgeshayoga/ui/video_content/favorites_screen.dart';
 import 'package:evgeshayoga/ui/video_content/components/drawer_content_screen.dart';
@@ -10,10 +9,7 @@ import 'package:evgeshayoga/utils/getUserSubscriptionStatus.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:package_info/package_info.dart';
 
 
 class YogaOnlineScreen extends StatefulWidget {
@@ -30,7 +26,6 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
   final FirebaseDatabase database = FirebaseDatabase.instance;
   DatabaseReference dbVideosReference;
   DatabaseReference dbUsersReference;
-  User user = User("", "", "", "");
   Map<String, dynamic> userSubscriptionStatus;
   List favoriteVideosIds = [];
   bool hasAccess = false;
@@ -38,8 +33,6 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
   List<YogaOnlineLesson> videos = [];
   List<YogaOnlineLesson> videosToDisplay = [];
   bool _isInAsyncCall = true;
-  String version = '';
-  String buildNumber = '';
 
   @override
   void initState() {
@@ -49,37 +42,31 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
 
   Future initialize() async {
     dbVideosReference = database.reference().child("videos");
-    dbUsersReference =
-        database.reference().child("users").child(widget.userUid);
 
-    var userSnapshot = await dbUsersReference.once();
-    var videosSnapshot = await dbVideosReference.once();
     List<YogaOnlineLesson> videosFromFB = [];
-    for (var value in videosSnapshot.value) {
-      if (value != null) {
-        videosFromFB.add(YogaOnlineLesson.fromFB(value));
-        videosFromFB.sort((sa, sb) {
-          return sb.id - sa.id;
-        });
+    try {
+      var videosSnapshot = await dbVideosReference.once();
+      for (var value in videosSnapshot.value) {
+        if (value != null) {
+          videosFromFB.add(YogaOnlineLesson.fromFB(value));
+        }
       }
+    } on DatabaseError catch (e) {
+      Navigator.pushReplacementNamed(context, "/home");
+      return;
     }
 
+    videosFromFB.sort((sa, sb) {
+      return sb.id - sa.id;
+    });
     var subscription = await getUserSubscriptionStatus(widget.userUid);
     setState(() {
       userSubscriptionStatus = subscription;
       hasAccess = userSubscriptionStatus['isSubscriptionActive'];
       _isInAsyncCall = false;
       videosToDisplay = videosFromFB;
-      user = User.fromSnapshot(userSnapshot);
       videos = videosFromFB;
       favoriteVideosIds = userSubscriptionStatus['favourite'];
-    });
-
-    PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
-      setState(() {
-        version = packageInfo.version;
-        buildNumber = packageInfo.buildNumber;
-      });
     });
   }
 
@@ -87,7 +74,7 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
   Widget build(BuildContext context) {
     bool isLandscape = checkIsLandscape(context);
     return Scaffold(
-      drawer: drawerProgramScreen(user, context, widget.userUid, isLandscape, version, buildNumber),
+      drawer: drawerProgramScreen(isLandscape),
       endDrawer: FiltersDrawer(
         videos: videos,
         filters: _filters,
@@ -129,7 +116,7 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
                 onPressed: () {
 
                   var router = new MaterialPageRoute(builder: (BuildContext context) {
-                    return FavoritesScreen(widget.userUid, videos, context);
+                    return FavoritesScreen(videos, context);
                   });
                   Navigator.of(context).push(router);
                 },
@@ -157,7 +144,7 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
       );
     } else
       return hasAccess
-          ? videoLessons(widget.userUid, isLandscape, videosToDisplay, context, favoriteVideosIds)
+          ? videoLessons(isLandscape, videosToDisplay, context, favoriteVideosIds)
           : Center(
               child: Text('Вы не подписаны на Yoga Online'),
             );

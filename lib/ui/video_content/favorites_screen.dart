@@ -1,16 +1,17 @@
 import 'package:evgeshayoga/models/yoga_online_lesson.dart';
+import 'package:evgeshayoga/provider/user_provider_model.dart';
 import 'package:evgeshayoga/ui/video_content/components/yoga_online_column.dart';
+import 'package:evgeshayoga/utils/ProgressHUD.dart';
 import 'package:evgeshayoga/utils/check_is_landscape.dart';
 import 'package:evgeshayoga/utils/getUserSubscriptionStatus.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class FavoritesScreen extends StatefulWidget {
-  final String uid;
-//  final List favoriteVideosIds;
   final List<YogaOnlineLesson> videos;
 
-  FavoritesScreen(this.uid, this.videos, context, {Key key})
+  FavoritesScreen(this.videos, context, {Key key})
       : super(key: key);
 
   @override
@@ -27,11 +28,12 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
   @override
   void initState() {
     super.initState();
+    String userUid = Provider.of<UserProviderModel>(context, listen: false).userUid;
     setState(() {
       _isInAsyncCall = true;
     });
 
-    getUserSubscriptionStatus(widget.uid).then((status) {
+    getUserSubscriptionStatus(userUid).then((status) {
       setState(() {
         userSubscriptionStatus = status;
         favoriteVideosIds = userSubscriptionStatus['favourite'];
@@ -54,7 +56,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
   @override
   Widget build(BuildContext context) {
     bool hasFavorites = favoriteVideosIds.length > 0;
-    isLandscape = checkIsLandscape(context);
+    bool isLandscape = checkIsLandscape(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -65,9 +67,9 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
         centerTitle: true,
         backgroundColor: Style.pinkMain,
       ),
-      body: Center(
+      body: _isInAsyncCall ? progressHUD(_isInAsyncCall) : Center(
         child: hasFavorites
-            ? videoLessons(widget.uid, isLandscape, videosToDisplay, context, favoriteVideosIds)
+            ? videoLessons(isLandscape, videosToDisplay, context, favoriteVideosIds)
             : Text(
                 "У нас нет избранных видео",
                 style: Style.regularTextStyle,
