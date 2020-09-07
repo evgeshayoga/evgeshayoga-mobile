@@ -11,7 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:firebase_database/firebase_database.dart';
 
-
 class YogaOnlineScreen extends StatefulWidget {
   final String userUid;
 
@@ -105,35 +104,45 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
           ),
           centerTitle: true,
           backgroundColor: Style.pinkMain,
-          actions: [
-            Builder(
-              builder: (context) => IconButton(
-                icon: Icon(
-                  Icons.favorite_border,
-                  size: 26.0,
-                  color: Style.blueGrey,
-                ),
-                onPressed: () {
-
-                  var router = new MaterialPageRoute(builder: (BuildContext context) {
-                    return FavoritesScreen(videos, context);
-                  });
-                  Navigator.of(context).push(router);
-                },
-              ),
-            ),
-            Builder(
-              builder: (context) => IconButton(
-                icon: Icon(
-                  AntDesign.filter,
-                  size: 26.0,
-                  color: Style.blueGrey,
-                ),
-                onPressed: () => Scaffold.of(context).openEndDrawer(),
-              ),
-            ),
-          ]),
+          actions: getAppBarActions()),
       body: yogaOnlineBody(isLandscape),
+    );
+  }
+
+  List<Widget> getAppBarActions() {
+    if (!hasAccess || _isInAsyncCall) {
+      return [filterButton()];
+    }
+    return [
+      Builder(
+        builder: (context) => IconButton(
+          icon: Icon(
+            Icons.favorite_border,
+            size: 26.0,
+            color: Style.blueGrey,
+          ),
+          onPressed: () {
+            var router = new MaterialPageRoute(builder: (BuildContext context) {
+              return FavoritesScreen(videos, context);
+            });
+            Navigator.of(context).push(router);
+          },
+        ),
+      ),
+      filterButton()
+    ];
+  }
+
+  Widget filterButton() {
+    return Builder(
+      builder: (context) => IconButton(
+        icon: Icon(
+          AntDesign.filter,
+          size: 26.0,
+          color: Style.blueGrey,
+        ),
+        onPressed: () => _isInAsyncCall ? () => {} : Scaffold.of(context).openEndDrawer(),
+      ),
     );
   }
 
@@ -144,7 +153,8 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
       );
     } else
       return hasAccess
-          ? videoLessons(isLandscape, videosToDisplay, context, favoriteVideosIds)
+          ? videoLessons(
+              isLandscape, videosToDisplay, context, favoriteVideosIds)
           : Center(
               child: Text('Вы не подписаны на Yoga Online'),
             );
