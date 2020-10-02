@@ -5,8 +5,8 @@ import 'package:package_info/package_info.dart';
 
 class InfoProviderModel extends ChangeNotifier {
   bool _initialized = false;
-  String _version;
-  String _buildNumber;
+  String _version = "";
+  String _buildNumber = "";
 
   String get version => _version;
   String get buildNumber => _buildNumber;

@@ -6,13 +6,9 @@ import 'package:evgeshayoga/utils/animator.dart';
 import 'package:evgeshayoga/utils/start_screen.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  Crashlytics.instance.enableInDevMode =
-      true; // Pass all uncaught errors from the framework to Crashlytics.
-  FlutterError.onError = Crashlytics.instance.recordFlutterError;
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (context) => UserProviderModel(new FirebaseAuthAdapter())),

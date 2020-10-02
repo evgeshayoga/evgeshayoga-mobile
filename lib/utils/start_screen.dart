@@ -3,6 +3,7 @@ import 'package:evgeshayoga/provider/user_provider_model.dart';
 import 'package:evgeshayoga/ui/video_content/yoga_online_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fbauth;
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -22,6 +23,8 @@ class _StartScreenState extends State<StartScreen> {
     try {
       // Wait for Firebase to initialize and set `_initialized` state to true
       await Firebase.initializeApp();
+      FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+      FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
       setState(() {
         _initialized = true;
       });

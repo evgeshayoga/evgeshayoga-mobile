@@ -26,6 +26,7 @@ class UserProviderModel extends ChangeNotifier {
   void logout() {
     _user = null;
     _userUid = null;
+    authAdapter.logout();
     // This call tells the widgets that are listening to this model to rebuild.
     notifyListeners();
   }
