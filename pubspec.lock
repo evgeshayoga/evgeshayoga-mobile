@@ -70,7 +70,7 @@ packages:
       name: chewie
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.10.3+1"
+    version: "0.11.0"
   cli_util:
     dependency: transitive
     description:
@@ -133,7 +133,7 @@ packages:
       name: coverage
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.14.1"
+    version: "0.14.2"
   crypto:
     dependency: transitive
     description:
@@ -372,7 +372,14 @@ packages:
       name: image
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.18"
+    version: "2.1.19"
+  import_js_library:
+    dependency: transitive
+    description:
+      name: import_js_library
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.2"
   in_app_purchase:
     dependency: "direct main"
     description:
@@ -846,7 +853,21 @@ packages:
       name: wakelock
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.4+2"
+    version: "0.2.1+1"
+  wakelock_platform_interface:
+    dependency: transitive
+    description:
+      name: wakelock_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.0+1"
+  wakelock_web:
+    dependency: transitive
+    description:
+      name: wakelock_web
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.0+3"
   watcher:
     dependency: transitive
     description:
@@ -874,7 +895,7 @@ packages:
       name: webview_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.6"
+    version: "1.0.7"
   win32:
     dependency: transitive
     description:
