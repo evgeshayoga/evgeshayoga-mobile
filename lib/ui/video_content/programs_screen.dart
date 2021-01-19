@@ -1,18 +1,17 @@
 import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:evgeshayoga/models/program.dart';
-import 'package:evgeshayoga/models/user.dart';
 import 'package:evgeshayoga/ui/video_content/components/drawer_content_screen.dart';
 import 'package:evgeshayoga/ui/video_content/program_screen.dart';
 import 'package:evgeshayoga/utils/ProgressHUD.dart';
 import 'package:evgeshayoga/utils/check_is_available.dart';
 import 'package:evgeshayoga/utils/check_is_landscape.dart';
 import 'package:evgeshayoga/utils/date_formatter.dart';
+import 'package:evgeshayoga/utils/getUserAccessStatus.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:transparent_image/transparent_image.dart';
 
 class Programs extends StatefulWidget {
@@ -25,12 +24,9 @@ class Programs extends StatefulWidget {
 }
 
 class _ProgramsState extends State<Programs> {
-  static const int tabletBreakpoint = 600;
-  final FirebaseDatabase database = FirebaseDatabase.instance;
-  DatabaseReference dbUsersReference;
-  DatabaseReference dbProgramsReference;
-  User user;
-  Map<String, dynamic> userProgramsStatuses;
+  final DatabaseReference dbProgramsReference = FirebaseDatabase.instance.reference().child("marathons");
+
+  Map<String, dynamic> userProgramsStatuses = new Map();
   bool _isInAsyncCall = false;
   bool noActivePrograms = false;
 
@@ -43,10 +39,6 @@ class _ProgramsState extends State<Programs> {
         _isInAsyncCall = true;
       });
     });
-    dbUsersReference =
-        database.reference().child("users").child(widget.userUid);
-    dbProgramsReference = database.reference().child("marathons");
-    user = User("", "", "", "");
 
     dbProgramsReference.once().then((snapshot) {
       _isInAsyncCall = false;
@@ -68,7 +60,6 @@ class _ProgramsState extends State<Programs> {
   Widget build(BuildContext context) {
     bool isLandscape = checkIsLandscape(context);
 
-    var programs = user.getPurchases().programs;
     return Scaffold(
       drawer: drawerProgramScreen(isLandscape),
       appBar: AppBar(
@@ -86,7 +77,10 @@ class _ProgramsState extends State<Programs> {
             );
           },
         ),
-        title: Text("Программы", style: Style.titleTextStyle,),
+        title: Text(
+          "Программы",
+          style: Style.titleTextStyle,
+        ),
         centerTitle: true,
         backgroundColor: Style.pinkMain,
       ),
@@ -122,8 +116,9 @@ class _ProgramsState extends State<Programs> {
                       if (isViewable(userProgramsStatuses, program.id)) {
                         return _availableProgram(
                             date, snapshot.value, isLandscape);
-                      } return _notAvailableProgram(
-                          programs, snapshot.value, context, isLandscape);
+                      }
+                      return _notAvailableProgram(
+                          snapshot.value, context, isLandscape);
                     },
                   ),
                 )
@@ -136,8 +131,7 @@ class _ProgramsState extends State<Programs> {
     return Container();
   }
 
-  Widget _notAvailableProgram(
-      purchases, program, BuildContext context, isLandscape) {
+  Widget _notAvailableProgram(program, BuildContext context, isLandscape) {
     String thumbnailUrl = program["thumbnailUrl"];
     Text title = Text(
       program["title"],
@@ -194,8 +188,10 @@ class _ProgramsState extends State<Programs> {
         children: <Widget>[
           Container(
               alignment: Alignment.center,
-              child: FadeInImage(placeholder: MemoryImage(kTransparentImage), image: CachedNetworkImageProvider("https://evgeshayoga.com" + thumbnailUrl))
-          ),
+              child: FadeInImage(
+                  placeholder: MemoryImage(kTransparentImage),
+                  image: CachedNetworkImageProvider(
+                      "https://evgeshayoga.com" + thumbnailUrl))),
           Container(
             alignment: Alignment.center,
             child: Opacity(
@@ -230,7 +226,10 @@ class _ProgramsState extends State<Programs> {
           FlatButton(
             child: Text('OK'),
             onPressed: () {
-              Navigator.of(context).pop();
+              var nav = Navigator.of(context);
+              if (nav != null) {
+                nav.pop();
+              }
             },
           ),
         ],
@@ -243,7 +242,10 @@ class _ProgramsState extends State<Programs> {
       constraints: BoxConstraints(minHeight: 100, maxHeight: 300),
       child: Container(
         alignment: Alignment.center,
-        child: FadeInImage(placeholder: MemoryImage(kTransparentImage), image: CachedNetworkImageProvider("https://evgeshayoga.com" + program["thumbnailUrl"])),
+        child: FadeInImage(
+            placeholder: MemoryImage(kTransparentImage),
+            image: CachedNetworkImageProvider(
+                "https://evgeshayoga.com" + program["thumbnailUrl"])),
       ),
     );
 
@@ -260,7 +262,10 @@ class _ProgramsState extends State<Programs> {
             var router = new MaterialPageRoute(builder: (BuildContext context) {
               return ProgramScreen(program["title"], program["id"]);
             });
-            Navigator.of(context).push(router);
+            var nav = Navigator.of(context);
+            if (nav != null) {
+              nav.push(router);
+            }
           },
           child: isLandscape
               ? Row(
@@ -299,18 +304,6 @@ class _ProgramsState extends State<Programs> {
       ),
     );
   }
-}
-
-Future<Map<String, dynamic>> getUserProgramsStatuses(String uid) async {
-  var response = await http.get(
-    "https://evgeshayoga.com/api/users/" + uid + "/marathons",
-  );
-  Map<String, dynamic> data = json.decode(response.body);
-  String error = data["error"];
-  if (error != null) {
-    throw new Exception(error);
-  }
-  return data;
 }
 
 bool isViewable(Map userProgramsStatuses, int programId) {
