@@ -86,7 +86,10 @@ class _ProgramsState extends State<Programs> {
             );
           },
         ),
-        title: Text("Программы", style: Style.titleTextStyle,),
+        title: Text(
+          "Программы",
+          style: Style.titleTextStyle,
+        ),
         centerTitle: true,
         backgroundColor: Style.pinkMain,
       ),
@@ -122,7 +125,8 @@ class _ProgramsState extends State<Programs> {
                       if (isViewable(userProgramsStatuses, program.id)) {
                         return _availableProgram(
                             date, snapshot.value, isLandscape);
-                      } return _notAvailableProgram(
+                      }
+                      return _notAvailableProgram(
                           programs, snapshot.value, context, isLandscape);
                     },
                   ),
@@ -194,8 +198,10 @@ class _ProgramsState extends State<Programs> {
         children: <Widget>[
           Container(
               alignment: Alignment.center,
-              child: FadeInImage(placeholder: MemoryImage(kTransparentImage), image: CachedNetworkImageProvider("https://evgeshayoga.com" + thumbnailUrl))
-          ),
+              child: FadeInImage(
+                  placeholder: MemoryImage(kTransparentImage),
+                  image: CachedNetworkImageProvider(
+                      "https://evgeshayoga.com" + thumbnailUrl))),
           Container(
             alignment: Alignment.center,
             child: Opacity(
@@ -243,7 +249,10 @@ class _ProgramsState extends State<Programs> {
       constraints: BoxConstraints(minHeight: 100, maxHeight: 300),
       child: Container(
         alignment: Alignment.center,
-        child: FadeInImage(placeholder: MemoryImage(kTransparentImage), image: CachedNetworkImageProvider("https://evgeshayoga.com" + program["thumbnailUrl"])),
+        child: FadeInImage(
+            placeholder: MemoryImage(kTransparentImage),
+            image: CachedNetworkImageProvider(
+                "https://evgeshayoga.com" + program["thumbnailUrl"])),
       ),
     );
 
@@ -303,7 +312,7 @@ class _ProgramsState extends State<Programs> {
 
 Future<Map<String, dynamic>> getUserProgramsStatuses(String uid) async {
   var response = await http.get(
-    "https://evgeshayoga.com/api/users/" + uid + "/marathons",
+    Uri.https("evgeshayoga.com", "/api/users/" + uid + "/marathons"),
   );
   Map<String, dynamic> data = json.decode(response.body);
   String error = data["error"];

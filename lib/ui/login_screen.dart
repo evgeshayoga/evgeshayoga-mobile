@@ -332,7 +332,7 @@ class _LoginState extends State<Login> {
       try {
         _showProgressIndicator();
         var response = await http.post(
-          "https://evgeshayoga.com/api/auth",
+          Uri.https("evgeshayoga.com", "/api/auth"),
           body:
               json.encode({"email": user.userEmail, "password": user.password}),
           headers: {'Content-Type': 'application/json'},

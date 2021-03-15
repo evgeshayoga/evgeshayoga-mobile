@@ -1,5 +1,4 @@
 import 'package:evgeshayoga/models/video.dart';
-import 'package:firebase_database/firebase_database.dart';
 
 class YogaOnlineLesson {
   String content;

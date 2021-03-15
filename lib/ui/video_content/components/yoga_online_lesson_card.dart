@@ -51,7 +51,7 @@ class _YogaOnlineLessonCardState extends State<YogaOnlineLessonCard> {
 
   Future onAddtoFavorites(uid, videoId) async {
     try {
-      var response = await http.post("https://evgeshayoga.com/api/users/$uid/videos/$videoId/like");
+      var response = await http.post(Uri.https("evgeshayoga.com", "/api/users/" + uid + "/videos" + videoId + "/like"));
       print(response.body);
       setState(() {
         isLiked = !isLiked;
