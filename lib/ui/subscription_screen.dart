@@ -1,7 +1,7 @@
 import 'package:evgeshayoga/ui/video_content/yoga_online_screen.dart';
 import 'package:evgeshayoga/utils/ProgressHUD.dart';
 import 'package:evgeshayoga/utils/date_formatter.dart';
-import 'package:evgeshayoga/utils/getUserSubscriptionStatus.dart';
+import 'package:evgeshayoga/utils/getUserAccessStatus.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:flutter/material.dart';
 
@@ -68,12 +68,17 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   }
 
   Widget subscriptionDetails(subscription) {
+    var expiryDate = subscription['expiryDate'];
+    DateTime parsedExpiryDate = DateTime.parse(expiryDate);
+    Widget dateWidget = parsedExpiryDate.difference(DateTime.now()).inDays > 365
+        ? Text("Подписка активна")
+        : Text("Подписка активна до " + dateFormatted(expiryDate));
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Text("Вы подписаны на Yoga Online"),
-        Text("Подписка активна до " + dateFormatted(subscription['expiryDate'])),
+        dateWidget,
         Container(
           padding: EdgeInsets.all(20),
         ),

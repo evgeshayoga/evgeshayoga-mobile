@@ -4,7 +4,7 @@ import 'package:evgeshayoga/provider/user_provider_model.dart';
 import 'package:evgeshayoga/ui/video_content/yoga_online_screen.dart';
 import 'package:evgeshayoga/utils/ProgressHUD.dart';
 import 'package:evgeshayoga/utils/style.dart';
-import 'package:firebase_auth/firebase_auth.dart' as fbauth;
+import 'package:firebase_auth/firebase_auth.dart' as fb;
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show PlatformException;
@@ -19,7 +19,7 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   DatabaseReference databaseReference;
-  final fbauth.FirebaseAuth _auth = fbauth.FirebaseAuth.instance;
+  final fb.FirebaseAuth _auth = fb.FirebaseAuth.instance;
   final _loginFormKey = GlobalKey<FormState>();
   User user = User("", "", "", "");
   String _loginAlert = "";
@@ -342,11 +342,11 @@ class _LoginState extends State<Login> {
         if (error != null) {
           throw new Exception(error);
         }
-        fbauth.UserCredential result = await _auth.signInWithEmailAndPassword(
+        fb.UserCredential result = await _auth.signInWithEmailAndPassword(
           email: user.userEmail,
           password: user.password,
         );
-        fbauth.User newUser = result.user;
+        fb.User newUser = result.user;
         await Provider.of<UserProviderModel>(context, listen: false)
             .login(newUser.uid);
         var router = new MaterialPageRoute(builder: (BuildContext context) {

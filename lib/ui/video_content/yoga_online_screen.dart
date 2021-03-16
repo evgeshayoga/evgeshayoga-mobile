@@ -5,7 +5,7 @@ import 'package:evgeshayoga/ui/video_content/components/filters_drawer.dart';
 import 'package:evgeshayoga/ui/video_content/components/yoga_online_column.dart';
 import 'package:evgeshayoga/utils/ProgressHUD.dart';
 import 'package:evgeshayoga/utils/check_is_landscape.dart';
-import 'package:evgeshayoga/utils/getUserSubscriptionStatus.dart';
+import 'package:evgeshayoga/utils/getUserAccessStatus.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -21,11 +21,10 @@ class YogaOnlineScreen extends StatefulWidget {
 }
 
 class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
-  static const int tabletBreakpoint = 600;
   final FirebaseDatabase database = FirebaseDatabase.instance;
-  DatabaseReference dbVideosReference;
+  final DatabaseReference dbVideosReference = FirebaseDatabase.instance.reference().child("videos");
   DatabaseReference dbUsersReference;
-  Map<String, dynamic> userSubscriptionStatus;
+  Map<String, dynamic> userSubscriptionStatus = new Map();
   List favoriteVideosIds = [];
   bool hasAccess = false;
   Filters _filters = Filters();
@@ -40,7 +39,6 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
   }
 
   Future initialize() async {
-    dbVideosReference = database.reference().child("videos");
 
     List<YogaOnlineLesson> videosFromFB = [];
     try {
@@ -125,7 +123,10 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
             var router = new MaterialPageRoute(builder: (BuildContext context) {
               return FavoritesScreen(videos, context);
             });
-            Navigator.of(context).push(router);
+            var nav = Navigator.of(context);
+            if (nav != null) {
+              nav.push(router);
+            }
           },
         ),
       ),
@@ -201,7 +202,10 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
       _filters = filters;
       videosToDisplay = filteredVideos;
     });
-    Navigator.of(context).pop();
+    var nav = Navigator.of(context);
+    if (nav != null) {
+      nav.pop();
+    }
   }
 
   void _clearFilters() {
