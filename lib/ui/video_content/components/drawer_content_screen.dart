@@ -7,7 +7,6 @@ import 'package:evgeshayoga/ui/video_content/programs_screen.dart';
 import 'package:evgeshayoga/ui/video_content/yoga_online_screen.dart';
 import 'package:evgeshayoga/ui/purchases_screen.dart';
 import 'package:evgeshayoga/utils/style.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

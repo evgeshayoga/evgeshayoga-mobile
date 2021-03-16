@@ -17,7 +17,7 @@ class _StartScreenState extends State<StartScreen> {
   @override
   initState() {
     super.initState();
-    FirebaseAuth.instance.currentUser().then((currentUser) {
+    Future.value(FirebaseAuth.instance.currentUser).then((currentUser) {
       if (currentUser == null) {
         Navigator.pushReplacementNamed(context, "/home");
       } else {
