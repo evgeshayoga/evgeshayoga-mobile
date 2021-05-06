@@ -16,8 +16,8 @@ Widget drawerProgramScreen(bool isLandscape) {
       User userData = userProvider.user ?? new User("", "", "", "");
       return Consumer<InfoProviderModel>(
         builder: (context, infoProvider, child) {
-          String version = infoProvider.version;
-          String buildNumber = infoProvider.buildNumber;
+          String version = infoProvider.version ?? "";
+          String buildNumber = infoProvider.buildNumber ?? "";
           return Drawer(
             child: SafeArea(
               child: Column(

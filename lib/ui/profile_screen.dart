@@ -6,7 +6,7 @@ class ProfileScreen extends StatelessWidget {
   User user;
 
   @override
-  ProfileScreen(this.user, {Key key}) : super(key: key);
+  ProfileScreen(this.user, {Key? key}) : super(key: key);
 
   Widget build(BuildContext context) {
     return Scaffold(

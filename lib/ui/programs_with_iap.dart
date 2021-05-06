@@ -9,7 +9,7 @@ import 'dart:io';
 class IAPScreen extends StatefulWidget {
   final String userUid;
 
-  IAPScreen({Key key, this.userUid}) : super(key: key);
+  IAPScreen({Key? key, this.userUid}) : super(key: key);
 
   @override
   _IAPScreenState createState() => _IAPScreenState();

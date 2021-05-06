@@ -54,6 +54,7 @@ class _ProgramBuilderState extends State<ProgramBuilder> {
     }
     List<Widget> programWeeks = [];
     program.getWeeks().forEach((week) {
+      String imagePath = week.thumbnailUrl.isNotEmpty ? week.thumbnailUrl : program.thumbnailUrl;
       programWeeks.add(Card(
         child: ListTile(
           title: Text(
@@ -62,7 +63,7 @@ class _ProgramBuilderState extends State<ProgramBuilder> {
             textAlign: TextAlign.center,
           ),
           subtitle:
-          FadeInImage(placeholder: MemoryImage(kTransparentImage), image: CachedNetworkImageProvider("https://evgeshayoga.com" + week.thumbnailUrl)),
+          FadeInImage(placeholder: MemoryImage(kTransparentImage), image: CachedNetworkImageProvider("https://evgeshayoga.com" + imagePath)),
           onTap: () {
             var router = new MaterialPageRoute(builder: (BuildContext context) {
               return WeekScreen(week);

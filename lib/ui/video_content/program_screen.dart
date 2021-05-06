@@ -8,7 +8,7 @@ class ProgramScreen extends StatelessWidget {
 
 
   @override
-  ProgramScreen(this.programTitle, this.programId, {Key key}) : super(key: key);
+  ProgramScreen(this.programTitle, this.programId, {Key? key}) : super(key: key);
 
   Widget build(BuildContext context) {
     return Scaffold(

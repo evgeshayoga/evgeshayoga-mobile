@@ -1,15 +1,15 @@
 import 'package:evgeshayoga/ui/video_content/program_screen.dart';
-import 'package:evgeshayoga/ui/video_content/programs_screen.dart';
 import 'package:evgeshayoga/utils/ProgressHUD.dart';
 import 'package:evgeshayoga/utils/check_is_available.dart';
 import 'package:evgeshayoga/utils/date_formatter.dart';
+import 'package:evgeshayoga/utils/getUserAccessStatus.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:flutter/material.dart';
 
 class PurchasesScreen extends StatefulWidget {
   final String userUid;
 
-  PurchasesScreen(this.userUid, {Key key}) : super(key: key);
+  PurchasesScreen(this.userUid, {Key? key}) : super(key: key);
 
   @override
   _PurchasesScreenState createState() => _PurchasesScreenState();

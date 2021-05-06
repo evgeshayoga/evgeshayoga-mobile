@@ -6,7 +6,7 @@ class LessonScreen extends StatelessWidget {
   final String lessonTitle;
   final int lessonId;
   @override
-  LessonScreen(this.lessonTitle, this.lessonId, {Key key}) : super(key: key);
+  LessonScreen(this.lessonTitle, this.lessonId, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
