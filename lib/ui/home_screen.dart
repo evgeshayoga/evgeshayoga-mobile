@@ -7,7 +7,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'login_screen.dart';
 
 class Home extends StatelessWidget {
-  Home({@required AnimationController controller})
+  Home({required AnimationController controller})
       : animation = HomeAnimation(controller);
 
   final HomeAnimation animation;
@@ -132,7 +132,7 @@ class Home extends StatelessWidget {
 
     return AnimatedBuilder(
       animation: animation.controller,
-      builder: (BuildContext context, Widget child) =>
+      builder: (BuildContext context, Widget? child) =>
           _buildHomeLayout(context, isLandscape),
     );
   }

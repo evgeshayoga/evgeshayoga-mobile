@@ -1,6 +1,6 @@
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:flutter/material.dart';
-import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:modal_progress_hud_alt/modal_progress_hud_alt.dart';
 
 Widget progressHUD(isInAsyncCall) {
   return Container(

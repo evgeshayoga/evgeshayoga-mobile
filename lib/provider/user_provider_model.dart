@@ -5,12 +5,12 @@ import 'package:flutter/foundation.dart';
 
 class UserProviderModel extends ChangeNotifier {
   final AuthAdapter authAdapter;
-  User _user;
-  String _userUid;
+  User? _user;
+  String? _userUid;
 
-  User get user => _user;
+  User? get user => _user;
 
-  String get userUid => _userUid;
+  String? get userUid => _userUid;
 
   UserProviderModel(this.authAdapter);
 

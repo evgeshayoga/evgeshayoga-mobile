@@ -13,11 +13,11 @@ import 'package:provider/provider.dart';
 Widget drawerProgramScreen(bool isLandscape) {
   return Consumer<UserProviderModel>(
     builder: (context, userProvider, child) {
-      User userData = userProvider.user ?? new User("", "", "", "");
+      User userData = userProvider.user ?? new User("", "", "", "", userId: 0);
       return Consumer<InfoProviderModel>(
         builder: (context, infoProvider, child) {
-          String version = infoProvider.version ?? "";
-          String buildNumber = infoProvider.buildNumber ?? "";
+          String version = infoProvider.version;
+          String buildNumber = infoProvider.buildNumber;
           return Drawer(
             child: SafeArea(
               child: Column(
@@ -87,7 +87,7 @@ Widget drawerProgramScreen(bool isLandscape) {
                               onTap: () {
                                 var router = new MaterialPageRoute(
                                     builder: (BuildContext context) {
-                                      return YogaOnlineScreen(userUid: userProvider.userUid);
+                                      return YogaOnlineScreen(userUid: userProvider.userUid!);
                                     });
                                 Navigator.of(context).push(router);
                               },
@@ -101,7 +101,7 @@ Widget drawerProgramScreen(bool isLandscape) {
                               onTap: () {
                                 var router = new MaterialPageRoute(
                                     builder: (BuildContext context) {
-                                      return Programs(userUid: userProvider.userUid);
+                                      return Programs(userUid: userProvider.userUid!);
                                     });
                                 Navigator.of(context).push(router);
                               },
@@ -115,7 +115,7 @@ Widget drawerProgramScreen(bool isLandscape) {
                               onTap: () {
                                 var router = new MaterialPageRoute(
                                     builder: (BuildContext context) {
-                                      return PurchasesScreen(userProvider.userUid);
+                                      return PurchasesScreen(userProvider.userUid!);
                                     });
                                 Navigator.of(context).push(router);
                               },
@@ -129,7 +129,7 @@ Widget drawerProgramScreen(bool isLandscape) {
                               onTap: () {
                                 var router = new MaterialPageRoute(
                                     builder: (BuildContext context) {
-                                      return SubscriptionScreen(userProvider.userUid);
+                                      return SubscriptionScreen(userProvider.userUid!);
                                     });
                                 Navigator.of(context).push(router);
                               },

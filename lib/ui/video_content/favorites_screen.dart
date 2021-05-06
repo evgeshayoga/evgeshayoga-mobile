@@ -11,7 +11,7 @@ import 'package:provider/provider.dart';
 class FavoritesScreen extends StatefulWidget {
   final List<YogaOnlineLesson> videos;
 
-  FavoritesScreen(this.videos, context, {Key key}) : super(key: key);
+  FavoritesScreen(this.videos, context, {Key? key}) : super(key: key);
 
   @override
   _FavoritesScreenState createState() => _FavoritesScreenState();
@@ -27,13 +27,13 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
   @override
   void initState() {
     super.initState();
-    String userUid =
+    String? userUid =
         Provider.of<UserProviderModel>(context, listen: false).userUid;
     setState(() {
       _isInAsyncCall = true;
     });
 
-    getUserSubscriptionStatus(userUid).then((status) {
+    getUserSubscriptionStatus(userUid!).then((status) {
       setState(() {
         userSubscriptionStatus = status;
         bool hasAccess = userSubscriptionStatus['isSubscriptionActive'];

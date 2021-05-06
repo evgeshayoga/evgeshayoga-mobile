@@ -14,7 +14,7 @@ class YogaOnlineLessonCard extends StatefulWidget {
   final bool isLandscape;
   final List favoriteVideosIds;
 
-  YogaOnlineLessonCard({this.yogaOnlineLesson, this.isLandscape, this.favoriteVideosIds});
+  YogaOnlineLessonCard({this.yogaOnlineLesson, required this.isLandscape, required this.favoriteVideosIds});
 
   @override
   _YogaOnlineLessonCardState createState() => _YogaOnlineLessonCardState();
@@ -23,7 +23,7 @@ class YogaOnlineLessonCard extends StatefulWidget {
 class _YogaOnlineLessonCardState extends State<YogaOnlineLessonCard> {
 
   bool isLiked = false;
-  String userUid;
+  String? userUid;
 
   @override
   void initState() {
@@ -163,67 +163,58 @@ class _YogaOnlineLessonCardState extends State<YogaOnlineLessonCard> {
 }
 
 String teachers(teachersList) {
-  String teachersStr = '';
   List namesList = [];
   teachersList.forEach((teacher) {
     namesList.add(teacher["name"]);
   });
-  return teachersStr = namesList.join(', ');
+  return namesList.join(', ');
 }
 
 String categories(categoriesList) {
-  String categoriesStr = '';
   List titleList = [];
   categoriesList.forEach((category) {
     titleList.add(category["title"]);
   });
-  return categoriesStr = titleList.join(", ");
+  return titleList.join(", ");
 }
 
 Widget levelIcon(level) {
-  Icon ic;
   switch (level) {
     case 0:
       {
-        ic = Icon(
+        return Icon(
           MaterialCommunityIcons.signal_cellular_1,
           color: Style.blueGrey,
         );
       }
-      break;
     case 1:
       {
-        ic = Icon(MaterialCommunityIcons.signal_cellular_2,
+        return Icon(MaterialCommunityIcons.signal_cellular_2,
             color: Style.blueGrey);
       }
-      break;
     case 2:
       {
-        ic = Icon(MaterialCommunityIcons.signal_cellular_3,
+        return Icon(MaterialCommunityIcons.signal_cellular_3,
             color: Style.blueGrey);
       }
-      break;
   }
-  return ic;
+  return SizedBox.shrink();
 }
 
 Widget formatIcon(format) {
-  Icon ic;
   switch (format) {
     case 0:
       {
-        ic = Icon(Icons.crop_original,
+        return Icon(Icons.crop_original,
           color: Style.blueGrey,
         );
       }
-      break;
     case 1:
       {
-        ic = Icon(Icons.filter,
+        return  Icon(Icons.filter,
           color: Style.blueGrey,
         );
       }
-      break;
   }
-  return ic;
+  return SizedBox.shrink();
 }

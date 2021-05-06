@@ -19,8 +19,8 @@ class ChewieVideo extends StatefulWidget {
 }
 
 class _ChewieVideoState extends State<ChewieVideo> {
-  VideoPlayerController _videoPlayerController;
-  ChewieController _chewieController;
+  VideoPlayerController? _videoPlayerController;
+  ChewieController? _chewieController;
   bool _initialized = false;
 
   @override
@@ -28,7 +28,7 @@ class _ChewieVideoState extends State<ChewieVideo> {
     super.initState();
     _videoPlayerController = VideoPlayerController.network(widget.videoUrl);
     _chewieController = ChewieController(
-      videoPlayerController: _videoPlayerController,
+      videoPlayerController: _videoPlayerController!,
       aspectRatio: 16 / 9,
       autoInitialize: !hasThumbnail,
       autoPlay: false,
@@ -54,14 +54,14 @@ class _ChewieVideoState extends State<ChewieVideo> {
 
   @override
   void dispose() {
-    _videoPlayerController.dispose();
-    _chewieController.dispose();
+    _videoPlayerController!.dispose();
+    _chewieController!.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    Chewie chewie = Chewie(controller: _chewieController);
+    Chewie chewie = Chewie(controller: _chewieController!);
     if (!hasThumbnail) {
       return chewie;
     }
@@ -115,7 +115,7 @@ class _ChewieVideoState extends State<ChewieVideo> {
     return GestureDetector(
       onTap: () {
         if (!_initialized) {
-          _videoPlayerController.initialize();
+          _videoPlayerController!.initialize();
           setState(() {
             _initialized = true;
           });

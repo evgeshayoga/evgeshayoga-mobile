@@ -14,7 +14,7 @@ import 'package:firebase_database/firebase_database.dart';
 class YogaOnlineScreen extends StatefulWidget {
   final String userUid;
 
-  YogaOnlineScreen({Key key, this.userUid}) : super(key: key);
+  YogaOnlineScreen({Key? key, required this.userUid}) : super(key: key);
 
   @override
   _YogaOnlineScreenState createState() => _YogaOnlineScreenState();
@@ -23,7 +23,7 @@ class YogaOnlineScreen extends StatefulWidget {
 class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
   final FirebaseDatabase database = FirebaseDatabase.instance;
   final DatabaseReference dbVideosReference = FirebaseDatabase.instance.reference().child("videos");
-  DatabaseReference dbUsersReference;
+  DatabaseReference? dbUsersReference;
   Map<String, dynamic> userSubscriptionStatus = new Map();
   List favoriteVideosIds = [];
   bool hasAccess = false;
@@ -166,36 +166,36 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
 
     if (filters.level != null) {
       filteredVideos = filteredVideos
-          .where((video) => video.level == int.parse(filters.level))
+          .where((video) => video.level == int.parse(filters.level!))
           .toList();
     }
     if (filters.type != null) {
       filteredVideos = filteredVideos
-          .where((video) => video.type == int.parse(filters.type))
+          .where((video) => video.type == int.parse(filters.type!))
           .toList();
     }
     if (filters.teacher != null) {
       filteredVideos = filteredVideos
           .where((video) =>
-              video.teachers.any((t) => t["id"] == int.parse(filters.teacher)))
+              video.teachers.any((t) => t["id"] == int.parse(filters.teacher!)))
           .toList();
     }
     if (filters.category != null) {
       filteredVideos = filteredVideos
           .where((video) => video.categories
-              .any((cat) => cat["id"] == int.parse(filters.category)))
+              .any((cat) => cat["id"] == int.parse(filters.category!)))
           .toList();
     }
     if (filters.duration != null) {
       filteredVideos = filteredVideos
           .where((video) =>
-              int.parse(filters.duration) - 5 <= video.duration &&
-              video.duration <= int.parse(filters.duration) + 4)
+              int.parse(filters.duration!) - 5 <= video.duration &&
+              video.duration <= int.parse(filters.duration!) + 4)
           .toList();
     }
     if (filters.format != null) {
       filteredVideos = filteredVideos
-          .where((video) => video.format == int.parse(filters.format))
+          .where((video) => video.format == int.parse(filters.format!))
           .toList();
     }
     setState(() {

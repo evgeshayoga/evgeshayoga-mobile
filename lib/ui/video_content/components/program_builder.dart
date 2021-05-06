@@ -13,7 +13,7 @@ import 'package:transparent_image/transparent_image.dart';
 class ProgramBuilder extends StatefulWidget {
   int id;
 
-  ProgramBuilder(this.id, {Key key}) : super(key: key);
+  ProgramBuilder(this.id, {Key? key}) : super(key: key);
 
   @override
   _ProgramBuilderState createState() => _ProgramBuilderState();
@@ -21,7 +21,7 @@ class ProgramBuilder extends StatefulWidget {
 
 class _ProgramBuilderState extends State<ProgramBuilder> {
   final FirebaseDatabase database = FirebaseDatabase.instance;
-  Program program;
+  Program? program;
   List<VideoModel> videos = [];
   bool _isInAsyncCall = false;
 
@@ -39,7 +39,7 @@ class _ProgramBuilderState extends State<ProgramBuilder> {
         .then((snapshot) {
       setState(() {
         program = Program.fromSnapshot(snapshot);
-        videos = program.getVideos();
+        videos = program!.getVideos();
         _isInAsyncCall = false;
       });
     });
@@ -53,8 +53,8 @@ class _ProgramBuilderState extends State<ProgramBuilder> {
       );
     }
     List<Widget> programWeeks = [];
-    program.getWeeks().forEach((week) {
-      String imagePath = week.thumbnailUrl.isNotEmpty ? week.thumbnailUrl : program.thumbnailUrl;
+    program!.getWeeks().forEach((week) {
+      String imagePath = week.thumbnailUrl.isNotEmpty ? week.thumbnailUrl : program!.thumbnailUrl;
       programWeeks.add(Card(
         child: ListTile(
           title: Text(
@@ -80,7 +80,7 @@ class _ProgramBuilderState extends State<ProgramBuilder> {
           children: <Widget>[
             DefaultTextStyle(
               child: HtmlWidget(
-                program.content,
+                program!.content,
                 webView: true,
               ),
               style: Style.regularTextStyle,

@@ -10,7 +10,7 @@ import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 class LessonBuilder extends StatefulWidget {
   final int id;
 
-  LessonBuilder(this.id, {Key key}) : super(key: key);
+  LessonBuilder(this.id, {Key? key}) : super(key: key);
 
   @override
   _LessonBuilderState createState() => _LessonBuilderState();
@@ -18,15 +18,15 @@ class LessonBuilder extends StatefulWidget {
 
 class _LessonBuilderState extends State<LessonBuilder> {
   final FirebaseDatabase database = FirebaseDatabase.instance;
-  YogaOnlineLesson yogaOnlineLesson;
+  YogaOnlineLesson? yogaOnlineLesson;
   List<VideoModel> videos = [];
-  bool _isInAsyncCall = false;
+  bool isInAsyncCall = false;
 
   @override
   void initState() {
     super.initState();
     setState(() {
-      _isInAsyncCall = true;
+      isInAsyncCall = true;
     });
     database
         .reference()
@@ -34,11 +34,13 @@ class _LessonBuilderState extends State<LessonBuilder> {
         .child('${widget.id}')
         .once()
         .then((snapshot) {
-      setState(() {
-        yogaOnlineLesson = YogaOnlineLesson.fromFB(snapshot.value);
-        videos = yogaOnlineLesson.getVideos();
-        _isInAsyncCall = false;
-      });
+          if (this.mounted) {
+            setState(() {
+              yogaOnlineLesson = YogaOnlineLesson.fromFB(snapshot.value);
+              videos = yogaOnlineLesson!.getVideos();
+              isInAsyncCall = false;
+            });
+          }
     });
   }
 
@@ -52,7 +54,7 @@ class _LessonBuilderState extends State<LessonBuilder> {
               children: <Widget>[
                 DefaultTextStyle(
                   child: HtmlWidget(
-                    yogaOnlineLesson.content,
+                    yogaOnlineLesson!.content,
                     webView: true,
                   ),
                   style: Style.regularTextStyle,
@@ -70,7 +72,7 @@ class _LessonBuilderState extends State<LessonBuilder> {
     if (yogaOnlineLesson == null) {
       return Container(
         height: 300,
-        child: progressHUD(_isInAsyncCall)
+        child: progressHUD(isInAsyncCall)
       );
     }
 

@@ -9,7 +9,7 @@ class FiltersDrawer extends StatefulWidget {
   final Function onClear;
 
   FiltersDrawer(
-      {Key key, this.videos, this.onApplyFilters, this.filters, this.onClear})
+      {Key? key, required this.videos, required this.onApplyFilters, required this.filters, required this.onClear})
       : super(key: key);
 
   @override
@@ -17,12 +17,12 @@ class FiltersDrawer extends StatefulWidget {
 }
 
 class _FiltersDrawerState extends State<FiltersDrawer> {
-  String _selectedLevel;
-  String _selectedType;
-  String _selectedTeacher;
-  String _selectedCategory;
-  String _selectedDuration;
-  String _selectedFormat;
+  String? _selectedLevel;
+  String? _selectedType;
+  String? _selectedTeacher;
+  String? _selectedCategory;
+  String? _selectedDuration;
+  String? _selectedFormat;
 
   @override
   void initState() {
@@ -113,7 +113,7 @@ class _FiltersDrawerState extends State<FiltersDrawer> {
                     children: <Widget>[
                       FilterRow(
                           name: "Уровень",
-                          value: _selectedLevel,
+                          value: _selectedLevel ?? "",
                           values: ddLevel(),
                           onChanged: (value) {
                             setState(() {
@@ -124,7 +124,7 @@ class _FiltersDrawerState extends State<FiltersDrawer> {
                       ),
                       FilterRow(
                         name: "Вид",
-                        value: _selectedType,
+                        value: _selectedType ?? "",
                         values: ddType(),
                         onChanged: (value) {
                           setState(() {
@@ -135,7 +135,7 @@ class _FiltersDrawerState extends State<FiltersDrawer> {
                       ),
                       FilterRow(
                         name: "Преподаватель",
-                        value: _selectedTeacher,
+                        value: _selectedTeacher ?? "",
                         values: ddTeachers(),
                         onChanged: (value) {
                           setState(() {
@@ -146,7 +146,7 @@ class _FiltersDrawerState extends State<FiltersDrawer> {
                       ),
                       FilterRow(
                           name: "Акцент",
-                          value: _selectedCategory,
+                          value: _selectedCategory ?? "",
                           values: ddCategories(),
                           onChanged: (value) {
                             setState(() {
@@ -157,7 +157,7 @@ class _FiltersDrawerState extends State<FiltersDrawer> {
                       ),
                       FilterRow(
                         name: "Формат",
-                        value: _selectedFormat,
+                        value: _selectedFormat ?? "",
                         values: ddFormat(),
                         onChanged: (value) {
                           setState(() {
@@ -216,7 +216,7 @@ class _FiltersDrawerState extends State<FiltersDrawer> {
                             ],
                             onChanged: (value) {
                               setState(() {
-                                _selectedDuration = value;
+                                _selectedDuration = value.toString();
                               });
                             },
                             hint: Text(
@@ -336,16 +336,16 @@ class FilterRow extends StatelessWidget {
    String value;
    Map <int, String> values;
    VoidCallback onClear;
-   ValueChanged<String> onChanged;
+   ValueChanged<String?> onChanged;
 
-  FilterRow({this.value, this.name, this.onClear, this.onChanged, this.values});
+  FilterRow({required this.value, required this.name, required this.onClear, required this.onChanged, required this.values});
 
-  List<DropdownMenuItem> ddItems() {
+  List<DropdownMenuItem<String>> ddItems() {
     var keys = values.keys.toList()..sort();
     return keys.map((key) => DropdownMenuItem<String>(
       value: key.toString(),
       child: Text(
-        "" + values[key],
+        "" + values[key].toString(),
       ),
     ))
         .toList();
@@ -374,12 +374,12 @@ class FilterRow extends StatelessWidget {
 
 
 class Filters {
-  String level;
-  String type;
-  String duration;
-  String teacher;
-  String category;
-  String format;
+  String? level;
+  String? type;
+  String? duration;
+  String? teacher;
+  String? category;
+  String? format;
 
   Filters({this.level, this.type, this.duration, this.teacher, this.category, this.format});
 }

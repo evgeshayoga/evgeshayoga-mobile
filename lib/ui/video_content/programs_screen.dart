@@ -17,7 +17,7 @@ import 'package:transparent_image/transparent_image.dart';
 class Programs extends StatefulWidget {
   final String userUid;
 
-  Programs({Key? key, this.userUid}) : super(key: key);
+  Programs({Key? key, required this.userUid}) : super(key: key);
 
   @override
   _ProgramsState createState() => _ProgramsState();

@@ -6,14 +6,14 @@ import 'chewie_video.dart';
 
 class VideoBlocks extends StatelessWidget {
   List<VideoModel> videos;
-  Widget upperContent;
+  Widget? upperContent;
 
   VideoBlocks(this.videos, {this.upperContent});
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> videoBlocks = upperContent != null ? [upperContent] : [];
-    videos.forEach((video) {
+    List<Widget> videoBlocks = upperContent != null ? [upperContent!] : [];
+    videos.forEach((VideoModel video) {
       videoBlocks.add(
         Card(
           margin: EdgeInsets.fromLTRB(0, 8, 0, 8),
@@ -27,7 +27,7 @@ class VideoBlocks extends StatelessWidget {
               subtitle: Column(
                 children: <Widget>[
                   video.hls.isNotEmpty ? ChewieVideo(video.hls, video.thumbnail) : Text(""),
-                  video.content == null
+                  video.content.isEmpty
                       ? Text("")
                       : Text(
                           video.content,

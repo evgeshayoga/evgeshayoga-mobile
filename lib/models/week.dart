@@ -6,13 +6,11 @@ class Week {
   String title;
   List videoBlocks;
 
-  Week({this.content, this.thumbnailUrl, this.title, this.videoBlocks});
-
   Week.fromObject(dynamic value)
-      : content = value["content"],
-        thumbnailUrl = value["thumbnailUrl"],
-        title = value["title"],
-        videoBlocks = value["videoBlocks"];
+      : content = value["content"] ?? "",
+        thumbnailUrl = value["thumbnailUrl"] ?? "",
+        title = value["title"] ?? "",
+        videoBlocks = value["videoBlocks"] ?? [];
 
   List<VideoModel> getVideos() {
     if (videoBlocks == null || videoBlocks.length == 0) {

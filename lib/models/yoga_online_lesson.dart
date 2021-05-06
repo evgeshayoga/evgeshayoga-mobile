@@ -18,8 +18,6 @@ class YogaOnlineLesson {
   int format;
   String formatName;
 
-  YogaOnlineLesson();
-
   YogaOnlineLesson.fromFB(value)
       : id = value["id"],
         content = value["content"],
@@ -27,7 +25,7 @@ class YogaOnlineLesson {
         thumbnailUrl = value["thumbnailUrl"],
         title = value["title"],
         subtitle = value["subtitle"],
-        videoBlocks = value["videoBlocks"],
+        videoBlocks = value["videoBlocks"] ?? [],
         duration = value["duration"],
         levelName = value["level_name"],
         level = value["level"],
@@ -39,7 +37,7 @@ class YogaOnlineLesson {
         formatName = value["format_name"] ?? "";
 
   List<VideoModel> getVideos() {
-    if (videoBlocks == null || videoBlocks.length == 0) {
+    if (videoBlocks.length == 0) {
       return [];
     }
     return videoBlocks.map((video) => VideoModel.fromObject(video)).toList();

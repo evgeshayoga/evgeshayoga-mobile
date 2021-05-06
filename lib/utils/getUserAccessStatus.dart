@@ -10,7 +10,7 @@ Future<Map<String, dynamic>> getUserSubscriptionStatus(String uid) async {
   );
   Map<String, dynamic> data = json.decode(response.body);
 
-  String error = data["error"];
+  String? error = data["error"];
   if (error != null) {
     throw new Exception(error);
   }
@@ -24,7 +24,7 @@ Future<Map<String, dynamic>> getUserProgramsStatuses(String uid) async {
       Uri.https("evgeshayoga.com", "/api/users/" + uid + "/marathons"),
   );
   Map<String, dynamic> data = json.decode(response.body);
-  String error = data["error"];
+  String? error = data["error"];
   if (error != null) {
     throw new Exception(error);
   }

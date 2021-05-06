@@ -5,18 +5,18 @@ import 'package:evgeshayoga/provider/user_provider_model.dart';
 import 'package:test/test.dart';
 
 void main() {
+  final user = new User("name", "email-123", "password", "phoneNumber", userId: 0);
   test('login user', () {
-    final user = new User("name", "email-123", "password", "phoneNumber");
     final cart = UserProviderModel(new TestAuthAdapter(user: user));
     expect(cart.user, equals(null));
     cart.addListener(() {
-      expect(cart.user.userEmail, equals("email-123"));
+      expect(cart.user!.userEmail, equals("email-123"));
       expect(cart.userUid, equals("fbuid"));
     });
     expect(() => cart.login("fbuid"), returnsNormally);
   });
   test('login user error', () async {
-    final cart = UserProviderModel(new TestAuthAdapter(loginError: new Error()));
+    final cart = UserProviderModel(new TestAuthAdapter(loginError: new Error(), user: user));
     expect(cart.user, equals(null));
     try {
       await cart.login("fbuid");
@@ -29,8 +29,8 @@ void main() {
 
 class TestAuthAdapter implements AuthAdapter {
   final User user;
-  final Error loginError;
-  TestAuthAdapter({this.user, this.loginError});
+  final Error? loginError;
+  TestAuthAdapter({required this.user, this.loginError});
   @override
   Future<User> login(String uid) {
     return Future.delayed(Duration.zero, () {

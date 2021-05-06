@@ -19,7 +19,7 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   final fb.FirebaseAuth _auth = fb.FirebaseAuth.instance;
   final _loginFormKey = GlobalKey<FormState>();
-  User user = User("", "", "", "");
+  User user = User("", "", "", "", userId: 0);
   String? _loginAlert;
   bool _isInAsyncCall = false;
   bool _isTablet = false;

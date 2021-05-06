@@ -9,26 +9,25 @@ import 'dart:io';
 class IAPScreen extends StatefulWidget {
   final String userUid;
 
-  IAPScreen({Key? key, this.userUid}) : super(key: key);
+  IAPScreen({Key? key, required this.userUid}) : super(key: key);
 
   @override
   _IAPScreenState createState() => _IAPScreenState();
 }
 
 class _IAPScreenState extends State<IAPScreen> {
-  static const int tabletBreakpoint = 600;
   final FirebaseDatabase database = FirebaseDatabase.instance;
-  DatabaseReference dbUsersReference;
-  DatabaseReference dbProgramsReference;
-  User user;
-  Map<String, dynamic> userProgramsStatuses;
+  DatabaseReference? dbUsersReference;
+  DatabaseReference? dbProgramsReference;
+  User? user;
+  Map<String, dynamic> userProgramsStatuses = {};
   final String productId = 'program1';
 
   bool available = true;
   InAppPurchaseConnection _iap = InAppPurchaseConnection.instance;
   List<ProductDetails> _products = [];
-  List<PurchaseDetails> _purchases = [];
-  StreamSubscription _subscription;
+  List<PurchaseDetails?> _purchases = [];
+  StreamSubscription? _subscription;
 
   @override
   void initState() {
@@ -38,7 +37,9 @@ class _IAPScreenState extends State<IAPScreen> {
 
   @override
   void dispose() {
-    _subscription.cancel();
+    if (_subscription != null) {
+      _subscription!.cancel();
+    }
     super.dispose();
   }
 
@@ -78,13 +79,13 @@ class _IAPScreenState extends State<IAPScreen> {
     });
   }
 
-  PurchaseDetails _hasPurchased(String productId) {
-    return _purchases.firstWhere((purchase) => purchase.productID == productId,
+  PurchaseDetails? _hasPurchased(String productId) {
+    return _purchases.firstWhere((purchase) => purchase != null && purchase.productID == productId,
         orElse: () => null);
   }
 
   void _verifyPurchase() {
-    PurchaseDetails purchase = _hasPurchased(productId);
+    PurchaseDetails? purchase = _hasPurchased(productId);
     if (purchase != null && purchase.status == PurchaseStatus.purchased) {}
   }
 
