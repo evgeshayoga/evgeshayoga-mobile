@@ -138,7 +138,7 @@ class _LoginState extends State<Login> {
                       ),
                       Padding(padding: new EdgeInsets.all(10.5)),
                       Center(
-                        child: Text(
+                        child: _loginAlert == null ? null : Text(
                           _loginAlert!,
                           style: TextStyle(
                             fontFamily: "Nunito",
@@ -265,7 +265,7 @@ class _LoginState extends State<Login> {
           Center(
             child: Padding(
               padding: const EdgeInsets.all(18.0),
-              child: Text(
+              child: _loginAlert == null ? null : Text(
                 _loginAlert!,
                 style: TextStyle(color: Colors.red),
               ),
@@ -336,7 +336,7 @@ class _LoginState extends State<Login> {
           headers: {'Content-Type': 'application/json'},
         );
         Map<String, dynamic> data = json.decode(response.body);
-        String error = data["error"];
+        var error = data["error"];
         if (error != null) {
           throw new Exception(error);
         }

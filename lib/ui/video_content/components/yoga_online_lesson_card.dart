@@ -32,7 +32,7 @@ class _YogaOnlineLessonCardState extends State<YogaOnlineLessonCard> {
     userUid = Provider.of<UserProviderModel>(context, listen: false).userUid;
   }
 
-  Widget addToFavoritesButton(uid, videoId) {
+  Widget addToFavoritesButton(String uid, int videoId) {
     return FlatButton(
       onPressed: (){
         onAddtoFavorites(uid, videoId);
@@ -49,9 +49,10 @@ class _YogaOnlineLessonCardState extends State<YogaOnlineLessonCard> {
     );
   }
 
-  Future onAddtoFavorites(uid, videoId) async {
+  Future onAddtoFavorites(String uid, int videoId) async {
     try {
-      var response = await http.post(Uri.https("evgeshayoga.com", "/api/users/" + uid + "/videos" + videoId + "/like"));
+      print(Uri.https("evgeshayoga.com", "/api/users/" + uid + "/videos" + videoId.toString() + "/like"));
+      var response = await http.post(Uri.https("evgeshayoga.com", "/api/users/" + uid + "/videos/" + videoId.toString() + "/like"));
       print(response.body);
       setState(() {
         isLiked = !isLiked;
@@ -139,7 +140,7 @@ class _YogaOnlineLessonCardState extends State<YogaOnlineLessonCard> {
                   children: <Widget>[
                     title,
                     additionalInfo(widget.yogaOnlineLesson),
-                    addToFavoritesButton(userUid, widget.yogaOnlineLesson.id),
+                    addToFavoritesButton(userUid!, widget.yogaOnlineLesson.id),
                   ],
                 ),
               ),
@@ -153,7 +154,7 @@ class _YogaOnlineLessonCardState extends State<YogaOnlineLessonCard> {
             children: <Widget>[
               ListTile(title: title, subtitle: programThumbnail),
               additionalInfo(widget.yogaOnlineLesson),
-              addToFavoritesButton(userUid, widget.yogaOnlineLesson.id),
+              addToFavoritesButton(userUid!, widget.yogaOnlineLesson.id),
             ],
           ),
         ),

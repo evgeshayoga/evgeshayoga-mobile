@@ -29,7 +29,7 @@ class _ChewieVideoState extends State<ChewieVideo> {
     _videoPlayerController = VideoPlayerController.network(widget.videoUrl);
     _chewieController = ChewieController(
       videoPlayerController: _videoPlayerController!,
-      aspectRatio: 16 / 9,
+      aspectRatio: 14 / 9,
       autoInitialize: !hasThumbnail,
       autoPlay: false,
       looping: false,
