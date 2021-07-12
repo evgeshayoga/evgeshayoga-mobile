@@ -27,11 +27,11 @@ class User {
 class UserPurchases {
   Map<int, dynamic> programs = Map();
 
-  UserPurchases(Map<dynamic, dynamic> dbData) {
+  UserPurchases(Map<dynamic, dynamic>? dbData) {
     if (dbData == null) {
       return;
     }
-    List userPrograms = dbData["marathons"];
+    List? userPrograms = dbData["marathons"];
     if (userPrograms != null) {
       userPrograms.forEach((purchase) {
         this.programs[purchase["id"]] = purchase;

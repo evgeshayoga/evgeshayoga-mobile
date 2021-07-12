@@ -1,7 +1,6 @@
 import 'package:evgeshayoga/models/video.dart';
 import 'package:evgeshayoga/models/week.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/foundation.dart';
 
 class Program {
   String content;

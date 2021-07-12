@@ -143,12 +143,12 @@ Widget drawerProgramScreen(bool isLandscape) {
                     flex: 1,
                     child: Container(
                       alignment: Alignment.center,
-                      child: RaisedButton(
+                      child: OutlinedButton(
                         onPressed: () {
                           userProvider.logout();
                           Navigator.pushReplacementNamed(context, '/home');
                         },
-                        color: Style.pinkMain,
+                        // color: Style.pinkMain,
                         child: new Text(
                           "Выйти",
                           style: Style.regularTextStyle,

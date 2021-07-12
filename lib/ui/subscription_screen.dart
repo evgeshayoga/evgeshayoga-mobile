@@ -37,7 +37,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (userSubscriptionStatus == null) {
+    if (_isInAsyncCall) {
       return progressHUD(_isInAsyncCall);
     }
     return Scaffold(

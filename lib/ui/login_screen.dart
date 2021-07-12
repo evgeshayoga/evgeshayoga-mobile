@@ -106,9 +106,8 @@ class _LoginState extends State<Login> {
                       ),
                       Container(
                         width: 200,
-                        child: RaisedButton(
+                        child: ElevatedButton(
                           onPressed: userLogIn,
-                          color: Color.fromRGBO(242, 206, 210, .75),
                           child: Text(
                             "Войти",
                             style: Style.regularTextStyle,
@@ -122,14 +121,13 @@ class _LoginState extends State<Login> {
                       ),
                       Container(
                         width: 200,
-                        child: RaisedButton(
+                        child: TextButton(
                           onPressed: () async {
                             var url = 'https://evgeshayoga.com/register';
                             if (await canLaunch(url)) {
                               await launch(url);
                             }
                           },
-                          color: Color.fromRGBO(242, 206, 210, .75),
                           child: Text(
                             "Зарегестрироваться",
                             style: Style.regularTextStyle,
@@ -228,9 +226,8 @@ class _LoginState extends State<Login> {
               children: <Widget>[
                 Container(
                   width: 250,
-                  child: RaisedButton(
+                  child: ElevatedButton(
                     onPressed: userLogIn,
-                    color: Style.pinkMain,
                     child: Text(
                       "Войти",
                       style: Style.regularTextStyle,
@@ -244,14 +241,13 @@ class _LoginState extends State<Login> {
                 ),
                 Container(
                   width: 250,
-                  child: RaisedButton(
+                  child: TextButton(
                     onPressed: () async {
                       var url = 'https://evgeshayoga.com/register';
                       if (await canLaunch(url)) {
                         await launch(url);
                       }
                     },
-                    color: Style.pinkMain,
                     child: Text(
                       "Зарегистрироваться",
                       style: Style.regularTextStyle,

@@ -1,5 +1,3 @@
-import 'package:evgeshayoga/models/user.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:package_info/package_info.dart';
 
