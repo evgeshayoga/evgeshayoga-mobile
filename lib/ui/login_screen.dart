@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:evgeshayoga/models/user.dart';
+import 'package:evgeshayoga/provider/info_provider_model.dart';
 import 'package:evgeshayoga/provider/user_provider_model.dart';
 import 'package:evgeshayoga/ui/video_content/yoga_online_screen.dart';
 import 'package:evgeshayoga/utils/ProgressHUD.dart';
@@ -136,13 +137,15 @@ class _LoginState extends State<Login> {
                       ),
                       Padding(padding: new EdgeInsets.all(10.5)),
                       Center(
-                        child: _loginAlert == null ? null : Text(
-                          _loginAlert!,
-                          style: TextStyle(
-                            fontFamily: "Nunito",
-                            color: Colors.red,
-                          ),
-                        ),
+                        child: _loginAlert == null
+                            ? null
+                            : Text(
+                                _loginAlert!,
+                                style: TextStyle(
+                                  fontFamily: "Nunito",
+                                  color: Colors.red,
+                                ),
+                              ),
                       ),
                     ],
                   ))
@@ -261,12 +264,23 @@ class _LoginState extends State<Login> {
           Center(
             child: Padding(
               padding: const EdgeInsets.all(18.0),
-              child: _loginAlert == null ? null : Text(
-                _loginAlert!,
-                style: TextStyle(color: Colors.red),
-              ),
+              child: _loginAlert == null
+                  ? null
+                  : Text(
+                      _loginAlert!,
+                      style: TextStyle(color: Colors.red),
+                    ),
             ),
-          )
+          ),
+          Consumer<InfoProviderModel>(builder: (context, infoProvider, child) {
+            String version = infoProvider.version;
+            String buildNumber = infoProvider.buildNumber;
+            return Text(
+                version + "+" + buildNumber,
+                style: TextStyle(fontSize: 9, color: Style.lightBlue),
+
+            );
+          })
         ],
       ),
     );
@@ -344,7 +358,9 @@ class _LoginState extends State<Login> {
         await Provider.of<UserProviderModel>(context, listen: false)
             .login(newUser!.uid);
         var router = new MaterialPageRoute(builder: (BuildContext context) {
-          return YogaOnlineScreen(userUid: newUser.uid,);
+          return YogaOnlineScreen(
+            userUid: newUser.uid,
+          );
         });
         Navigator.of(context).push(router);
       } on PlatformException catch (e) {

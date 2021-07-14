@@ -55,14 +55,14 @@ class App extends StatelessWidget {
       ],
       child: MaterialApp(
         theme: ThemeData(
-          primaryColor: Style.pinkMain,
+          colorScheme: ColorScheme.light(primary: Style.pinkMain),
           splashColor: Style.pinkMain.withOpacity(.5),
           highlightColor: Style.pinkMain.withOpacity(.5),
-          elevatedButtonTheme: ElevatedButtonThemeData(
-           style: ElevatedButton.styleFrom(primary: Style.pinkMain)
-          ),
-          outlinedButtonTheme: OutlinedButtonThemeData(style: OutlinedButton.styleFrom(primary: Style.pinkDark)),
-          textButtonTheme: TextButtonThemeData(style: TextButton.styleFrom(primary: Style.pinkDark)),
+          // elevatedButtonTheme: ElevatedButtonThemeData(
+          //  style: ElevatedButton.styleFrom(primary: Style.pinkMain)
+          // ),
+          // outlinedButtonTheme: OutlinedButtonThemeData(style: OutlinedButton.styleFrom(primary: Style.pinkDark)),
+          // textButtonTheme: TextButtonThemeData(style: TextButton.styleFrom(primary: Style.pinkDark)),
           textTheme: TextTheme(
             headline5: Style.titleTextStyle,
             headline6: Style.headerTextStyle,
