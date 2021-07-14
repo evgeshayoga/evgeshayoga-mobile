@@ -18,7 +18,7 @@ class VideoBlocks extends StatelessWidget {
         Card(
           margin: EdgeInsets.fromLTRB(0, 8, 0, 8),
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(8.0),
             child: ListTile(
               title: Text(
                 video.title + ". " + video.subtitle,
