@@ -17,12 +17,12 @@ class _StartScreenState extends State<StartScreen> {
   @override
   initState() {
     super.initState();
+    Provider.of<InfoProviderModel>(context, listen: false).initialize();
     Future.value(FirebaseAuth.instance.currentUser).then((currentUser) {
       if (currentUser == null) {
         Navigator.pushReplacementNamed(context, "/home");
       } else {
         Future.delayed(Duration(milliseconds: 100)).then((_) {
-          Provider.of<InfoProviderModel>(context, listen: false).initialize();
           return Provider.of<UserProviderModel>(context, listen: false)
               .login(currentUser.uid);
         }).then((_) {
