@@ -27,7 +27,7 @@ dependencies:
   video_player: ^2.1.1
   connectivity: ^3.0.2
   chewie: ^1.0.0
-  firebase_auth: ^2.0.0
+  firebase_auth: ^3.0.0
   firebase_database: ^7.1.0
   firebase_analytics: ^8.0.3
   firebase_crashlytics: ^2.0.0
