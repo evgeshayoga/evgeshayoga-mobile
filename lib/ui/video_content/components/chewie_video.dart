@@ -7,8 +7,8 @@ import 'package:transparent_image/transparent_image.dart';
 import 'package:video_player/video_player.dart';
 
 class ChewieVideo extends StatefulWidget {
-  String videoUrl = '';
-  String videoThumbnail = '';
+  final String videoUrl;
+  final String videoThumbnail;
 
   ChewieVideo(this.videoUrl, this.videoThumbnail); //  final String title;
 

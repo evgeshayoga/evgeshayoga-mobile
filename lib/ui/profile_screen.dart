@@ -3,7 +3,7 @@ import 'package:evgeshayoga/utils/style.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatelessWidget {
-  User user;
+  final User user;
 
   @override
   ProfileScreen(this.user, {Key? key}) : super(key: key);

@@ -27,7 +27,7 @@ class ProgramScreen extends StatelessWidget {
         backgroundColor: Style.pinkMain,
       ),
       body: Container(
-        padding: EdgeInsets.fromLTRB(8, 25, 8, 25),
+        padding: EdgeInsets.only(bottom: 24),
         child: ListView(
           children: <Widget>[
             ProgramBuilder(programId),

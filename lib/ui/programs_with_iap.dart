@@ -4,7 +4,6 @@ import 'package:evgeshayoga/utils/style.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
-import 'dart:io';
 
 class IAPScreen extends StatefulWidget {
   final String userUid;
@@ -24,7 +23,7 @@ class _IAPScreenState extends State<IAPScreen> {
   final String productId = 'program1';
 
   bool available = true;
-  InAppPurchaseConnection _iap = InAppPurchaseConnection.instance;
+  InAppPurchase _iap = InAppPurchase.instance;
   List<ProductDetails> _products = [];
   List<PurchaseDetails?> _purchases = [];
   StreamSubscription? _subscription;
@@ -45,17 +44,18 @@ class _IAPScreenState extends State<IAPScreen> {
 
   void _initialize() async {
     available = await _iap.isAvailable();
-    if (available) {
-      await _getProducts();
-      await _getPastPurchases();
-    }
+
     // ... omitted
     // Listen to new purchases
-    _subscription = _iap.purchaseUpdatedStream.listen((data) => setState(() {
+    _subscription = _iap.purchaseStream.listen((data) => setState(() {
           print('NEW PURCHASE');
           _purchases.addAll(data);
 //      _verifyPurchase();
         }));
+    if (available) {
+      await _getProducts();
+      await _iap.restorePurchases();
+    }
   }
 
   Future<void> _getProducts() async {
@@ -64,18 +64,6 @@ class _IAPScreenState extends State<IAPScreen> {
     setState(() {
       _products = response.productDetails;
       debugPrint("PRODUCTS " + _products.length.toString());
-    });
-  }
-
-  Future<void> _getPastPurchases() async {
-    QueryPurchaseDetailsResponse response = await _iap.queryPastPurchases();
-    for (PurchaseDetails purchase in response.pastPurchases) {
-      if (Platform.isIOS) {
-        _iap.completePurchase(purchase);
-      }
-    }
-    setState(() {
-      _purchases = response.pastPurchases;
     });
   }
 
@@ -193,7 +181,7 @@ class _IAPScreenState extends State<IAPScreen> {
               title: Text("Program 1"),
               subtitle: Text("Purchasable Program"),
             ),
-            RaisedButton(
+            ElevatedButton(
               child: Text("Buy"),
               onPressed: () {
 //                _buyProduct(_products[0]);

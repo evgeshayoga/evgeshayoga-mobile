@@ -13,16 +13,13 @@ class WeekScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<VideoModel> videos = week.getVideos();
-    Widget upperContent = Padding(
-      padding: EdgeInsets.all(8),
-      child: DefaultTextStyle(
-        child: HtmlWidget(
-          week.content,
-          webView: true,
-        ),
-        style: Style.regularTextStyle,
-        textAlign: TextAlign.justify,
+    Widget upperContent = DefaultTextStyle(
+      child: HtmlWidget(
+        week.content,
+        webView: true,
       ),
+      style: Style.regularTextStyle,
+      textAlign: TextAlign.justify,
     );
 
     return Scaffold(

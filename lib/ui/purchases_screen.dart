@@ -152,8 +152,7 @@ class _PurchasesScreenState extends State<PurchasesScreen> {
       children: <Widget>[
         Expanded(
           flex: 2,
-          child: FlatButton(
-            splashColor: Style.pinkLight,
+          child: TextButton(
             child: Text(
               purchase["title"],
               textAlign: TextAlign.center,
@@ -180,7 +179,7 @@ class _PurchasesScreenState extends State<PurchasesScreen> {
                       style: Style.regularTextStyle,
                     ),
                     actions: <Widget>[
-                      FlatButton(
+                      TextButton(
                         child: Text('OK'),
                         onPressed: () {
                           Navigator.of(context).pop();

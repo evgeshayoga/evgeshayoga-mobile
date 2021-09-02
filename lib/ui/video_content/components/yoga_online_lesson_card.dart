@@ -14,14 +14,16 @@ class YogaOnlineLessonCard extends StatefulWidget {
   final bool isLandscape;
   final List favoriteVideosIds;
 
-  YogaOnlineLessonCard({this.yogaOnlineLesson, required this.isLandscape, required this.favoriteVideosIds});
+  YogaOnlineLessonCard(
+      {this.yogaOnlineLesson,
+      required this.isLandscape,
+      required this.favoriteVideosIds});
 
   @override
   _YogaOnlineLessonCardState createState() => _YogaOnlineLessonCardState();
 }
 
 class _YogaOnlineLessonCardState extends State<YogaOnlineLessonCard> {
-
   bool isLiked = false;
   String? userUid;
 
@@ -33,26 +35,24 @@ class _YogaOnlineLessonCardState extends State<YogaOnlineLessonCard> {
   }
 
   Widget addToFavoritesButton(String uid, int videoId) {
-    return FlatButton(
-      onPressed: (){
+    return IconButton(
+      onPressed: () {
         onAddtoFavorites(uid, videoId);
       },
-      color: Colors.white,
-      splashColor: Style.pinkMain,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Icon(isLiked ? Icons.favorite : Icons.favorite_border, color: Style.pinkMain,),
-          Text(isLiked ? '   Удалить из избранного' : '   Добавить в избранное', style: Style.regularTextStyle,)
-        ],
+      splashRadius: 24,
+      icon: Icon(
+        isLiked ? Icons.favorite : Icons.favorite_border,
+        color: Style.pinkMain,
       ),
     );
   }
 
   Future onAddtoFavorites(String uid, int videoId) async {
     try {
-      print(Uri.https("evgeshayoga.com", "/api/users/" + uid + "/videos" + videoId.toString() + "/like"));
-      var response = await http.post(Uri.https("evgeshayoga.com", "/api/users/" + uid + "/videos/" + videoId.toString() + "/like"));
+      print(Uri.https("evgeshayoga.com",
+          "/api/users/" + uid + "/videos" + videoId.toString() + "/like"));
+      var response = await http.post(Uri.https("evgeshayoga.com",
+          "/api/users/" + uid + "/videos/" + videoId.toString() + "/like"));
       print(response.body);
       setState(() {
         isLiked = !isLiked;
@@ -67,18 +67,13 @@ class _YogaOnlineLessonCardState extends State<YogaOnlineLessonCard> {
     return Column(
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.fromLTRB(16, 8.0, 16, 8.0),
+          padding: EdgeInsets.all(0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-              Row(
-                children: <Widget>[
-                  Text(
-                    yogaOnlineLesson.levelName + "  ",
-                    style: Style.regularTextStyle,
-                  ),
-                  levelIcon(yogaOnlineLesson.level),
-                ],
+              Tooltip(
+                message: yogaOnlineLesson.levelName,
+                child: levelIcon(yogaOnlineLesson.level),
               ),
               formatIcon(yogaOnlineLesson.format),
               Row(
@@ -88,9 +83,10 @@ class _YogaOnlineLessonCardState extends State<YogaOnlineLessonCard> {
                     size: 16,
                     color: Style.blueGrey,
                   ),
-                  Text(": " + yogaOnlineLesson.duration.toString() + " мин"),
+                  Text(yogaOnlineLesson.duration.toString() + " мин"),
                 ],
               ),
+              addToFavoritesButton(userUid!, widget.yogaOnlineLesson.id),
             ],
           ),
         ),
@@ -113,7 +109,10 @@ class _YogaOnlineLessonCardState extends State<YogaOnlineLessonCard> {
       constraints: BoxConstraints(minHeight: 100, maxHeight: 300),
       child: Container(
         alignment: Alignment.center,
-        child: FadeInImage(placeholder: MemoryImage(kTransparentImage), image: CachedNetworkImageProvider("https://evgeshayoga.com" + widget.yogaOnlineLesson.thumbnailUrl)),
+        child: FadeInImage(
+            placeholder: MemoryImage(kTransparentImage),
+            image: CachedNetworkImageProvider("https://evgeshayoga.com" +
+                widget.yogaOnlineLesson.thumbnailUrl)),
       ),
     );
     Text title = Text(
@@ -121,43 +120,44 @@ class _YogaOnlineLessonCardState extends State<YogaOnlineLessonCard> {
       textAlign: TextAlign.center,
       style: Style.headerTextStyle,
     );
-    return Container(
-      child: Card(
-        elevation: 0,
-        child: GestureDetector(
-          onTap: () {
-            var router = new MaterialPageRoute(builder: (BuildContext context) {
-              return LessonScreen(widget.yogaOnlineLesson.title, widget.yogaOnlineLesson.id);
-            });
-            Navigator.of(context).push(router);
-          },
-          child: widget.isLandscape
-              ? Row(
-            children: <Widget>[
-              Expanded(
-                flex: 2,
-                child: Column(
-                  children: <Widget>[
-                    title,
-                    additionalInfo(widget.yogaOnlineLesson),
-                    addToFavoritesButton(userUid!, widget.yogaOnlineLesson.id),
-                  ],
-                ),
-              ),
-              Expanded(
-                flex: 2,
-                child: programThumbnail,
+    return Card(
+      // elevation: 0,
+      margin: EdgeInsets.all(8),
+      child: InkWell(
+        onTap: () {
+          var router = new MaterialPageRoute(builder: (BuildContext context) {
+            return LessonScreen(
+                widget.yogaOnlineLesson.title, widget.yogaOnlineLesson.id);
+          });
+          Navigator.of(context).push(router);
+        },
+        child: widget.isLandscape
+            ? Row(
+                children: <Widget>[
+                  Expanded(
+                    flex: 2,
+                    child: Column(
+                      children: <Widget>[
+                        title,
+                        additionalInfo(widget.yogaOnlineLesson),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    flex: 2,
+                    child: programThumbnail,
+                  )
+                ],
               )
-            ],
-          )
-              : Column(
-            children: <Widget>[
-              ListTile(title: title, subtitle: programThumbnail),
-              additionalInfo(widget.yogaOnlineLesson),
-              addToFavoritesButton(userUid!, widget.yogaOnlineLesson.id),
-            ],
-          ),
-        ),
+            : Column(
+                children: <Widget>[
+                  ListTile(
+                      title: title,
+                      subtitle: programThumbnail,
+                      contentPadding: EdgeInsets.only(top: 8)),
+                  additionalInfo(widget.yogaOnlineLesson),
+                ],
+              ),
       ),
     );
   }
@@ -206,14 +206,22 @@ Widget formatIcon(format) {
   switch (format) {
     case 0:
       {
-        return Icon(Icons.crop_original,
-          color: Style.blueGrey,
+        return Tooltip(
+          message: "Видео",
+          child: Icon(
+            Icons.crop_original,
+            color: Style.blueGrey,
+          ),
         );
       }
     case 1:
       {
-        return  Icon(Icons.filter,
-          color: Style.blueGrey,
+        return Tooltip(
+          message: "Программа",
+          child: Icon(
+            Icons.filter,
+            color: Style.blueGrey,
+          ),
         );
       }
   }

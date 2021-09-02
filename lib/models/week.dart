@@ -13,7 +13,7 @@ class Week {
         videoBlocks = value["videoBlocks"] ?? [];
 
   List<VideoModel> getVideos() {
-    if (videoBlocks == null || videoBlocks.length == 0) {
+    if (videoBlocks.length == 0) {
       return [];
     }
     return videoBlocks.map((video) => VideoModel.fromObject(video)).toList();

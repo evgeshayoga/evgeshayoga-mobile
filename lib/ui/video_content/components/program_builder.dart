@@ -47,23 +47,29 @@ class _ProgramBuilderState extends State<ProgramBuilder> {
 
   Widget build(BuildContext context) {
     if (program == null) {
-      return Container(
-        height: 300,
-        child: progressHUD(_isInAsyncCall)
-      );
+      return Container(height: 300, child: progressHUD(_isInAsyncCall));
     }
     List<Widget> programWeeks = [];
     program!.getWeeks().forEach((week) {
-      String imagePath = week.thumbnailUrl.isNotEmpty ? week.thumbnailUrl : program!.thumbnailUrl;
+      String imagePath = week.thumbnailUrl.isNotEmpty
+          ? week.thumbnailUrl
+          : program!.thumbnailUrl;
       programWeeks.add(Card(
+        margin: EdgeInsets.all(8),
         child: ListTile(
-          title: Text(
-            week.title,
-            style: Style.headerTextStyle,
-            textAlign: TextAlign.center,
+          contentPadding: EdgeInsets.symmetric(vertical: 8),
+          title: Padding(
+            padding: EdgeInsets.symmetric(vertical: 8),
+            child: Text(
+              week.title,
+              style: Style.headerTextStyle,
+              textAlign: TextAlign.center,
+            ),
           ),
-          subtitle:
-          FadeInImage(placeholder: MemoryImage(kTransparentImage), image: CachedNetworkImageProvider("https://evgeshayoga.com" + imagePath)),
+          subtitle: FadeInImage(
+              placeholder: MemoryImage(kTransparentImage),
+              image: CachedNetworkImageProvider(
+                  "https://evgeshayoga.com" + imagePath)),
           onTap: () {
             var router = new MaterialPageRoute(builder: (BuildContext context) {
               return WeekScreen(week);
@@ -76,18 +82,16 @@ class _ProgramBuilderState extends State<ProgramBuilder> {
 
     return Column(
       children: <Widget>[
-        Column(
-          children: <Widget>[
-            DefaultTextStyle(
+        Container(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: DefaultTextStyle(
               child: HtmlWidget(
                 program!.content,
                 webView: true,
               ),
               style: Style.regularTextStyle,
               textAlign: TextAlign.justify,
-            )
-          ],
-        ),
+            )),
         Column(
           children: programWeeks,
         ),

@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:evgeshayoga/models/program.dart';
 import 'package:evgeshayoga/ui/video_content/components/drawer_content_screen.dart';
@@ -24,7 +23,8 @@ class Programs extends StatefulWidget {
 }
 
 class _ProgramsState extends State<Programs> {
-  final DatabaseReference dbProgramsReference = FirebaseDatabase.instance.reference().child("marathons");
+  final DatabaseReference dbProgramsReference =
+      FirebaseDatabase.instance.reference().child("marathons");
 
   Map<String, dynamic> userProgramsStatuses = new Map();
   bool _isInAsyncCall = false;
@@ -96,23 +96,22 @@ class _ProgramsState extends State<Programs> {
               children: <Widget>[
                 Flexible(
                   child: FirebaseAnimatedList(
+                    defaultChild: Container(
+                        height: 300, child: progressHUD(_isInAsyncCall)),
                     query: dbProgramsReference,
                     sort: (sa, sb) {
                       return sb.value["id"] - sa.value["id"];
                     },
                     itemBuilder: (_, DataSnapshot snapshot,
                         Animation<double> animation, int index) {
-                      if (snapshot == null || userProgramsStatuses == null) {
-                        return Container(
-                            height: 300, child: progressHUD(_isInAsyncCall));
-                      }
                       var program = Program.fromSnapshot(snapshot);
-                      String date = userProgramsStatuses[program.id.toString()]
-                              ["availableTill"]
-                          .toString();
-                      if (!program.isActive) {
+                      String key = program.id.toString();
+                      var hasStatus = userProgramsStatuses.containsKey(key);
+
+                      if (!program.isActive || !hasStatus) {
                         return _inactiveProgram();
                       }
+                      String date = userProgramsStatuses[key]["availableTill"].toString();
                       if (isViewable(userProgramsStatuses, program.id)) {
                         return _availableProgram(
                             date, snapshot.value, isLandscape);
@@ -223,13 +222,10 @@ class _ProgramsState extends State<Programs> {
           style: Style.regularTextStyle,
         ),
         actions: <Widget>[
-          FlatButton(
+          TextButton(
             child: Text('OK'),
             onPressed: () {
-              var nav = Navigator.of(context);
-              if (nav != null) {
-                nav.pop();
-              }
+              Navigator.of(context).pop();
             },
           ),
         ],
@@ -306,11 +302,13 @@ class _ProgramsState extends State<Programs> {
   }
 }
 
-bool isViewable(Map userProgramsStatuses, int programId) {
-  if (userProgramsStatuses != null || programId != null) {
-    return (userProgramsStatuses[programId.toString()]["isViewable"] &&
-        isAvailable(userProgramsStatuses[programId.toString()]["availableTill"]
-            .toString()));
-  } else
-    return false;
+bool isViewable(Map? userProgramsStatuses, int programId) {
+  if (userProgramsStatuses != null && programId > 0) {
+    String key = programId.toString();
+    if (userProgramsStatuses.containsKey(key)) {
+      return (userProgramsStatuses[key]["isViewable"] &&
+          isAvailable(userProgramsStatuses[key]["availableTill"].toString()));
+    }
+  }
+  return false;
 }

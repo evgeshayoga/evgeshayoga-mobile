@@ -37,9 +37,6 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (_isInAsyncCall) {
-      return progressHUD(_isInAsyncCall);
-    }
     return Scaffold(
       appBar: AppBar(
         leading: Builder(
@@ -80,9 +77,9 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
         Text("Вы подписаны на Yoga Online"),
         dateWidget,
         Container(
-          padding: EdgeInsets.all(20),
+          padding: EdgeInsets.all(16),
         ),
-        RaisedButton(
+        ElevatedButton(
           onPressed: (){
             var router =
             new MaterialPageRoute(builder: (BuildContext context) {
@@ -90,7 +87,6 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
             });
             Navigator.of(context).push(router);
           },
-          color: Style.pinkMain,
           child: Text(
             "Перейти к занятиям",
             style: Style.regularTextStyle,

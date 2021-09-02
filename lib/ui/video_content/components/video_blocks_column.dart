@@ -5,36 +5,52 @@ import 'package:flutter/material.dart';
 import 'chewie_video.dart';
 
 class VideoBlocks extends StatelessWidget {
-  List<VideoModel> videos;
-  Widget? upperContent;
+  final List<VideoModel> videos;
+  final Widget? upperContent;
 
   VideoBlocks(this.videos, {this.upperContent});
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> videoBlocks = upperContent != null ? [upperContent!] : [];
+    List<Widget> videoBlocks = upperContent != null
+        ? [
+            Container(
+              child: Padding(
+                padding: EdgeInsets.all(16),
+                child: upperContent!,
+              ),
+            )
+          ]
+        : [];
     videos.forEach((VideoModel video) {
       videoBlocks.add(
-        Card(
-          margin: EdgeInsets.fromLTRB(0, 8, 0, 8),
-          child: Padding(
-            padding: EdgeInsets.all(8.0),
-            child: ListTile(
-              title: Text(
+        Container(
+          // margin: EdgeInsets.all(8),
+          margin: EdgeInsets.symmetric(vertical: 8),
+          child: ListTile(
+            contentPadding: EdgeInsets.all(0),
+            title: Padding(
+              padding: EdgeInsets.all(16),
+              child: Text(
                 video.title + ". " + video.subtitle,
                 style: Style.headerTextStyle,
               ),
-              subtitle: Column(
-                children: <Widget>[
-                  video.hls.isNotEmpty ? ChewieVideo(video.hls, video.thumbnail) : Text(""),
-                  video.content.isEmpty
+            ),
+            subtitle: Column(
+              children: <Widget>[
+                video.hls.isNotEmpty
+                    ? ChewieVideo(video.hls, video.thumbnail)
+                    : Text(""),
+                Padding(
+                  padding: EdgeInsets.all(16),
+                  child: video.content.isEmpty
                       ? Text("")
                       : Text(
                           video.content,
                           style: Style.regularTextStyle,
                         ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),

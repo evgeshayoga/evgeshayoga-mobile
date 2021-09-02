@@ -1,7 +1,6 @@
 import 'package:evgeshayoga/utils/animation.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'login_screen.dart';

@@ -34,49 +34,32 @@ class _LessonBuilderState extends State<LessonBuilder> {
         .child('${widget.id}')
         .once()
         .then((snapshot) {
-          if (this.mounted) {
-            setState(() {
-              yogaOnlineLesson = YogaOnlineLesson.fromFB(snapshot.value);
-              videos = yogaOnlineLesson!.getVideos();
-              isInAsyncCall = false;
-            });
-          }
+      if (this.mounted) {
+        setState(() {
+          yogaOnlineLesson = YogaOnlineLesson.fromFB(snapshot.value);
+          videos = yogaOnlineLesson!.getVideos();
+          isInAsyncCall = false;
+        });
+      }
     });
   }
 
-  Widget upperContext() {
-    return Container(
-      child: Column(
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-            child: Column(
-              children: <Widget>[
-                DefaultTextStyle(
-                  child: HtmlWidget(
-                    yogaOnlineLesson!.content,
-                    webView: true,
-                  ),
-                  style: Style.regularTextStyle,
-                  textAlign: TextAlign.justify,
-                )
-              ],
-            ),
-          ),
-        ],
+  Widget upperContent() {
+    return DefaultTextStyle(
+      child: HtmlWidget(
+        yogaOnlineLesson!.content,
+        webView: true,
       ),
+      style: Style.regularTextStyle,
+      textAlign: TextAlign.justify,
     );
-}
+  }
 
   Widget build(BuildContext context) {
     if (yogaOnlineLesson == null) {
-      return Container(
-        height: 300,
-        child: progressHUD(isInAsyncCall)
-      );
+      return Container(height: 300, child: progressHUD(isInAsyncCall));
     }
 
-
-    return VideoBlocks(videos, upperContent: upperContext());
+    return VideoBlocks(videos, upperContent: upperContent());
   }
 }

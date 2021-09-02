@@ -113,7 +113,7 @@ class _FiltersDrawerState extends State<FiltersDrawer> {
                     children: <Widget>[
                       FilterRow(
                           name: "Уровень",
-                          value: _selectedLevel ?? "",
+                          value: _selectedLevel,
                           values: ddLevel(),
                           onChanged: (value) {
                             setState(() {
@@ -124,7 +124,7 @@ class _FiltersDrawerState extends State<FiltersDrawer> {
                       ),
                       FilterRow(
                         name: "Вид",
-                        value: _selectedType ?? "",
+                        value: _selectedType,
                         values: ddType(),
                         onChanged: (value) {
                           setState(() {
@@ -135,7 +135,7 @@ class _FiltersDrawerState extends State<FiltersDrawer> {
                       ),
                       FilterRow(
                         name: "Преподаватель",
-                        value: _selectedTeacher ?? "",
+                        value: _selectedTeacher,
                         values: ddTeachers(),
                         onChanged: (value) {
                           setState(() {
@@ -146,7 +146,7 @@ class _FiltersDrawerState extends State<FiltersDrawer> {
                       ),
                       FilterRow(
                           name: "Акцент",
-                          value: _selectedCategory ?? "",
+                          value: _selectedCategory,
                           values: ddCategories(),
                           onChanged: (value) {
                             setState(() {
@@ -157,7 +157,7 @@ class _FiltersDrawerState extends State<FiltersDrawer> {
                       ),
                       FilterRow(
                         name: "Формат",
-                        value: _selectedFormat ?? "",
+                        value: _selectedFormat,
                         values: ddFormat(),
                         onChanged: (value) {
                           setState(() {
@@ -239,7 +239,7 @@ class _FiltersDrawerState extends State<FiltersDrawer> {
                 ),
                 Container(
                   width: 200,
-                  child: RaisedButton(
+                  child: ElevatedButton(
                     onPressed: () {
                       widget.onApplyFilters(Filters(
                           level: _selectedLevel,
@@ -250,7 +250,6 @@ class _FiltersDrawerState extends State<FiltersDrawer> {
                           format: _selectedFormat,
                       ));
                     },
-                    color: Style.pinkMain,
                     child: new Text(
                       "Применить",
                       style: Style.regularTextStyle,
@@ -259,11 +258,10 @@ class _FiltersDrawerState extends State<FiltersDrawer> {
                 ),
                 Container(
                   width: 200,
-                  child: RaisedButton(
+                  child: TextButton(
                     onPressed: () {
                       _clearFilters();
                     },
-                    color: Style.pinkMain,
                     child: new Text(
                       "Очистить",
                       style: Style.regularTextStyle,
@@ -332,11 +330,11 @@ class _FiltersDrawerState extends State<FiltersDrawer> {
 }
 
 class FilterRow extends StatelessWidget {
-   String name;
-   String value;
-   Map <int, String> values;
-   VoidCallback onClear;
-   ValueChanged<String?> onChanged;
+   final String name;
+   final String? value;
+   final Map <int, String> values;
+   final VoidCallback onClear;
+   final ValueChanged<String?> onChanged;
 
   FilterRow({required this.value, required this.name, required this.onClear, required this.onChanged, required this.values});
 
