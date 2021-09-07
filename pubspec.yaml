@@ -11,7 +11,7 @@ description: A new Flutter project.
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.6.6+53
+version: 1.7.1+55
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -26,7 +26,7 @@ dependencies:
   intl: ^0.17.0
   video_player: ^2.1.1
   connectivity: ^3.0.2
-  chewie: ^1.0.0
+  chewie: ^1.2.0
   firebase_auth: ^3.0.0
   firebase_database: ^7.1.0
   firebase_analytics: ^8.0.3
@@ -41,7 +41,7 @@ dependencies:
     git:
       url: https://github.com/adarsh-technocrat/flutter-icons
   package_info: ^2.0.0
-  provider: ^6.0.0
+  provider: ^5.0.0
   transparent_image: ^2.0.0
   cached_network_image: ^3.0.0
 
