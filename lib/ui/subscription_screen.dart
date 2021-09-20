@@ -55,11 +55,16 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
         centerTitle: true,
       ),
       body: Center(
-        child: _isInAsyncCall ? progressHUD(_isInAsyncCall) : Container(
-          child: isSubscribed
-              ? subscriptionDetails(userSubscriptionStatus)
-              : Text("Вы не подписаны на Yoga Online"),
-        ),
+        child: _isInAsyncCall
+            ? progressHUD(_isInAsyncCall)
+            : Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  isSubscribed
+                      ? subscriptionDetails(userSubscriptionStatus)
+                      : Text("Вы не подписаны на Yoga Online"),
+                ],
+              ),
       ),
     );
   }
@@ -80,9 +85,8 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
           padding: EdgeInsets.all(16),
         ),
         ElevatedButton(
-          onPressed: (){
-            var router =
-            new MaterialPageRoute(builder: (BuildContext context) {
+          onPressed: () {
+            var router = new MaterialPageRoute(builder: (BuildContext context) {
               return YogaOnlineScreen(userUid: widget.userUid);
             });
             Navigator.of(context).push(router);

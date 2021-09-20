@@ -1,6 +1,7 @@
 import 'package:evgeshayoga/models/user.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProfileScreen extends StatelessWidget {
   final User user;
@@ -47,7 +48,27 @@ class ProfileScreen extends StatelessWidget {
             Text(
               user.phoneNumber,
               style: Style.regularTextStyle,
-            )
+            ),
+            Padding(
+              padding: EdgeInsets.all(8),
+              child: Text(
+                "Управление личным кабинетом и подпиской Йога-онлайн доступно только на нашем сайте evgeshayoga.com",
+                style: Style.regularTextStyle,
+              ),
+            ),
+            OutlinedButton(
+              onPressed: () async {
+                var url = 'https://evgeshayoga.com/profile/payment';
+                if (await canLaunch(url)) {
+                  await launch(url);
+                }
+              },
+              // color: Style.pinkMain,
+              child: new Text(
+                "Перейти на сайт",
+                style: Style.regularTextStyle,
+              ),
+            ),
           ],
         ),
       ),
