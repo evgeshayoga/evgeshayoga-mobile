@@ -61,6 +61,7 @@ class VideoBlocks extends StatelessWidget {
         itemCount: videoBlocks.length,
         itemBuilder: (context, i) => videoBlocks[i],
         shrinkWrap: true,
+        cacheExtent: 1000,
       );
     }
     return Column(children: videoBlocks);
