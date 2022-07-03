@@ -259,9 +259,7 @@ class _ProgramsState extends State<Programs> {
               return ProgramScreen(program["title"], program["id"]);
             });
             var nav = Navigator.of(context);
-            if (nav != null) {
-              nav.push(router);
-            }
+            nav.push(router);
           },
           child: isLandscape
               ? Row(

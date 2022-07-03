@@ -48,7 +48,7 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
           videosFromFB.add(YogaOnlineLesson.fromFB(value));
         }
       }
-    } on DatabaseError catch (e) {
+    } on DatabaseError {
       Navigator.pushReplacementNamed(context, "/home");
       return;
     }
@@ -124,9 +124,7 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
               return FavoritesScreen(videos, context);
             });
             var nav = Navigator.of(context);
-            if (nav != null) {
-              nav.push(router);
-            }
+            nav.push(router);
           },
         ),
       ),
@@ -203,9 +201,7 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
       videosToDisplay = filteredVideos;
     });
     var nav = Navigator.of(context);
-    if (nav != null) {
-      nav.pop();
-    }
+    nav.pop();
   }
 
   void _clearFilters() {

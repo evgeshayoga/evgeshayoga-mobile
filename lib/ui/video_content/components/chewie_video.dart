@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chewie/chewie.dart';
 import 'package:evgeshayoga/utils/style.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:video_player/video_player.dart';
@@ -50,7 +49,7 @@ class _ChewieVideoState extends State<ChewieVideo> {
   }
 
   get hasThumbnail =>
-      widget.videoThumbnail != null && widget.videoThumbnail.length > 0;
+      widget.videoThumbnail.length > 0;
 
   @override
   void dispose() {
