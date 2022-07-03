@@ -45,9 +45,9 @@ class FirebaseAuthAdapter implements AuthAdapter {
   @override
   Future<User> login(String uid) async {
     DatabaseReference dbUsersReference =
-    database.reference().child("users").child(uid);
+    database.ref("users").child(uid);
     var userSnapshot = await dbUsersReference.once();
-    var decodedUser = User.fromSnapshot(userSnapshot);
+    var decodedUser = User.fromSnapshot(userSnapshot.snapshot);
 
     return decodedUser;
   }

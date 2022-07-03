@@ -1,12 +1,12 @@
 import 'package:evgeshayoga/models/video.dart';
 
 class Week {
-  String content;
-  String thumbnailUrl;
-  String title;
-  List videoBlocks;
+  final String content;
+  final String thumbnailUrl;
+  final String title;
+  final List videoBlocks;
 
-  Week.fromObject(dynamic value)
+  Week.fromObject(Map value)
       : content = value["content"] ?? "",
         thumbnailUrl = value["thumbnailUrl"] ?? "",
         title = value["title"] ?? "",

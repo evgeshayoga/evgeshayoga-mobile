@@ -1,7 +1,7 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-Future<Map<String, dynamic>> getUserSubscriptionStatus(String uid) async {
+Future<Map<String, dynamic>> getUserSubscriptionStatus(String? uid) async {
   if (uid == null) {
     return new Map();
   }
@@ -16,7 +16,7 @@ Future<Map<String, dynamic>> getUserSubscriptionStatus(String uid) async {
   }
   return data;
 }
-Future<Map<String, dynamic>> getUserProgramsStatuses(String uid) async {
+Future<Map<String, dynamic>> getUserProgramsStatuses(String? uid) async {
   if (uid == null) {
     return new Map();
   }

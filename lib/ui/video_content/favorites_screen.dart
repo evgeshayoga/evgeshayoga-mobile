@@ -33,7 +33,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
       _isInAsyncCall = true;
     });
 
-    getUserSubscriptionStatus(userUid!).then((status) {
+    getUserSubscriptionStatus(userUid).then((status) {
       setState(() {
         userSubscriptionStatus = status;
         bool hasAccess = userSubscriptionStatus['isSubscriptionActive'];

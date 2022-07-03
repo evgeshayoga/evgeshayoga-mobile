@@ -32,13 +32,12 @@ class _ProgramBuilderState extends State<ProgramBuilder> {
       _isInAsyncCall = true;
     });
     database
-        .reference()
-        .child("marathons")
+        .ref("marathons")
         .child('${widget.id}')
         .once()
-        .then((snapshot) {
+        .then((event) {
       setState(() {
-        program = Program.fromSnapshot(snapshot);
+        program = Program.fromSnapshot(event.snapshot);
         videos = program!.getVideos();
         _isInAsyncCall = false;
       });

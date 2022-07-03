@@ -1,11 +1,11 @@
 class VideoModel {
-  String content;
-  String hls;
-  String iframe;
-  String picture;
-  String subtitle;
-  String title;
-  String thumbnail;
+  final String content;
+  final String hls;
+  final  String iframe;
+  final String picture;
+  final String subtitle;
+  final String title;
+  final String thumbnail;
 
   VideoModel.fromObject(dynamic value)
       : content = value["content"],

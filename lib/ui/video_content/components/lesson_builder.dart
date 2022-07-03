@@ -29,14 +29,13 @@ class _LessonBuilderState extends State<LessonBuilder> {
       isInAsyncCall = true;
     });
     database
-        .reference()
-        .child("videos")
+        .ref("videos")
         .child('${widget.id}')
         .once()
-        .then((snapshot) {
+        .then((event) {
       if (this.mounted) {
         setState(() {
-          yogaOnlineLesson = YogaOnlineLesson.fromFB(snapshot.value);
+          yogaOnlineLesson = YogaOnlineLesson.fromFB(new Map<String, dynamic>.from(event.snapshot.value as dynamic));
           videos = yogaOnlineLesson!.getVideos();
           isInAsyncCall = false;
         });

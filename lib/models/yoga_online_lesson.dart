@@ -1,24 +1,24 @@
 import 'package:evgeshayoga/models/video.dart';
 
 class YogaOnlineLesson {
-  String content;
-  int id;
-  bool isActive;
-  String thumbnailUrl;
-  String title;
-  String subtitle;
-  List videoBlocks;
-  int duration;
-  String levelName;
-  int level;
-  List teachers;
-  List categories;
-  int type;
-  String typeName;
-  int format;
-  String formatName;
+  final String content;
+  final int id;
+  final  bool isActive;
+  final  String thumbnailUrl;
+  final  String title;
+  final  String subtitle;
+  final  List videoBlocks;
+  final int duration;
+  final String levelName;
+  final int level;
+  final List teachers;
+  final List categories;
+  final int type;
+  final String typeName;
+  final int format;
+  final String formatName;
 
-  YogaOnlineLesson.fromFB(value)
+  YogaOnlineLesson.fromFB(Map<String, dynamic> value)
       : id = value["id"],
         content = value["content"],
         isActive = value["isActive"],

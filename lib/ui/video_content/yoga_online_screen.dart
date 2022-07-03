@@ -7,6 +7,7 @@ import 'package:evgeshayoga/utils/ProgressHUD.dart';
 import 'package:evgeshayoga/utils/check_is_landscape.dart';
 import 'package:evgeshayoga/utils/getUserAccessStatus.dart';
 import 'package:evgeshayoga/utils/style.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -43,12 +44,13 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
     List<YogaOnlineLesson> videosFromFB = [];
     try {
       var videosSnapshot = await dbVideosReference.once();
-      for (var value in videosSnapshot.value) {
-        if (value != null) {
-          videosFromFB.add(YogaOnlineLesson.fromFB(value));
+      var value = videosSnapshot.snapshot.value as List<Object?>;
+      value.forEach((v) {
+        if (v != null) {
+          videosFromFB.add(YogaOnlineLesson.fromFB(Map<String, dynamic>.from(v as dynamic)));
         }
-      }
-    } on DatabaseError {
+      });
+    } on FirebaseException {
       Navigator.pushReplacementNamed(context, "/home");
       return;
     }

@@ -24,7 +24,7 @@ class Programs extends StatefulWidget {
 
 class _ProgramsState extends State<Programs> {
   final DatabaseReference dbProgramsReference =
-      FirebaseDatabase.instance.reference().child("marathons");
+      FirebaseDatabase.instance.ref("marathons");
 
   Map<String, dynamic> userProgramsStatuses = new Map();
   bool _isInAsyncCall = false;
@@ -40,12 +40,14 @@ class _ProgramsState extends State<Programs> {
       });
     });
 
-    dbProgramsReference.once().then((snapshot) {
+    dbProgramsReference.once().then((event) {
       _isInAsyncCall = false;
-      List activePrograms = [];
-      snapshot.value.forEach((program) {
+      List<dynamic> activePrograms = [];
+      var value = event.snapshot.value as List<Object?>;
+      value.forEach((program) {
         if (program != null) {
-          if (program["isActive"] == true) {
+          var mappedProgram = new Map<String, dynamic>.from(program as dynamic);
+          if (mappedProgram["isActive"] == true) {
             activePrograms.add(program);
           }
         }
@@ -100,7 +102,7 @@ class _ProgramsState extends State<Programs> {
                         height: 300, child: progressHUD(_isInAsyncCall)),
                     query: dbProgramsReference,
                     sort: (sa, sb) {
-                      return sb.value["id"] - sa.value["id"];
+                      return (sb.value as Map)["id"] - (sa.value as Map)["id"];
                     },
                     itemBuilder: (_, DataSnapshot snapshot,
                         Animation<double> animation, int index) {

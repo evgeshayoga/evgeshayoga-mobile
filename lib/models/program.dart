@@ -3,22 +3,24 @@ import 'package:evgeshayoga/models/week.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 class Program {
-  String content;
-  int id;
-  bool isActive;
-  String thumbnailUrl;
-  String title;
-  List weeks;
-  List videoBlocks;
+  late String content;
+  late int id;
+  late bool isActive;
+  late String thumbnailUrl;
+  late String title;
+  late List weeks;
+  late List videoBlocks;
 
-  Program.fromSnapshot(DataSnapshot snapshot)
-      : id = snapshot.value["id"],
-        content = snapshot.value["content"],
-        isActive = snapshot.value["isActive"],
-        thumbnailUrl = snapshot.value["thumbnailUrl"],
-        title = snapshot.value["title"],
-        weeks = snapshot.value["weeks"] ?? [],
-        videoBlocks = snapshot.value["videoBlocks"] ?? [];
+  Program.fromSnapshot(DataSnapshot snapshot) {
+    var data = new Map<String, dynamic>.from(snapshot.value as dynamic);
+    id = data["id"];
+    content = data["content"];
+    isActive = data["isActive"];
+    thumbnailUrl = data["thumbnailUrl"];
+    title = data["title"];
+    weeks = data["weeks"] ?? [];
+    videoBlocks = data["videoBlocks"] ?? [];
+  }
 
   List<Week> getWeeks() {
     if (weeks.length == 0) {
