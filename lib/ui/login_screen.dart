@@ -12,6 +12,8 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+final registrationUrl = Uri.parse('https://evgeshayoga.com/register');
+
 class Login extends StatefulWidget {
   @override
   _LoginState createState() => _LoginState();
@@ -124,10 +126,7 @@ class _LoginState extends State<Login> {
                         width: 200,
                         child: TextButton(
                           onPressed: () async {
-                            var url = 'https://evgeshayoga.com/register';
-                            if (await canLaunch(url)) {
-                              await launch(url);
-                            }
+                            await launchUrl(registrationUrl);
                           },
                           child: Text(
                             "Зарегестрироваться",
@@ -246,10 +245,7 @@ class _LoginState extends State<Login> {
                   width: 250,
                   child: TextButton(
                     onPressed: () async {
-                      var url = 'https://evgeshayoga.com/register';
-                      if (await canLaunch(url)) {
-                        await launch(url);
-                      }
+                      await launchUrl(registrationUrl);
                     },
                     child: Text(
                       "Зарегистрироваться",

@@ -11,7 +11,7 @@ import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class ProgramBuilder extends StatefulWidget {
-  int id;
+  final int id;
 
   ProgramBuilder(this.id, {Key? key}) : super(key: key);
 
@@ -67,8 +67,8 @@ class _ProgramBuilderState extends State<ProgramBuilder> {
           ),
           subtitle: FadeInImage(
               placeholder: MemoryImage(kTransparentImage),
-              image: CachedNetworkImageProvider(
-                  "https://evgeshayoga.com" + imagePath)),
+              image: CachedNetworkImageProvider("https://evgeshayoga.com" + imagePath),
+          ),
           onTap: () {
             var router = new MaterialPageRoute(builder: (BuildContext context) {
               return WeekScreen(week);

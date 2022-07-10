@@ -3,7 +3,7 @@ import 'package:evgeshayoga/provider/user_provider_model.dart';
 import 'package:evgeshayoga/ui/video_content/lesson_screen.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
+import 'package:flutter_font_icons/flutter_font_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:http/http.dart' as http;

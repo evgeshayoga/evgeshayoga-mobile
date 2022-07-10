@@ -5,6 +5,9 @@ import 'package:url_launcher/url_launcher.dart';
 
 import 'login_screen.dart';
 
+final registrationUrl = Uri.parse('https://evgeshayoga.com/register');
+
+
 class Home extends StatelessWidget {
   Home({required AnimationController controller})
       : animation = HomeAnimation(controller);
@@ -63,10 +66,7 @@ class Home extends StatelessWidget {
                         minWidth: 120,
                         color: Style.pinkMain,
                         onPressed: () async {
-                          var url = 'https://evgeshayoga.com/register';
-                          if (await canLaunch(url)) {
-                            await launch(url);
-                          }
+                            await launchUrl(registrationUrl);
                         },
                         child: new Text(
                           "Регистрация",

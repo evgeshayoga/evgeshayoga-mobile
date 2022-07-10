@@ -9,7 +9,7 @@ import 'package:evgeshayoga/utils/getUserAccessStatus.dart';
 import 'package:evgeshayoga/utils/style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
+// import 'package:flutter_icons/flutter_icons.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 class YogaOnlineScreen extends StatefulWidget {
@@ -23,12 +23,13 @@ class YogaOnlineScreen extends StatefulWidget {
 
 class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
   final FirebaseDatabase database = FirebaseDatabase.instance;
-  final DatabaseReference dbVideosReference = FirebaseDatabase.instance.reference().child("videos");
+  final DatabaseReference dbVideosReference = FirebaseDatabase.instance.ref("videos");
   DatabaseReference? dbUsersReference;
   Map<String, dynamic> userSubscriptionStatus = new Map();
   List favoriteVideosIds = [];
   bool hasAccess = false;
   Filters _filters = Filters();
+  bool isFiltered = false;
   List<YogaOnlineLesson> videos = [];
   List<YogaOnlineLesson> videosToDisplay = [];
   bool _isInAsyncCall = true;
@@ -117,7 +118,7 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
       Builder(
         builder: (context) => IconButton(
           icon: Icon(
-            Icons.favorite_border,
+            Icons.favorite_border_rounded,
             size: 26.0,
             color: Style.blueGrey,
           ),
@@ -138,7 +139,7 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
     return Builder(
       builder: (context) => IconButton(
         icon: Icon(
-          AntDesign.filter,
+          isFiltered ? Icons.filter_alt_rounded : Icons.filter_alt_outlined,
           size: 26.0,
           color: Style.blueGrey,
         ),
@@ -198,8 +199,10 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
           .where((video) => video.format == int.parse(filters.format!))
           .toList();
     }
+
     setState(() {
       _filters = filters;
+      isFiltered = videos.length != filteredVideos.length;
       videosToDisplay = filteredVideos;
     });
     var nav = Navigator.of(context);
@@ -207,9 +210,6 @@ class _YogaOnlineScreenState extends State<YogaOnlineScreen> {
   }
 
   void _clearFilters() {
-    setState(() {
-      _filters = Filters();
-      videosToDisplay = videos;
-    });
+    _applyFilters(Filters());
   }
 }

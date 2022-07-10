@@ -3,6 +3,8 @@ import 'package:evgeshayoga/utils/style.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+final profileUrl = Uri.parse('https://evgeshayoga.com/profile/payment');
+
 class ProfileScreen extends StatelessWidget {
   final User user;
 
@@ -58,10 +60,7 @@ class ProfileScreen extends StatelessWidget {
             ),
             OutlinedButton(
               onPressed: () async {
-                var url = 'https://evgeshayoga.com/profile/payment';
-                if (await canLaunch(url)) {
-                  await launch(url);
-                }
+                await launchUrl(profileUrl);
               },
               // color: Style.pinkMain,
               child: new Text(
