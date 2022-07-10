@@ -42,7 +42,7 @@ packages:
       name: audio_session
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.8"
+    version: "0.1.9"
   boolean_selector:
     dependency: transitive
     description:
@@ -451,7 +451,7 @@ packages:
       name: in_app_purchase_android
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.2+8"
+    version: "0.2.3"
   in_app_purchase_platform_interface:
     dependency: transitive
     description:
@@ -493,7 +493,7 @@ packages:
       name: json_annotation
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.5.0"
+    version: "4.6.0"
   just_audio:
     dependency: transitive
     description:
@@ -785,7 +785,7 @@ packages:
       name: sqflite
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.2+1"
+    version: "2.0.3"
   sqflite_common:
     dependency: transitive
     description:
@@ -981,7 +981,7 @@ packages:
       name: wakelock
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.6.1+2"
+    version: "0.6.2"
   wakelock_macos:
     dependency: transitive
     description:

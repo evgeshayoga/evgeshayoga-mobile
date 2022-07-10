@@ -10,39 +10,16 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(FirebaseInitializer());
-}
-
-class FirebaseInitializer extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder(
-      // Initialize FlutterFire
-      future: Firebase.initializeApp().then((snapshot) {
-        if (kDebugMode) {
-          FirebaseCrashlytics.instance
-              .setCrashlyticsCollectionEnabled(false);
-        }
-        return snapshot;
-      }),
-      builder: (context, snapshot) {
-        // Check for errors
-        if (snapshot.hasError) {
-          return Container();
-        }
-
-        // Once complete, show your application
-        if (snapshot.connectionState == ConnectionState.done) {
-          return App();
-        }
-
-        // Otherwise, show something whilst waiting for initialization to complete
-        return Container();
-      },
-    );
+  await Firebase.initializeApp();
+  if (kDebugMode) {
+    FirebaseCrashlytics.instance
+        .setCrashlyticsCollectionEnabled(false);
+  } else {
+    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
   }
+  runApp(App());
 }
 
 class App extends StatelessWidget {

@@ -12,7 +12,7 @@ A cross-platform mobile app for displaying video content from evgeshayoga.com Yo
 ## Getting Started
 
 Following components are required
- - Flutter ❤️ (^1.9.0)
+ - Flutter ❤️ (^3.0.0)
  - Xcode
  - Android Studio
  - cocoapods (^1.8.0)
