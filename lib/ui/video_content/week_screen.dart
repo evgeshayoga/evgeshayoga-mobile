@@ -16,7 +16,6 @@ class WeekScreen extends StatelessWidget {
     Widget upperContent = DefaultTextStyle(
       child: HtmlWidget(
         week.content,
-        webView: true,
       ),
       style: Style.regularTextStyle,
       textAlign: TextAlign.justify,

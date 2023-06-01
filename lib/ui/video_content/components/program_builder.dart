@@ -86,7 +86,6 @@ class _ProgramBuilderState extends State<ProgramBuilder> {
             child: DefaultTextStyle(
               child: HtmlWidget(
                 program!.content,
-                webView: true,
               ),
               style: Style.regularTextStyle,
               textAlign: TextAlign.justify,

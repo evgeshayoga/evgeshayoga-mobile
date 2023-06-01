@@ -47,7 +47,6 @@ class _LessonBuilderState extends State<LessonBuilder> {
     return DefaultTextStyle(
       child: HtmlWidget(
         yogaOnlineLesson!.content,
-        webView: true,
       ),
       style: Style.regularTextStyle,
       textAlign: TextAlign.justify,
