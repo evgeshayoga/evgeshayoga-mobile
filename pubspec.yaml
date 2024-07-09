@@ -11,10 +11,10 @@ description: Evgeshayoga Flutter project.
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.9.0+67
+version: 1.10.0+69
 
 environment:
-  sdk: ">=2.17.0 <3.0.0"
+  sdk: ">=3.2.0 <4.0.0"
 
 dependencies:
   flutter:
@@ -23,21 +23,21 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-  intl: ^0.18.0
-  video_player: ^2.6.0
-  connectivity: ^3.0.2
-  chewie: ^1.5.0
-  firebase_auth: ^4.6.0
-  firebase_database: ^10.2.0
-  firebase_crashlytics: ^3.3.0
-  http: ^0.13.0
+  intl: ^0.19.0
+  video_player: ^2.9.0
+  connectivity_plus: ^6.0.3
+  chewie: ^1.8.1
+  firebase_auth: ^5.1.2
+  firebase_database: ^11.0.0
+  firebase_crashlytics: ^4.0.0
+  http: ^1.2.1
   url_launcher: ^6.0.2
   flutter_launcher_icons: ^0.13.0
   modal_progress_hud_alt: ^1.0.0
-  flutter_widget_from_html: ^0.10.0
-  in_app_purchase: ^3.0.0
+  flutter_widget_from_html: ^0.15.0
+  in_app_purchase: ^3.2.0
   flutter_font_icons: ^2.0.0
-  package_info: ^2.0.0
+  package_info_plus: ^8.0.0
   provider: ^6.0.5
   transparent_image: ^2.0.0
   cached_network_image: ^3.2.2
